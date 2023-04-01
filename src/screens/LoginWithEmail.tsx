@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NavPropsAuth } from '@routes/auth';
 import { Formik } from 'formik';
 import React from 'react';
+import { View } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
 export const LoginWithEmail = () => {
@@ -31,27 +32,29 @@ export const LoginWithEmail = () => {
           onSubmit={values => loginWithEmail(values)}>
           {({ handleChange, values, handleSubmit, errors, touched }) => (
             <>
-              <Input
-                name="email"
-                label="e-mail"
-                placeholder="Ex: joao@email.com"
-                value={values.email}
-                onChangeText={handleChange('email')}
-                error={touched.email && errors.email ? errors.email : ''}
-                marginBottom={effects.spacing.lg}
-              />
+              <View>
+                <Input
+                  name="email"
+                  label="e-mail"
+                  placeholder="Ex: joao@email.com"
+                  value={values.email.toLowerCase()}
+                  onChangeText={handleChange('email')}
+                  error={touched.email && errors.email ? errors.email : ''}
+                  marginBottom={effects.spacing.lg}
+                />
 
-              <Input
-                name="password"
-                label="Senha"
-                placeholder="********"
-                secureTextEntry
-                value={values.password}
-                onChangeText={handleChange('password')}
-                error={
-                  touched.password && errors.password ? errors.password : ''
-                }
-              />
+                <Input
+                  name="password"
+                  label="Senha"
+                  placeholder="********"
+                  secureTextEntry
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  error={
+                    touched.password && errors.password ? errors.password : ''
+                  }
+                />
+              </View>
 
               <Container flex={1} justifyContent="flex-end">
                 <Button

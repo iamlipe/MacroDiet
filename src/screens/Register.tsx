@@ -66,7 +66,7 @@ export const Register = () => {
                 name="email"
                 label="e-mail"
                 placeholder="Ex: jose@email.com"
-                value={values.email}
+                value={values.email.toLowerCase()}
                 onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
                 error={touched.email && errors.email ? errors.email : ''}
@@ -109,7 +109,7 @@ export const Register = () => {
                 </Label>
 
                 <Button
-                  title="Submit"
+                  title="Registrar"
                   onPress={handleSubmit}
                   disabled={loading}
                 />
