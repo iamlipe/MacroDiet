@@ -1,10 +1,11 @@
-import authFirebase, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import authFirebase from '@react-native-firebase/auth';
 import { useUserStore } from '@stores/user';
 import { useCallback, useMemo, useState } from 'react';
 import { getUserByDoc } from '@services/firebase/repositories/users';
 import { useLoader } from './useLoader';
 import { useToast } from './useToast';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { buidSchemaAuth } from '@services/firebase/models/user';
 import * as Yup from 'yup';
 
 interface LoginWithEmailDTO {
@@ -34,19 +35,6 @@ export const useLogin = () => {
           .min(8, 'Senha deve ter no mínimo 8 caracteres'),
       }),
     [],
-  );
-
-  const authUser = useCallback(
-    (user: FirebaseAuthTypes.User) => {
-      auth({
-        name: user.displayName.split(' ').splice(0, 1)[0],
-        lastName: user.displayName.split(' ').join(' '),
-        email: user.email,
-        phone: user.phoneNumber,
-        photo: user.photoURL,
-      });
-    },
-    [auth],
   );
 
   const handleAuthError = useCallback(
@@ -85,7 +73,7 @@ export const useLogin = () => {
       if (user) {
         login(user);
       } else {
-        authUser(googleAuth);
+        auth(buidSchemaAuth(googleAuth));
       }
     } catch (error) {
       handleAuthError(error);
@@ -93,7 +81,7 @@ export const useLogin = () => {
       setLoading(false);
       hideLoader();
     }
-  }, [authUser, handleAuthError, hideLoader, login, showLoader]);
+  }, [auth, handleAuthError, hideLoader, login, showLoader]);
 
   // NOTE: implement when have a developer team
   const loginWithFacebook = useCallback(async () => {
@@ -122,7 +110,7 @@ export const useLogin = () => {
         if (user) {
           login(user);
         } else {
-          authUser(userFirebaseAuth);
+          auth(buidSchemaAuth(userFirebaseAuth));
         }
       } catch (error) {
         handleAuthError(error);
@@ -131,7 +119,7 @@ export const useLogin = () => {
         hideLoader();
       }
     },
-    [authUser, handleAuthError, hideLoader, login, showLoader],
+    [auth, handleAuthError, hideLoader, login, showLoader],
   );
 
   const logout = useCallback(async () => {
