@@ -1,6 +1,40 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
-  }
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin",
+        "lint": {
+          "validProperties": "shadow-color,shadow-opacity,shadow-offset"
+        }
+      }
+    ],
+
+    /* Visit https://aka.ms/tsconfig.json to read more about this file */
+    "types": [
+      "jest",
+      "@types/styled-components-react-native"
+    ],
+
+    /* Completeness */
+    "skipLibCheck": true,                            /* Skip type checking all .d.ts files. */
+    "baseUrl": "./",
+    "paths": {
+      "@context/*": ["./src/context/*"],
+      "@screens/*": ["./src/screens/*"],
+      "@config/*": ["./src/config/*"],
+      "@stores/*": ["./src/stores/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@components/*": ["./src/components/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@i18n/*": ["./src/i18n/*"],
+      "@services/*": ["./src/services/*"],
+      "@validations/*": ["./src/validations/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@__mocks__/*": ["./__mocks__/*"],
+      "@__tests__/*": ["./__tests__/*"],
+    },
+  },
 }
