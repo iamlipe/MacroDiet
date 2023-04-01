@@ -7,13 +7,12 @@ import { Scroll } from '@components/Scroll';
 import { useLogin } from '@hooks/useLogin';
 import { useNavigation } from '@react-navigation/native';
 import { NavPropsAuth } from '@routes/auth';
-import { Platform } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
 export const Login = () => {
   const { goBack, navigate: navigateAuth } = useNavigation<NavPropsAuth>();
   const { effects, fonts } = useTheme();
-  const { loginWithGoogle, loginWithApple, loginWithFacebook } = useLogin();
+  const { loginWithGoogle } = useLogin();
 
   return (
     <Background>
@@ -38,24 +37,6 @@ export const Login = () => {
           title="Google"
           icon={{ name: 'google', position: 'left' }}
           onPress={loginWithGoogle}
-          marginBottom={effects.spacing.md}
-        />
-
-        {Platform.OS === 'ios' && (
-          <Button
-            type="outlined"
-            title="Apple"
-            icon={{ name: 'apple', position: 'left' }}
-            onPress={loginWithApple}
-            marginBottom={effects.spacing.md}
-          />
-        )}
-
-        <Button
-          type="outlined"
-          title="Facebook"
-          icon={{ name: 'facebook', position: 'left' }}
-          onPress={loginWithFacebook}
           marginBottom={effects.spacing.md}
         />
 
