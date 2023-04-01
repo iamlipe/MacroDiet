@@ -1,14 +1,11 @@
-import { users } from '@__mocks__/users';
+import authFirebase, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { useUserStore } from '@stores/user';
 import { useCallback, useMemo, useState } from 'react';
 import { getUserByDoc } from '@services/firebase/repositories/users';
-import authFirebase from '@react-native-firebase/auth';
-
-import * as Yup from 'yup';
-
 import { useLoader } from './useLoader';
 import { useToast } from './useToast';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import * as Yup from 'yup';
 
 interface LoginWithEmailDTO {
   email: string;
@@ -39,6 +36,36 @@ export const useLogin = () => {
     [],
   );
 
+  const authUser = useCallback(
+    (user: FirebaseAuthTypes.User) => {
+      auth({
+        name: user.displayName.split(' ').splice(0, 1)[0],
+        lastName: user.displayName.split(' ').join(' '),
+        email: user.email,
+        phone: user.phoneNumber,
+        photo: user.photoURL,
+      });
+    },
+    [auth],
+  );
+
+  const handleAuthError = useCallback(
+    error => {
+      if (error.message) {
+        showToast({
+          type: 'error',
+          message: error.code,
+        });
+      } else {
+        showToast({
+          type: 'error',
+          message: 'something went wrong',
+        });
+      }
+    },
+    [showToast],
+  );
+
   const loginWithGoogle = useCallback(async () => {
     try {
       setLoading(true);
@@ -55,36 +82,18 @@ export const useLogin = () => {
 
       const user = await getUserByDoc({ doc: googleAuth.uid });
 
-      if (!user) {
-        auth({
-          name: googleAuth.displayName.split(' ').splice(0, 1)[0],
-          lastName: googleAuth.displayName.split(' ').join(' '),
-          email: googleAuth.email,
-          phone: googleAuth.phoneNumber,
-          photo: googleAuth.photoURL,
-        });
-      }
-
-      login(user);
-    } catch (error) {
-      if (error instanceof Error) {
-        showToast({
-          type: 'error',
-          message: error.message,
-        });
+      if (user) {
+        login(user);
       } else {
-        showToast({
-          type: 'error',
-          message: 'something went wrong',
-        });
+        authUser(googleAuth);
       }
+    } catch (error) {
+      handleAuthError(error);
     } finally {
-      setTimeout(() => {
-        setLoading(false);
-        hideLoader();
-      }, 1000);
+      setLoading(false);
+      hideLoader();
     }
-  }, [auth, hideLoader, login, showLoader, showToast]);
+  }, [authUser, handleAuthError, hideLoader, login, showLoader]);
 
   // NOTE: implement when have a developer team
   const loginWithFacebook = useCallback(async () => {
@@ -97,24 +106,32 @@ export const useLogin = () => {
   }, [showToast]);
 
   const loginWithEmail = useCallback(
-    async ({ email }: LoginWithEmailDTO) => {
+    async ({ email, password }: LoginWithEmailDTO) => {
       try {
         setLoading(true);
         showLoader();
-        const user = users.data.filter(item => item.email === email);
-        if (user.length) {
-          login(user[0]);
+
+        const { user: userFirebaseAuth } =
+          await authFirebase().signInWithEmailAndPassword(
+            email.toLowerCase().trim(),
+            password.toLowerCase().trim(),
+          );
+
+        const user = await getUserByDoc({ doc: userFirebaseAuth.uid });
+
+        if (user) {
+          login(user);
+        } else {
+          authUser(userFirebaseAuth);
         }
       } catch (error) {
-        showToast({ type: 'error', message: 'something went wrong' });
+        handleAuthError(error);
       } finally {
-        setTimeout(() => {
-          setLoading(false);
-          hideLoader();
-        }, 1000);
+        setLoading(false);
+        hideLoader();
       }
     },
-    [hideLoader, login, showLoader, showToast],
+    [authUser, handleAuthError, hideLoader, login, showLoader],
   );
 
   const logout = useCallback(async () => {
