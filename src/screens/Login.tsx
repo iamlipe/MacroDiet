@@ -12,7 +12,7 @@ import { useTheme } from 'styled-components/native';
 export const Login = () => {
   const { goBack, navigate: navigateAuth } = useNavigation<NavPropsAuth>();
   const { effects, fonts } = useTheme();
-  const { loginWithGoogle } = useLogin();
+  const { loginWithGoogle, loading } = useLogin();
 
   return (
     <Background>
@@ -53,6 +53,7 @@ export const Login = () => {
           linkPosition="center"
           title="Cadastrar-se"
           onPress={() => navigateAuth('Register')}
+          disabled={loading}
         />
       </Scroll>
     </Background>
