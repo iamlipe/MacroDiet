@@ -15,6 +15,8 @@ import { useSearch } from './useSearch';
 import { useSync } from './useSync';
 import { useToast } from './useToast';
 import { useGoalCalculate } from './useGoalCalculate';
+import { useHandleError } from './useHandleError';
+import { useRecoveryPassword } from './useRecoveryPassword';
 
 export {
   useActitivities,
@@ -34,4 +36,6 @@ export {
   useSync,
   useToast,
   useGoalCalculate,
+  useHandleError,
+  useRecoveryPassword,
 };

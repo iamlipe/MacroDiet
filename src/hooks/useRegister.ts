@@ -1,9 +1,10 @@
-import { useUserStore } from '@stores/user';
-import { useCallback, useMemo, useState } from 'react';
 import * as Yup from 'yup';
-
+import { useCallback, useMemo, useState } from 'react';
+import { useUserStore } from '@stores/user';
 import { useLoader } from './useLoader';
 import { useToast } from './useToast';
+import { buidSchemaAuth } from '@services/firebase/models/user';
+import authFirebase from '@react-native-firebase/auth';
 
 interface RegisterDTO {
   fullName: string;
@@ -48,23 +49,26 @@ export const useRegister = () => {
   );
 
   const handleRegister = useCallback(
-    ({ fullName, email }: RegisterDTO) => {
+    async ({ fullName, email, password }: RegisterDTO) => {
       try {
         setLoading(true);
         showLoader();
 
-        auth({
-          name: fullName.split(' ').splice(0, 1)[0],
-          lastName: fullName.split(' ').join(' '),
-          email,
-        });
+        const { user } = await authFirebase().createUserWithEmailAndPassword(
+          email.toLowerCase().trim(),
+          password,
+        );
+
+        await user.updateProfile({ displayName: fullName });
+
+        if (user) {
+          auth(buidSchemaAuth({ ...user, displayName: fullName }));
+        }
       } catch (error) {
         showToast({ type: 'error', message: 'something went wrong' });
       } finally {
-        setTimeout(() => {
-          setLoading(false);
-          hideLoader();
-        }, 1000);
+        setLoading(false);
+        hideLoader();
       }
     },
     [auth, hideLoader, showLoader, showToast],
