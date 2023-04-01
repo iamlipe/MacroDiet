@@ -1,3 +1,5 @@
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
+
 export interface IInfo {
   height: { quantity: number; measureId: string };
   weigth: { quantity: number; measureId: string };
@@ -64,5 +66,15 @@ export class User implements IUser {
     this.preferences = user.preferences;
   }
 }
+
+export const buidSchemaAuth = (raw: FirebaseAuthTypes.User): IAuth => {
+  return {
+    name: raw.displayName.split(' ').splice(0, 1)[0],
+    lastName: raw.displayName.split(' ').join(' '),
+    email: raw.email,
+    phone: raw.phoneNumber,
+    photo: raw.photoURL,
+  };
+};
 
 export const buildSchemaUser = () => {};
