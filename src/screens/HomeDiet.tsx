@@ -169,10 +169,12 @@ export const HomeDiet = () => {
           </Accordion>
         ))}
 
-        <Button
-          title="Adicionar refeição"
-          onPress={() => navigateLogged('AddMeal')}
-        />
+        <Container flex={1} justifyContent="flex-end">
+          <Button
+            title="Adicionar refeição"
+            onPress={() => navigateLogged('AddMeal')}
+          />
+        </Container>
       </Scroll>
     </Background>
   );
