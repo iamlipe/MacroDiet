@@ -16,6 +16,12 @@ export const measures: MeasuresData = {
         title: 'gram',
         multiple: 1,
       },
+      {
+        id: '2',
+        acronym: 'kg',
+        title: 'kilograma',
+        multiple: 1000,
+      },
     ],
     length: [
       {
