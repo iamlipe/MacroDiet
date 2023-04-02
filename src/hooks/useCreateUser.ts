@@ -3,14 +3,13 @@ import {
   CreateUserStackParamsList,
   NavPropsCreateUser,
 } from '@routes/createUserStack';
-import { IAuth, IInfo, User } from '@services/firebase/models/user';
-import { useUserStore } from '@stores/user';
+import { IInfo, User } from '@services/firebase/models/user';
+import { ICreatedUser, useUserStore } from '@stores/user';
 import { useCallback, useMemo, useState } from 'react';
-import * as Yup from 'yup';
-
 import { useLoader } from './useLoader';
-import { useMeals } from './useMeals';
 import { useToast } from './useToast';
+import { createUser as createUserFirebase } from '@services/firebase/repositories/users';
+import * as Yup from 'yup';
 
 interface HandleFormProps {
   values: Partial<IInfo>;
@@ -20,8 +19,7 @@ interface HandleFormProps {
 export const useCreateUser = () => {
   const [loading, setLoading] = useState(false);
   const { show: showLoading, hide: hideLoading } = useLoader();
-  const { setCreateUser, login, auth, userCreate } = useUserStore();
-  const { createMealsDay } = useMeals({ shouldUpdateStore: false });
+  const { setCreateUser, login, userCreate, user } = useUserStore();
   const { show: showToast } = useToast();
   const { navigate: navigateCreateUser } = useNavigation<NavPropsCreateUser>();
 
@@ -34,7 +32,7 @@ export const useCreateUser = () => {
   const goalSchema = useMemo(
     () =>
       Yup.object().shape({
-        goalId: Yup.string().required(),
+        goalId: Yup.string().required('Por favor, selecione o seu objetivo.'),
       }),
     [],
   );
@@ -48,7 +46,9 @@ export const useCreateUser = () => {
   const activitySchema = useMemo(
     () =>
       Yup.object().shape({
-        activityId: Yup.string().required(),
+        activityId: Yup.string().required(
+          'Por favor, selecione um nível de atividade.',
+        ),
       }),
     [],
   );
@@ -63,15 +63,18 @@ export const useCreateUser = () => {
     () =>
       Yup.object().shape({
         birthDate: Yup.date()
-          .max(new Date(), 'A data deve ser antes do dia atual')
-          .required('A data é obrigatória'),
+          .max(
+            new Date(),
+            'A data selecionada deve estar no passado em relação ao dia atual.',
+          )
+          .required('Por favor, selecione a sua data de nascimento.'),
       }),
     [],
   );
 
   const initialValuesGender = useMemo(() => {
     return {
-      genderId: '',
+      genderId: 'Por favor, selecione o seu sexo biológico',
     };
   }, []);
 
@@ -96,8 +99,10 @@ export const useCreateUser = () => {
     () =>
       Yup.object().shape({
         height: Yup.object().shape({
-          quantity: Yup.string().required(),
-          measureId: Yup.string().required(),
+          quantity: Yup.string()
+            .min(1, 'Digite uma altura valida')
+            .required('Digite a sua altura'),
+          measureId: Yup.string().required('Selecione uma unidade de medida.'),
         }),
       }),
     [],
@@ -116,41 +121,45 @@ export const useCreateUser = () => {
     () =>
       Yup.object().shape({
         weigth: Yup.object().shape({
-          quantity: Yup.string().required(),
-          measureId: Yup.string().required(),
+          quantity: Yup.string()
+            .min(1, 'Digite um peso valido')
+            .required('Informe o seu peso atual.'),
+          measureId: Yup.string().required('Selecione uma unidade de medida.'),
         }),
       }),
     [],
   );
 
-  const handleValuesForm = useCallback((values: any): Partial<IInfo> => {
-    if (values.birthDate) {
-      const date = new Date(values.birthDate);
+  const handleValuesForm = useCallback((data: any): Partial<IInfo> => {
+    let values = {};
+
+    if (data.birthDate) {
+      const date = new Date(data.birthDate);
 
       const birthDate = {
-        milliseconds: date.getMilliseconds(),
-        nanoseconds: date.getMilliseconds() * 1000000,
+        milliseconds: date.getTime(),
+        nanoseconds: date.getTime() * 1000000,
       };
 
-      return { birthDate };
+      values = { ...values, birthDate };
     }
 
-    if (values.height) {
+    if (data.height) {
       const height = {
-        quantity: Number(values.height.quantity),
-        measureId: values.height.measureId,
+        quantity: Number(data.height.quantity),
+        measureId: data.height.measureId,
       };
 
-      return { height };
+      values = { ...values, height };
     }
 
-    if (values.weigth) {
+    if (data.weigth) {
       const weigth = {
-        quantity: Number(values.weigth.quantity),
-        measureId: values.weigth.measureId,
+        quantity: Number(data.weigth.quantity),
+        measureId: data.weigth.measureId,
       };
 
-      return { weigth };
+      values = { ...values, weigth };
     }
 
     return { ...values };
@@ -168,17 +177,28 @@ export const useCreateUser = () => {
     [navigateCreateUser, setCreateUser, showToast],
   );
 
-  const createUser = useCallback(() => {
+  const createUser = useCallback(async () => {
     try {
-      const authData: IAuth = auth as unknown as IAuth;
-      const infoData: IInfo = userCreate as unknown as IInfo;
+      const { doc, activityId, birthDate, genderId, goalId, height, weigth } =
+        userCreate as unknown as ICreatedUser;
 
       setLoading(true);
       showLoading();
 
       const newUser = new User({
-        ...authData,
-        info: infoData,
+        name: user.name,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        photo: user.photo,
+        info: {
+          activityId,
+          birthDate,
+          genderId,
+          goalId,
+          height,
+          weigth,
+        },
         preferences: {
           mealsTime: [
             { title: 'Cafe da manha', time: { hour: 8, minutes: 30 } },
@@ -194,26 +214,18 @@ export const useCreateUser = () => {
         },
       });
 
-      createMealsDay({
-        userId: '1',
-        mealsTime: newUser.preferences.mealsTime,
+      const { createdUser } = await createUserFirebase({
+        doc,
+        user: newUser,
       });
 
-      login(newUser);
+      login(createdUser);
     } catch (error) {
-      showToast({ type: 'error', message: 'something went wrong' });
+      showToast({ type: 'error', message: error.message });
     } finally {
       setTimeout(() => hideLoading(), 1000);
     }
-  }, [
-    auth,
-    createMealsDay,
-    hideLoading,
-    login,
-    showLoading,
-    showToast,
-    userCreate,
-  ]);
+  }, [hideLoading, login, showLoading, showToast, user, userCreate]);
 
   return {
     initialValuesGoal,
