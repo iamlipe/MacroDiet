@@ -15,7 +15,7 @@ interface LoginWithEmailDTO {
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
-  const { login, logout: logoutStore, auth } = useUserStore();
+  const { login, logout: logoutStore, auth, setCreateUser } = useUserStore();
   const { show: showToast } = useToast();
   const { show: showLoader, hide: hideLoader } = useLoader();
 
@@ -68,12 +68,13 @@ export const useLogin = () => {
         googleCredential,
       );
 
-      const user = await getUserByDoc({ doc: googleAuth.uid });
+      const { user } = await getUserByDoc({ doc: googleAuth.uid });
 
       if (user) {
         login(user);
       } else {
         auth(buidSchemaAuth(googleAuth));
+        setCreateUser({ doc: googleAuth.uid });
       }
     } catch (error) {
       handleAuthError(error);
@@ -81,7 +82,7 @@ export const useLogin = () => {
       setLoading(false);
       hideLoader();
     }
-  }, [auth, handleAuthError, hideLoader, login, showLoader]);
+  }, [auth, handleAuthError, hideLoader, login, setCreateUser, showLoader]);
 
   // NOTE: implement when have a developer team
   const loginWithFacebook = useCallback(async () => {
@@ -105,12 +106,13 @@ export const useLogin = () => {
             password.toLowerCase().trim(),
           );
 
-        const user = await getUserByDoc({ doc: userFirebaseAuth.uid });
+        const { user } = await getUserByDoc({ doc: userFirebaseAuth.uid });
 
         if (user) {
           login(user);
         } else {
           auth(buidSchemaAuth(userFirebaseAuth));
+          setCreateUser({ doc: userFirebaseAuth.uid });
         }
       } catch (error) {
         handleAuthError(error);
@@ -119,7 +121,7 @@ export const useLogin = () => {
         hideLoader();
       }
     },
-    [auth, handleAuthError, hideLoader, login, showLoader],
+    [auth, handleAuthError, hideLoader, login, setCreateUser, showLoader],
   );
 
   const logout = useCallback(async () => {

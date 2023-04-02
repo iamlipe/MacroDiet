@@ -1,12 +1,14 @@
-import { Background } from '@components/Backgroud';
-import { Button } from '@components/Button';
-import { Container } from '@components/Container';
-import { Label } from '@components/Label';
-import { Scroll } from '@components/Scroll';
-import { useNavigation } from '@react-navigation/native';
-import { NavPropsCreateUser } from '@routes/createUserStack';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components/native';
+import { NavPropsCreateUser } from '@routes/createUserStack';
+import {
+  Background,
+  Button,
+  Container,
+  Label,
+  Scroll,
+} from '@components/index';
 
 export const IntroductionCreateUser = () => {
   const { navigate: navigateCreateUser } = useNavigation<NavPropsCreateUser>();

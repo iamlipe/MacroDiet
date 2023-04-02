@@ -1249,6 +1249,8 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.17.11):
     - React-Core
+  - RNDateTimePicker (7.0.0):
+    - React-Core
   - RNFBApp (17.4.0):
     - Firebase/CoreOnly (= 10.7.0)
     - React-Core
@@ -1375,6 +1377,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
@@ -1531,6 +1534,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNDateTimePicker:
+    :path: "../node_modules/@react-native-community/datetimepicker"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBAuth:
@@ -1644,6 +1649,7 @@ SPEC CHECKSUMS:
   ReactCommon: 34f9369c376d5f335069dda29552b3e7351b9ec6
   RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
+  RNDateTimePicker: 66cb21772d462d02efc6826adac37f1fd40984cf
   RNFBApp: 525cc4317f7955eda6bac09fac3acf7ee06afa0b
   RNFBAuth: 57e0173a5cc9e63201bfe9379ef89f3ece5d923d
   RNFBCrashlytics: f24159efca2309fef256332e47d58b4af7a3fd41

@@ -1,4 +1,6 @@
 import styled from 'styled-components/native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 interface WrapperProps {
   name: string;
@@ -46,4 +48,36 @@ export const Error = styled.Text`
   font-size: ${({ theme }) => theme.fonts.size.md}px;
   color: ${({ theme }) => theme.fonts.color.secundary};
   margin-top: ${({ theme }) => theme.effects.spacing.vs}px;
+`;
+
+export const BottomSheet = styled(BottomSheetModal).attrs(({ theme }) => ({
+  handleStyle: {
+    height: 40,
+    backgroundColor: theme.colors.background.dark,
+    justifyContent: 'center',
+  },
+  handleIndicatorStyle: {
+    width: 40,
+    backgroundColor: theme.colors.gray.white,
+  },
+}))`
+  background-color: ${({ theme }) => theme.colors.gray.black};
+`;
+
+export const Backdrop = styled.Pressable`
+  flex: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.background.modal};
+`;
+
+export const StyledDatePicker = styled(DateTimePicker).attrs(({ theme }) => ({
+  display: 'spinner',
+  textColor: theme.fonts.color.primary,
+}))`
+  flex: 1;
+  background-color: ${({ theme }) => theme.colors.background.dark};
 `;

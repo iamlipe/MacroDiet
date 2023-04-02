@@ -1,11 +1,13 @@
-import { Background } from '@components/Backgroud';
-import { Button } from '@components/Button';
-import { Container } from '@components/Container';
-import { Label } from '@components/Label';
-import { Scroll } from '@components/Scroll';
-import { useCreateUser } from '@hooks/useCreateUser';
 import React from 'react';
+import { useCreateUser } from '@hooks/useCreateUser';
 import { useTheme } from 'styled-components/native';
+import {
+  Background,
+  Button,
+  Container,
+  Label,
+  Scroll,
+} from '@components/index';
 
 export const ConclusionCreateUser = () => {
   const { createUser } = useCreateUser();
