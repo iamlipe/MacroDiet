@@ -7,8 +7,7 @@ interface MealsData {
 export const meals: MealsData = {
   data: [
     {
-      id: '1',
-      userId: '1',
+      user: '1',
       title: 'Cafe da manha',
       time: { milliseconds: 0, nanoseconds: 0 },
       foods: [
@@ -20,22 +19,19 @@ export const meals: MealsData = {
       ],
     },
     {
-      id: '2',
-      userId: '1',
+      user: '2',
       title: 'Almoco',
       time: { milliseconds: 0, nanoseconds: 0 },
       foods: [],
     },
     {
-      id: '3',
-      userId: '1',
+      user: '3',
       title: 'Cafe da tarde',
       time: { milliseconds: 0, nanoseconds: 0 },
       foods: [],
     },
     {
-      id: '4',
-      userId: '1',
+      user: '4',
       title: 'Janta',
       time: { milliseconds: 0, nanoseconds: 0 },
       foods: [],

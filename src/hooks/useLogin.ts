@@ -7,6 +7,7 @@ import { useToast } from './useToast';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { buidSchemaAuth } from '@services/firebase/models/user';
 import * as Yup from 'yup';
+import { useMeals } from './useMeals';
 
 interface LoginWithEmailDTO {
   email: string;
@@ -18,6 +19,7 @@ export const useLogin = () => {
   const { login, logout: logoutStore, auth, setCreateUser } = useUserStore();
   const { show: showToast } = useToast();
   const { show: showLoader, hide: hideLoader } = useLoader();
+  const { createMealsDay } = useMeals({ shouldUpdateStore: false });
 
   const initialValuesLoginWithEmail = useMemo(() => {
     return {
@@ -72,6 +74,7 @@ export const useLogin = () => {
 
       if (user) {
         login(user);
+        createMealsDay({ mealsTime: user.preferences.mealsTime });
       } else {
         auth(buidSchemaAuth(googleAuth));
         setCreateUser({ doc: googleAuth.uid });
@@ -82,7 +85,15 @@ export const useLogin = () => {
       setLoading(false);
       hideLoader();
     }
-  }, [auth, handleAuthError, hideLoader, login, setCreateUser, showLoader]);
+  }, [
+    auth,
+    createMealsDay,
+    handleAuthError,
+    hideLoader,
+    login,
+    setCreateUser,
+    showLoader,
+  ]);
 
   // NOTE: implement when have a developer team
   const loginWithFacebook = useCallback(async () => {
@@ -110,6 +121,7 @@ export const useLogin = () => {
 
         if (user) {
           login(user);
+          createMealsDay({ mealsTime: user.preferences.mealsTime });
         } else {
           auth(buidSchemaAuth(userFirebaseAuth));
           setCreateUser({ doc: userFirebaseAuth.uid });
@@ -121,7 +133,15 @@ export const useLogin = () => {
         hideLoader();
       }
     },
-    [auth, handleAuthError, hideLoader, login, setCreateUser, showLoader],
+    [
+      auth,
+      createMealsDay,
+      handleAuthError,
+      hideLoader,
+      login,
+      setCreateUser,
+      showLoader,
+    ],
   );
 
   const logout = useCallback(async () => {
