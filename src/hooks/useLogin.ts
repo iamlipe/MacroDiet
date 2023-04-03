@@ -74,7 +74,7 @@ export const useLogin = () => {
 
       if (user) {
         login(user);
-        createMealsDay({ mealsTime: user.preferences.mealsTime });
+        await createMealsDay({ mealsTime: user.preferences.mealsTime });
       } else {
         auth(buidSchemaAuth(googleAuth));
         setCreateUser({ doc: googleAuth.uid });
@@ -121,7 +121,7 @@ export const useLogin = () => {
 
         if (user) {
           login(user);
-          createMealsDay({ mealsTime: user.preferences.mealsTime });
+          await createMealsDay({ mealsTime: user.preferences.mealsTime });
         } else {
           auth(buidSchemaAuth(userFirebaseAuth));
           setCreateUser({ doc: userFirebaseAuth.uid });
