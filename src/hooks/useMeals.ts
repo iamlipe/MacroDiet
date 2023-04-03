@@ -1,28 +1,28 @@
-import { meals as mealsData } from '@__mocks__/meals';
 import { useNavigation } from '@react-navigation/native';
 import { NavPropsDiet } from '@routes/dietStack';
 import { IFood, IInfoFood } from '@services/firebase/models/food';
 import { IMeal, Meal } from '@services/firebase/models/meal';
-import { IMealTime } from '@services/firebase/models/user';
 import { useMealStore } from '@stores/meal';
 import { useUserStore } from '@stores/user';
-import moment from 'moment';
-import * as Yup from 'yup';
-
+import {
+  createMeal as createMealFirebase,
+  getMealsDay as getMealsDayFirebase,
+} from '@services/firebase/repositories/meals';
 import { useFoods } from './useFoods';
 import { useMeasures } from './useMeasures';
-
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
 import { useToast } from './useToast';
+import auth from '@react-native-firebase/auth';
+import * as Yup from 'yup';
+import { IMealTime } from '@services/firebase/models/user';
+
+interface CreateMealProps {
+  time: { hour: number; minutes: number };
+  title: string;
+}
 
 interface UseMealsProps {
   shouldUpdateStore?: boolean;
-}
-
-interface CreateMealsDayProps {
-  userId: string;
-  mealsTime: IMealTime[];
 }
 
 interface GetInfoMeal {
@@ -57,10 +57,7 @@ export const useMeals = ({ shouldUpdateStore = false }: UseMealsProps) => {
       setLoading(true);
 
       if (user) {
-        const mealsDay = mealsData.data
-          .filter(meal => meal.userId === user.id)
-          .filter(meal => moment(new Date(meal.time.milliseconds)));
-
+        const { mealsDay } = await getMealsDayFirebase(auth().currentUser.uid);
         setMeals(mealsDay);
       }
     } catch (error) {
@@ -70,39 +67,44 @@ export const useMeals = ({ shouldUpdateStore = false }: UseMealsProps) => {
     }
   }, [setMeals, showToast, user]);
 
+  const createMeal = useCallback(async ({ time, title }: CreateMealProps) => {
+    const mealTime = new Date();
+    mealTime.setHours(time.hour);
+    mealTime.setMinutes(time.minutes);
+
+    const meal = new Meal({
+      user: auth().currentUser.uid,
+      title,
+      time: {
+        milliseconds: mealTime.getTime(),
+        nanoseconds: mealTime.getTime() * 1000000,
+      },
+      foods: [],
+    });
+
+    await createMealFirebase({ meal });
+  }, []);
+
   const createMealsDay = useCallback(
-    ({ userId, mealsTime }: CreateMealsDayProps) => {
+    ({ mealsTime }: { mealsTime: IMealTime[] }) => {
       try {
         setLoading(true);
 
-        const createdMeals = mealsTime.map(meal => {
-          const date = new Date();
-          date.setHours(meal.time.hour);
-          date.setMinutes(meal.time.minutes);
-
-          return new Meal({
-            id: '1',
-            userId,
-            title: meal.title,
-            time: {
-              milliseconds: date.getMilliseconds(),
-              nanoseconds: date.getMilliseconds() * 1000000,
-            },
-            foods: [],
-          });
+        mealsTime.map(async meal => {
+          await createMeal(meal);
         });
-
-        setMeals(createdMeals);
       } catch (error) {
+        if (error.meassage) {
+          showToast({ type: 'error', message: error.message });
+        }
+
         showToast({ type: 'error', message: 'something went wrong' });
       } finally {
         setLoading(true);
       }
     },
-    [setMeals, showToast],
+    [createMeal, showToast],
   );
-
-  const createMeal = useCallback(() => {}, []);
 
   const deleteMeal = useCallback(() => {}, []);
 
@@ -134,7 +136,7 @@ export const useMeals = ({ shouldUpdateStore = false }: UseMealsProps) => {
         if (mealListStore) {
           if (type === 'add' && quantity && measureId) {
             setMeals([
-              ...mealListStore.filter(item => item.id !== meal.id),
+              // ...mealListStore.filter(item => item.id !== meal.id),
               {
                 ...meal,
                 foods: [
@@ -145,7 +147,7 @@ export const useMeals = ({ shouldUpdateStore = false }: UseMealsProps) => {
             ]);
           } else if (type === 'remove') {
             setMeals([
-              ...mealListStore.filter(item => item.id !== meal.id),
+              // ...mealListStore.filter(item => item.id !== meal.id),
               {
                 ...meal,
                 foods: [
