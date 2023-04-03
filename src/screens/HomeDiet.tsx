@@ -131,7 +131,7 @@ export const HomeDiet = () => {
 
         {meals?.map((meal, index) => (
           <Accordion
-            key={meal.id}
+            key={meal.title}
             title={meal.title}
             description={getFormatInHours(new Date(meal.time.milliseconds))}
             overview={`${handleInfoMeal(meal).totalKcal}kcal`}
