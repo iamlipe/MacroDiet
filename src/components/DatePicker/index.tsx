@@ -49,7 +49,10 @@ export const DatePicker = ({
   );
 
   const selected = useMemo(
-    () => (mode === 'date' ? moment(date).isBefore(new Date(), 'day') : true),
+    () =>
+      mode === 'date'
+        ? moment(date).isBefore(new Date(), 'day')
+        : !moment(date).isSame(new Date(), 'minute'),
     [date, mode],
   );
 
@@ -76,9 +79,9 @@ export const DatePicker = ({
         <Title selected={selected}>
           {selected ? currentDate : placeholder}
         </Title>
-      </Wrapper>
 
-      {error && <Error>{error}</Error>}
+        {error && <Error>{error}</Error>}
+      </Wrapper>
 
       <BottomSheet
         ref={bottomSheetRef}
