@@ -5,8 +5,7 @@ export interface IFoodMeal {
 }
 
 export interface IMeal {
-  id: string;
-  userId: string;
+  user: string;
   title: string;
   time: { nanoseconds: number; milliseconds: number };
   foods: IFoodMeal[];
@@ -15,15 +14,13 @@ export interface IMeal {
 export const buildSchemaMeal = () => {};
 
 export class Meal implements IMeal {
-  public id: string;
-  public userId: string;
+  public user: string;
   public title: string;
   public time: { nanoseconds: number; milliseconds: number };
   public foods: { foodId: string; measureId: string; quantity: number }[];
 
   constructor(meal: IMeal) {
-    this.id = meal.id;
-    this.userId = meal.userId;
+    this.user = meal.user;
     this.title = meal.title;
     this.time = meal.time;
     this.foods = meal.foods;
