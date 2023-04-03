@@ -11,7 +11,7 @@ export type GetUserByDocDTO = {
 };
 
 export const getUserByDoc = async ({ doc }: GetUserByDocDTO) => {
-  const user = await firestore().collection('users').doc(doc).get();
+  const user = await firestore().collection('Users').doc(doc).get();
   return { user: user.data() as IUser };
 };
 
@@ -19,7 +19,9 @@ export const createUser = async ({ doc, user }: CreateUserDTO) => {
   await firestore()
     .collection('Users')
     .doc(doc)
-    .set({ ...user });
+    .set({
+      ...user,
+    });
 
   return { createdUser: user };
 };
