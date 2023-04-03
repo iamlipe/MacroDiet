@@ -1,5 +1,4 @@
 import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 import moment from 'moment';
 import { IMeal } from '../models/meal';
 
@@ -8,11 +7,7 @@ export type CreateMealDTO = {
 };
 
 export const createMeal = async ({ meal }: CreateMealDTO) => {
-  const { mealsDay } = await getMealsDay(auth().currentUser.uid);
-
-  if (!mealsDay.length) {
-    await firestore().collection('Meals').add(meal);
-  }
+  await firestore().collection('Meals').add(meal);
 };
 
 export const getMealsDay = async (user: string) => {

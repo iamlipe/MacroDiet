@@ -2,11 +2,11 @@ import React, { useMemo, useRef } from 'react';
 import { firstLetterUppercase } from '@utils/stringFormat';
 import moment from 'moment';
 import {
-  Wrapper,
-  Title,
-  Error,
-  Label,
-  BottomSheet,
+  StyledWrapper,
+  StyledTitle,
+  StyledError,
+  StyledLabel,
+  StyledBottomSheet,
   StyledDatePicker,
 } from './styles';
 import { Backdrop } from '@components/Select/styles';
@@ -49,7 +49,10 @@ export const DatePicker = ({
   );
 
   const selected = useMemo(
-    () => (mode === 'date' ? moment(date).isBefore(new Date(), 'day') : true),
+    () =>
+      mode === 'date'
+        ? moment(date).isBefore(new Date(), 'day')
+        : !moment(date).isSame(new Date(), 'minute'),
     [date, mode],
   );
 
@@ -67,20 +70,20 @@ export const DatePicker = ({
 
   return (
     <>
-      {label && <Label>{firstLetterUppercase(label)}</Label>}
+      {label && <StyledLabel>{firstLetterUppercase(label)}</StyledLabel>}
 
-      <Wrapper
+      <StyledWrapper
         name={name}
         onPress={() => bottomSheetRef.current?.present()}
         {...rest}>
-        <Title selected={selected}>
+        <StyledTitle selected={selected}>
           {selected ? currentDate : placeholder}
-        </Title>
-      </Wrapper>
+        </StyledTitle>
 
-      {error && <Error>{error}</Error>}
+        {error && <StyledError>{error}</StyledError>}
+      </StyledWrapper>
 
-      <BottomSheet
+      <StyledBottomSheet
         ref={bottomSheetRef}
         snapPoints={['40%']}
         backdropComponent={renderBackDrop}>
@@ -99,7 +102,7 @@ export const DatePicker = ({
             }}
           />
         </Container>
-      </BottomSheet>
+      </StyledBottomSheet>
     </>
   );
 };

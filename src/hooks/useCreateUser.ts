@@ -211,7 +211,7 @@ export const useCreateUser = () => {
       });
 
       login(createdUser);
-      createMealsDay({ mealsTime: defaultPreferences.mealsTime });
+      await createMealsDay({ mealsTime: defaultPreferences.mealsTime });
     } catch (error) {
       showToast({ type: 'error', message: error.message });
     } finally {
