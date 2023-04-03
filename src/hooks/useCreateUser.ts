@@ -8,8 +8,10 @@ import { ICreatedUser, useUserStore } from '@stores/user';
 import { useCallback, useMemo, useState } from 'react';
 import { useLoader } from './useLoader';
 import { useToast } from './useToast';
+import { useMeals } from './useMeals';
 import { createUser as createUserFirebase } from '@services/firebase/repositories/users';
 import * as Yup from 'yup';
+import { defaultPreferences } from '@__mocks__/users';
 
 interface HandleFormProps {
   values: Partial<IInfo>;
@@ -22,6 +24,7 @@ export const useCreateUser = () => {
   const { setCreateUser, login, userCreate, user } = useUserStore();
   const { show: showToast } = useToast();
   const { navigate: navigateCreateUser } = useNavigation<NavPropsCreateUser>();
+  const { createMealsDay } = useMeals({ shouldUpdateStore: false });
 
   const initialValuesGoal = useMemo(() => {
     return {
@@ -199,19 +202,7 @@ export const useCreateUser = () => {
           height,
           weigth,
         },
-        preferences: {
-          mealsTime: [
-            { title: 'Cafe da manha', time: { hour: 8, minutes: 30 } },
-            { title: 'Almoço', time: { hour: 12, minutes: 30 } },
-            { title: 'Cafe da tarde', time: { hour: 17, minutes: 30 } },
-            { title: 'Janta', time: { hour: 21, minutes: 0 } },
-          ],
-          favoritesFoods: [],
-          notifications: {
-            receiveNotifiicationsMeals: true,
-            reciveNotificationsDrinkWatter: false,
-          },
-        },
+        preferences: defaultPreferences,
       });
 
       const { createdUser } = await createUserFirebase({
@@ -220,12 +211,25 @@ export const useCreateUser = () => {
       });
 
       login(createdUser);
+      createMealsDay({ mealsTime: defaultPreferences.mealsTime });
     } catch (error) {
       showToast({ type: 'error', message: error.message });
     } finally {
       setTimeout(() => hideLoading(), 1000);
     }
-  }, [hideLoading, login, showLoading, showToast, user, userCreate]);
+  }, [
+    createMealsDay,
+    hideLoading,
+    login,
+    showLoading,
+    showToast,
+    user.email,
+    user.lastName,
+    user.name,
+    user.phone,
+    user.photo,
+    userCreate,
+  ]);
 
   return {
     initialValuesGoal,
