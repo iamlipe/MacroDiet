@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { NavPropsDiet } from '@routes/dietStack';
 import { IFood, IInfoFood } from '@services/firebase/models/food';
 import { IMeal, Meal } from '@services/firebase/models/meal';
@@ -6,7 +6,7 @@ import { useMealStore } from '@stores/meal';
 import { useUserStore } from '@stores/user';
 import {
   createMeal as createMealFirebase,
-  getMealsDay as getMealsDayFirebase,
+  getMealsDay,
 } from '@services/firebase/repositories/meals';
 import { useFoods } from './useFoods';
 import { useMeasures } from './useMeasures';
@@ -51,13 +51,14 @@ export const useMeals = ({ shouldUpdateStore = false }: UseMealsProps) => {
   const { getMeasureById } = useMeasures({ shouldUpdateStore: false });
   const { show: showToast } = useToast();
   const { navigate: navigateDiet } = useNavigation<NavPropsDiet>();
+  const isFocused = useIsFocused();
 
   const getMeals = useCallback(async () => {
     try {
       setLoading(true);
 
       if (user) {
-        const { mealsDay } = await getMealsDayFirebase(auth().currentUser.uid);
+        const { mealsDay } = await getMealsDay(auth().currentUser.uid);
         setMeals(mealsDay);
       }
     } catch (error) {
@@ -66,6 +67,24 @@ export const useMeals = ({ shouldUpdateStore = false }: UseMealsProps) => {
       setLoading(true);
     }
   }, [setMeals, showToast, user]);
+
+  const initialValuesCreateMeal = useMemo(() => {
+    return {
+      mealTime: '',
+      title: '',
+    };
+  }, []);
+
+  const createMealSchema = useMemo(
+    () =>
+      Yup.object().shape({
+        mealTime: Yup.string().required(
+          'Escolha um horario para esse refeição',
+        ),
+        title: Yup.string().required('Por favor, digite o nome da refeição'),
+      }),
+    [],
+  );
 
   const createMeal = useCallback(async ({ time, title }: CreateMealProps) => {
     const mealTime = new Date();
@@ -86,13 +105,17 @@ export const useMeals = ({ shouldUpdateStore = false }: UseMealsProps) => {
   }, []);
 
   const createMealsDay = useCallback(
-    ({ mealsTime }: { mealsTime: IMealTime[] }) => {
+    async ({ mealsTime }: { mealsTime: IMealTime[] }) => {
       try {
         setLoading(true);
 
-        mealsTime.map(async meal => {
-          await createMeal(meal);
-        });
+        const { mealsDay } = await getMealsDay(auth().currentUser.uid);
+
+        if (!mealsDay.length) {
+          mealsTime.map(async meal => {
+            await createMeal(meal);
+          });
+        }
       } catch (error) {
         if (error.meassage) {
           showToast({ type: 'error', message: error.message });
@@ -268,7 +291,7 @@ export const useMeals = ({ shouldUpdateStore = false }: UseMealsProps) => {
     if (shouldUpdateStore) {
       getMeals();
     }
-  }, [getMeals, shouldUpdateStore]);
+  }, [getMeals, shouldUpdateStore, isFocused]);
 
   return {
     getMeals,
@@ -279,7 +302,9 @@ export const useMeals = ({ shouldUpdateStore = false }: UseMealsProps) => {
     deleteMeal,
     createMeal,
     addFoodInMealSchema,
+    createMealSchema,
     initialValuesAddFoodInMeal,
+    initialValuesCreateMeal,
     loading,
   };
 };
