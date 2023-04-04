@@ -1,5 +1,5 @@
 export interface IFoodMeal {
-  food: string;
+  foodDoc: string;
   measureId: string;
   quantity: number;
 }
@@ -18,7 +18,7 @@ export class Meal implements Omit<IMeal, 'doc'> {
   public user: string;
   public title: string;
   public time: { nanoseconds: number; milliseconds: number };
-  public foods: { food: string; measureId: string; quantity: number }[];
+  public foods: { foodDoc: string; measureId: string; quantity: number }[];
 
   constructor(meal: Omit<IMeal, 'doc'>) {
     this.user = meal.user;
