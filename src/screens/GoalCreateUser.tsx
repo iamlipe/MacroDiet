@@ -1,5 +1,5 @@
-import { buildOptions } from '@components/Option';
 import React from 'react';
+import { buildOptions } from '@components/Option';
 import { useCreateUser } from '@hooks/useCreateUser';
 import { useGoalStore } from '@stores/goal';
 import { Formik } from 'formik';
@@ -10,10 +10,19 @@ import {
   Option,
   Scroll,
 } from '@components/index';
+import * as Yup from 'yup';
 
 export const GoalCreateUser = () => {
   const { goals } = useGoalStore();
-  const { initialValuesGoal, goalSchema, handleForm } = useCreateUser();
+  const { handleForm } = useCreateUser();
+
+  const initialValuesGoal = {
+    goalId: '',
+  };
+
+  const goalSchema = Yup.object().shape({
+    goalId: Yup.string().required('Por favor, selecione o seu objetivo.'),
+  });
 
   return (
     <Background>

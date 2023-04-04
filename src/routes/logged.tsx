@@ -27,8 +27,8 @@ export type LoggedStackParamsList = {
   App: undefined;
   DetailsMealsDay: undefined;
   ChoseFoodToAddInMeal: { meal: IMeal };
-  UpdateFoodInMeal: { meal: IMeal; food: IFood };
-  EditMeal: { meal: IMeal; updatedMeal?: IMeal };
+  UpdateFoodInMeal: { type: 'add' | 'edit'; meal: IMeal; food: IFood };
+  EditMeal: { meal?: IMeal; updatedMeal?: IMeal };
   AddMeal: undefined;
   Favorites: undefined;
   Goal: undefined;

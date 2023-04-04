@@ -10,10 +10,21 @@ import {
   Option,
   Scroll,
 } from '@components/index';
+import * as Yup from 'yup';
 
 export const ActivityCreateUser = () => {
-  const { activitySchema, handleForm, initialValuesActivity } = useCreateUser();
+  const { handleForm } = useCreateUser();
   const { acitivities } = useActivityStore();
+
+  const initialValuesActivity = {
+    activityId: '',
+  };
+
+  const activitySchema = Yup.object().shape({
+    activityId: Yup.string().required(
+      'Por favor, selecione um nível de atividade.',
+    ),
+  });
 
   return (
     <Background>

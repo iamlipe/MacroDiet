@@ -1,21 +1,46 @@
-import { Background } from '@components/Backgroud';
-import { Button } from '@components/Button';
-import { Container } from '@components/Container';
-import { Header } from '@components/Header';
-import { Input } from '@components/Input';
-import { Label } from '@components/Label';
-import { Scroll } from '@components/Scroll';
+import React from 'react';
+import * as Yup from 'yup';
 import { useRegister } from '@hooks/useRegister';
 import { useNavigation } from '@react-navigation/native';
-import { Formik } from 'formik';
-import React from 'react';
 import { useTheme } from 'styled-components/native';
+import { Formik } from 'formik';
+import {
+  Background,
+  Button,
+  Container,
+  Header,
+  Input,
+  Label,
+  Scroll,
+} from '@components/index';
 
 export const Register = () => {
   const { effects, fonts } = useTheme();
   const { goBack } = useNavigation();
-  const { handleRegister, initialValuesFormRegister, loading, registerSchema } =
-    useRegister();
+  const { handleRegister, loading } = useRegister();
+
+  const initialValuesFormRegister = {
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  };
+
+  const registerSchema = Yup.object().shape({
+    fullName: Yup.string()
+      .matches(
+        /^([a-zA-Z]+\s)*[a-zA-Z]+$/,
+        'Por favor, insira um nome completo válido',
+      )
+      .required(),
+    email: Yup.string().email('email invalido').required(),
+    password: Yup.string()
+      .min(8, 'Senha deve ter no mínimo 8 caracteres')
+      .required(),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password')], 'As senhas precisam ser iguais')
+      .required(),
+  });
 
   return (
     <Background>

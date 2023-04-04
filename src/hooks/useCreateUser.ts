@@ -5,12 +5,11 @@ import {
 } from '@routes/createUserStack';
 import { IInfo, User } from '@services/firebase/models/user';
 import { ICreatedUser, useUserStore } from '@stores/user';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLoader } from './useLoader';
 import { useToast } from './useToast';
 import { useMeals } from './useMeals';
 import { createUser as createUserFirebase } from '@services/firebase/repositories/users';
-import * as Yup from 'yup';
 import { defaultPreferences } from '@__mocks__/users';
 
 interface HandleFormProps {
@@ -25,113 +24,6 @@ export const useCreateUser = () => {
   const { show: showToast } = useToast();
   const { navigate: navigateCreateUser } = useNavigation<NavPropsCreateUser>();
   const { createMealsDay } = useMeals();
-
-  const initialValuesGoal = useMemo(() => {
-    return {
-      goalId: '',
-    };
-  }, []);
-
-  const goalSchema = useMemo(
-    () =>
-      Yup.object().shape({
-        goalId: Yup.string().required('Por favor, selecione o seu objetivo.'),
-      }),
-    [],
-  );
-
-  const initialValuesActivity = useMemo(() => {
-    return {
-      activityId: '',
-    };
-  }, []);
-
-  const activitySchema = useMemo(
-    () =>
-      Yup.object().shape({
-        activityId: Yup.string().required(
-          'Por favor, selecione um nível de atividade.',
-        ),
-      }),
-    [],
-  );
-
-  const initialValuesBirthDate = useMemo(() => {
-    return {
-      birthDate: '',
-    };
-  }, []);
-
-  const birthDateSchema = useMemo(
-    () =>
-      Yup.object().shape({
-        birthDate: Yup.date()
-          .max(
-            new Date(),
-            'A data selecionada deve estar no passado em relação ao dia atual.',
-          )
-          .required('Por favor, selecione a sua data de nascimento.'),
-      }),
-    [],
-  );
-
-  const initialValuesGender = useMemo(() => {
-    return {
-      genderId: 'Por favor, selecione o seu sexo biológico',
-    };
-  }, []);
-
-  const genderSchema = useMemo(
-    () =>
-      Yup.object().shape({
-        genderId: Yup.string().required(),
-      }),
-    [],
-  );
-
-  const initialValuesHeight = useMemo(() => {
-    return {
-      height: {
-        quantity: '',
-        measureId: '',
-      },
-    };
-  }, []);
-
-  const heightSchema = useMemo(
-    () =>
-      Yup.object().shape({
-        height: Yup.object().shape({
-          quantity: Yup.string()
-            .min(1, 'Digite uma altura valida')
-            .required('Digite a sua altura'),
-          measureId: Yup.string().required('Selecione uma unidade de medida.'),
-        }),
-      }),
-    [],
-  );
-
-  const initialValuesWeigth = useMemo(() => {
-    return {
-      weigth: {
-        quantity: '',
-        measureId: '',
-      },
-    };
-  }, []);
-
-  const weigthSchema = useMemo(
-    () =>
-      Yup.object().shape({
-        weigth: Yup.object().shape({
-          quantity: Yup.string()
-            .min(1, 'Digite um peso valido')
-            .required('Informe o seu peso atual.'),
-          measureId: Yup.string().required('Selecione uma unidade de medida.'),
-        }),
-      }),
-    [],
-  );
 
   const handleValuesForm = useCallback((data: any): Partial<IInfo> => {
     let values = {};
@@ -232,18 +124,6 @@ export const useCreateUser = () => {
   ]);
 
   return {
-    initialValuesGoal,
-    initialValuesActivity,
-    initialValuesBirthDate,
-    initialValuesGender,
-    initialValuesHeight,
-    initialValuesWeigth,
-    activitySchema,
-    goalSchema,
-    birthDateSchema,
-    genderSchema,
-    heightSchema,
-    weigthSchema,
     handleValuesForm,
     handleForm,
     createUser,

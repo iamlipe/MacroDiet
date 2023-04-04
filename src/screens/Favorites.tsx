@@ -35,7 +35,7 @@ export const Favorites = () => {
 
   const renderItem = ({ item, drag, isActive }: RenderItemParams<IFood>) => {
     return (
-      <ScaleDecorator activeScale={1.025} key={item.id}>
+      <ScaleDecorator activeScale={1.025} key={item.doc}>
         <TouchableOpacity onLongPress={drag} disabled={isActive}>
           <Card
             title={item.name}

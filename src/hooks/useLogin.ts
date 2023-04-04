@@ -1,13 +1,12 @@
 import authFirebase from '@react-native-firebase/auth';
 import { useUserStore } from '@stores/user';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { getUserByDoc } from '@services/firebase/repositories/users';
 import { useLoader } from './useLoader';
 import { useToast } from './useToast';
 import { useMeals } from './useMeals';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { buidSchemaAuth } from '@services/firebase/models/user';
-import * as Yup from 'yup';
 
 interface LoginWithEmailDTO {
   email: string;
@@ -20,24 +19,6 @@ export const useLogin = () => {
   const { show: showToast } = useToast();
   const { show: showLoader, hide: hideLoader } = useLoader();
   const { createMealsDay } = useMeals();
-
-  const initialValuesLoginWithEmail = useMemo(() => {
-    return {
-      email: '',
-      password: '',
-    };
-  }, []);
-
-  const loginWithEmailSchema = useMemo(
-    () =>
-      Yup.object().shape({
-        email: Yup.string().email('email invalido').required(),
-        password: Yup.string()
-          .required()
-          .min(8, 'Senha deve ter no mínimo 8 caracteres'),
-      }),
-    [],
-  );
 
   const handleAuthError = useCallback(
     error => {
@@ -165,8 +146,6 @@ export const useLogin = () => {
     loginWithFacebook,
     loginWithEmail,
     logout,
-    initialValuesLoginWithEmail,
-    loginWithEmailSchema,
     loading,
   };
 };

@@ -42,6 +42,15 @@ export const Button: React.FC<ButtonProps> = ({
         onPress={onPress}
         {...rest}>
         <StyledTitle link>{title}</StyledTitle>
+        {icon && (
+          <StyledContainerIcon iconLeft={icon.position === 'left'}>
+            <Icon
+              name={icon.name}
+              color={colors.gray.white}
+              size={icon.size || fonts.size.s2}
+            />
+          </StyledContainerIcon>
+        )}
       </StyledWrapperLink>
     );
   }

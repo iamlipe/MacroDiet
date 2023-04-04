@@ -1,22 +1,35 @@
 import React from 'react';
-import { Background } from '@components/Backgroud';
-import { Container } from '@components/Container';
-import { DatePicker } from '@components/DatePicker';
-import { Header } from '@components/Header';
-import { Input } from '@components/Input';
-import { Scroll } from '@components/Scroll';
-import { Formik } from 'formik';
 import { useTheme } from 'styled-components/native';
-import { View } from 'react-native';
-import { Button } from '@components/index';
 import { useMeals } from '@hooks/index';
 import { useNavigation } from '@react-navigation/native';
 import { NavPropsDiet } from '@routes/dietStack';
+import { View } from 'react-native';
+import { Formik } from 'formik';
+import {
+  Background,
+  Container,
+  DatePicker,
+  Header,
+  Input,
+  Scroll,
+  Button,
+} from '@components/index';
+import * as Yup from 'yup';
 
 export const AddMeal = () => {
   const { effects } = useTheme();
-  const { createMeal, initialValuesCreateMeal, createMealSchema } = useMeals();
+  const { createMeal } = useMeals();
   const { navigate } = useNavigation<NavPropsDiet>();
+
+  const initialValuesCreateMeal = {
+    mealTime: '',
+    title: '',
+  };
+
+  const createMealSchema = Yup.object().shape({
+    mealTime: Yup.string().required('Escolha um horario para esse refeição'),
+    title: Yup.string().required('Por favor, digite o nome da refeição'),
+  });
 
   return (
     <Background>

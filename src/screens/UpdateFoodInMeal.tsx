@@ -1,27 +1,30 @@
-import { Background } from '@components/Backgroud';
-import { Button } from '@components/Button';
-import { Card } from '@components/Card';
-import { Container } from '@components/Container';
-import { Header } from '@components/Header';
-import { Icon } from '@components/Icon';
-import { Input } from '@components/Input';
-import { Label } from '@components/Label';
-import { buildOptions } from '@components/Option';
-import { Scroll } from '@components/Scroll';
-import { Select } from '@components/Select';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NavPropsDiet } from '@routes/dietStack';
-import { IFood } from '@services/firebase/models/food';
-import { IMeal } from '@services/firebase/models/meal';
-import { useMeasureStore } from '@stores/measure';
-import { Formik } from 'formik';
 import React from 'react';
 import { TouchableOpacity, useWindowDimensions } from 'react-native';
-import { useTheme } from 'styled-components/native';
-import { useFoodStore } from '@stores/food';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NavPropsDiet } from '@routes/dietStack';
+import { NavPropsLogged } from '@routes/logged';
+import { IFood } from '@services/firebase/models/food';
+import { IMeal } from '@services/firebase/models/meal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useFavorite } from '@hooks/useFavorite';
-import { useMeals } from '@hooks/useMeals';
+import { useMeasureStore } from '@stores/measure';
+import { useFoodStore } from '@stores/food';
+import { useMeals, useFavorite } from '@hooks/index';
+import { useTheme } from 'styled-components/native';
+import { Formik } from 'formik';
+import {
+  Background,
+  Button,
+  Card,
+  Container,
+  Header,
+  Icon,
+  Input,
+  Label,
+  Scroll,
+  Select,
+} from '@components/index';
+import { buildOptions } from '@components/Option';
+import * as Yup from 'yup';
 
 interface CardInfoProps {
   info: string;
@@ -29,6 +32,10 @@ interface CardInfoProps {
 }
 
 type StackParamsList = {
+  Info: {
+    type: 'add' | 'remove';
+  };
+
   MealData: {
     meal: IMeal;
   };
@@ -43,15 +50,30 @@ export const UpdateFoodInMeal = () => {
     useRoute<RouteProp<StackParamsList, 'MealData'>>();
   const { params: paramsFood } =
     useRoute<RouteProp<StackParamsList, 'FoodData'>>();
+  const { params: paramsInfo } = useRoute<RouteProp<StackParamsList, 'Info'>>();
   const { goBack } = useNavigation<NavPropsDiet>();
+  const { navigate: navigateLogged } = useNavigation<NavPropsLogged>();
   const { bottom } = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const { measures } = useMeasureStore();
   const { foods } = useFoodStore();
   const { handleFavorite } = useFavorite();
   const { colors, fonts, effects } = useTheme();
-  const { updateMeal, addFoodInMealSchema, initialValuesAddFoodInMeal } =
-    useMeals();
+  const { handleFoodsInMeal, updateMeal } = useMeals();
+
+  const initialValuesAddFoodInMeal = {
+    food: {
+      quantity: '',
+      measureId: '',
+    },
+  };
+
+  const addFoodInMealSchema = Yup.object().shape({
+    food: Yup.object().shape({
+      quantity: Yup.string().required(),
+      measureId: Yup.string().required(),
+    }),
+  });
 
   const renderCardInfo = ({ info, quantity }: CardInfoProps) => {
     return (
@@ -85,15 +107,26 @@ export const UpdateFoodInMeal = () => {
       <Formik
         initialValues={initialValuesAddFoodInMeal}
         validationSchema={addFoodInMealSchema}
-        onSubmit={values =>
-          updateMeal({
-            type: 'add',
+        onSubmit={async values => {
+          const foodsInMeal = handleFoodsInMeal({
+            type: paramsInfo.type,
             food: paramsFood.food,
             meal: paramsMeal.meal,
             measureId: values.food.measureId,
             quantity: Number(values.food.quantity),
-          })
-        }>
+          });
+
+          if (paramsInfo.type === 'add') {
+            await updateMeal({
+              doc: paramsMeal.meal.doc,
+              updatedMeal: { foods: foodsInMeal },
+            });
+          } else {
+            navigateLogged('EditMeal', {
+              updatedMeal: { ...paramsMeal.meal, foods: foodsInMeal },
+            });
+          }
+        }}>
         {({ handleChange, values, handleSubmit, errors, touched }) => (
           <>
             <Scroll style={{ marginBottom: 100 + bottom }}>

@@ -12,12 +12,28 @@ import {
   Scroll,
   Select,
 } from '@components/index';
+import * as Yup from 'yup';
 
 export const WeightCreateUser = () => {
   const { measures } = useMeasureStore();
   const { effects } = useTheme();
-  const { initialValuesWeigth, weigthSchema, handleForm, handleValuesForm } =
-    useCreateUser();
+  const { handleForm, handleValuesForm } = useCreateUser();
+
+  const initialValuesWeigth = {
+    weigth: {
+      quantity: '',
+      measureId: '',
+    },
+  };
+
+  const weigthSchema = Yup.object().shape({
+    weigth: Yup.object().shape({
+      quantity: Yup.string()
+        .min(1, 'Digite um peso valido')
+        .required('Informe o seu peso atual.'),
+      measureId: Yup.string().required('Selecione uma unidade de medida.'),
+    }),
+  });
 
   return (
     <Background>

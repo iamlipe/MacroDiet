@@ -26,7 +26,7 @@ export const useFoods = () => {
 
   const getFood = useCallback(
     (doc: string) => {
-      return foods.find(food => food.doc === doc);
+      return foods?.find(food => food.doc === doc);
     },
     [foods],
   );

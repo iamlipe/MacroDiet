@@ -12,12 +12,28 @@ import {
   Scroll,
   Select,
 } from '@components/index';
+import * as Yup from 'yup';
 
 export const HeightCreateUser = () => {
   const { effects } = useTheme();
   const { measures } = useMeasureStore();
-  const { handleForm, initialValuesHeight, heightSchema, handleValuesForm } =
-    useCreateUser();
+  const { handleForm, handleValuesForm } = useCreateUser();
+
+  const initialValuesHeight = {
+    height: {
+      quantity: '',
+      measureId: '',
+    },
+  };
+
+  const heightSchema = Yup.object().shape({
+    height: Yup.object().shape({
+      quantity: Yup.string()
+        .min(1, 'Digite uma altura valida')
+        .required('Digite a sua altura'),
+      measureId: Yup.string().required('Selecione uma unidade de medida.'),
+    }),
+  });
 
   return (
     <Background>

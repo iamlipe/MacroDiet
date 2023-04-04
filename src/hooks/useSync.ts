@@ -15,6 +15,14 @@ export const useSync = () => {
   const { getGender } = useGender();
   const { show: showToast } = useToast();
 
+  useEffect(() => {
+    getActivities();
+    getGender();
+    getGoals();
+    getMeasures();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const sync = useCallback(async () => {
     try {
       setIsSync(true);
