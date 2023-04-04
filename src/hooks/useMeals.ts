@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NavPropsDiet } from '@routes/dietStack';
 import { useMealStore } from '@stores/meal';
@@ -10,12 +10,12 @@ import { IMeal, Meal } from '@services/firebase/models/meal';
 import { IFood, IInfoFood } from '@services/firebase/models/food';
 import { IMealTime } from '@services/firebase/models/user';
 import {
+  UpdateMealDTO,
   createMeal as createMealFirebase,
   getMealsDay,
   updateMeal as updateMealFirebase,
 } from '@services/firebase/repositories/meals';
 import authFirebase from '@react-native-firebase/auth';
-import * as Yup from 'yup';
 
 interface CreateMealProps {
   time: { hour: number; minutes: number };
@@ -32,8 +32,8 @@ interface GetTotalInfoMealsDay {
   info: keyof IInfoFood;
 }
 
-interface UpdateMeal {
-  type: 'add' | 'remove';
+interface HandleFoodsInMeal {
+  type: 'add' | 'remove' | 'edit';
   meal: IMeal;
   food: IFood;
   quantity?: number;
@@ -42,7 +42,7 @@ interface UpdateMeal {
 
 export const useMeals = () => {
   const [loading, setLoading] = useState(false);
-  const { setMeals, meals: mealListStore } = useMealStore();
+  const { setMeals } = useMealStore();
   const { user } = useUserStore();
   const { getFood } = useFoods();
   const { getMeasureById } = useMeasures();
@@ -63,24 +63,6 @@ export const useMeals = () => {
       setLoading(true);
     }
   }, [handleFirestoreError, setMeals, user]);
-
-  const initialValuesCreateMeal = useMemo(() => {
-    return {
-      mealTime: '',
-      title: '',
-    };
-  }, []);
-
-  const createMealSchema = useMemo(
-    () =>
-      Yup.object().shape({
-        mealTime: Yup.string().required(
-          'Escolha um horario para esse refeição',
-        ),
-        title: Yup.string().required('Por favor, digite o nome da refeição'),
-      }),
-    [],
-  );
 
   const createMeal = useCallback(
     async ({ time, title }: CreateMealProps) => {
@@ -132,53 +114,47 @@ export const useMeals = () => {
     [createMeal, handleFirestoreError],
   );
 
-  const deleteMeal = useCallback(() => {}, []);
-
-  const initialValuesAddFoodInMeal = useMemo(() => {
-    return {
-      food: {
-        quantity: '',
-        measureId: '',
-      },
-    };
-  }, []);
-
-  const addFoodInMealSchema = useMemo(
-    () =>
-      Yup.object().shape({
-        food: Yup.object().shape({
-          quantity: Yup.string().required(),
-          measureId: Yup.string().required(),
-        }),
-      }),
-    [],
-  );
+  const handleFoodsInMeal = ({
+    type,
+    meal,
+    food,
+    quantity,
+    measureId,
+  }: HandleFoodsInMeal) => {
+    switch (type) {
+      case 'add':
+        return [
+          ...meal.foods.filter(item => item.foodDoc !== food.doc),
+          {
+            foodDoc: food.doc,
+            quantity:
+              quantity +
+              (meal.foods.find(item => item.foodDoc === food.doc)?.quantity ||
+                0),
+            measureId,
+          },
+        ];
+      case 'edit':
+        return [
+          ...meal.foods.filter(item => item.foodDoc !== food.doc),
+          { foodDoc: food.doc, quantity, measureId },
+        ];
+      case 'remove':
+        return [...meal.foods.filter(item => item.foodDoc !== food.doc, [])];
+      default:
+        return meal.foods;
+    }
+  };
 
   const updateMeal = useCallback(
-    async ({ type, meal, food, quantity, measureId }: UpdateMeal) => {
+    async ({ doc, updatedMeal }: UpdateMealDTO) => {
       try {
         setLoading(true);
 
-        if (mealListStore) {
-          if (type === 'add' && quantity && measureId) {
-            const updatedMeal = {
-              foods: [
-                ...meal.foods,
-                { foodDoc: food.doc, quantity, measureId },
-              ],
-            };
-
-            await updateMealFirebase({ doc: meal.doc, updatedMeal });
-          } else if (type === 'remove') {
-            const updatedMeal = {
-              foods: [
-                ...meal.foods.filter(item => item.foodDoc !== food.doc, []),
-              ],
-            };
-
-            await updateMealFirebase({ doc: meal.doc, updatedMeal });
-          }
-        }
+        await updateMealFirebase({
+          doc,
+          updatedMeal,
+        });
 
         navigateDiet('HomeDiet');
       } catch (error) {
@@ -187,7 +163,7 @@ export const useMeals = () => {
         setLoading(false);
       }
     },
-    [mealListStore, navigateDiet, handleFirestoreError],
+    [navigateDiet, handleFirestoreError],
   );
 
   const getInfoMeal = useCallback(
@@ -292,12 +268,8 @@ export const useMeals = () => {
     handleInfoMeal,
     handleInfoMealsDay,
     updateMeal,
-    deleteMeal,
     createMeal,
-    addFoodInMealSchema,
-    createMealSchema,
-    initialValuesAddFoodInMeal,
-    initialValuesCreateMeal,
+    handleFoodsInMeal,
     loading,
   };
 };
