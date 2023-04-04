@@ -20,6 +20,7 @@ import { SearchBar } from './SearchBar';
 import { Select } from './Select';
 import { Toast } from './Toast';
 import { TopTabCreateUser } from './TopTabCreateUser';
+import { BottomSheet } from './BottomSheet';
 
 export {
   Accordion,
@@ -44,4 +45,5 @@ export {
   Select,
   Toast,
   TopTabCreateUser,
+  BottomSheet,
 };
