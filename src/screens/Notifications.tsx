@@ -15,10 +15,7 @@ import { useNotification } from '@hooks/useNotification';
 export const Notifications = () => {
   const { effects, fonts } = useTheme();
   const { goBack } = useNavigation();
-  const { initialValuesNotifications } = useNotification({
-    scheduleMealsNotificationToNextDays: 0,
-    updateDisplayedNotifications: false,
-  });
+  const { initialValuesNotifications } = useNotification();
 
   return (
     <Background>

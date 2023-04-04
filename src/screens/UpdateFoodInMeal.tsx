@@ -49,11 +49,9 @@ export const UpdateFoodInMeal = () => {
   const { measures } = useMeasureStore();
   const { foods } = useFoodStore();
   const { handleFavorite } = useFavorite();
-  const { updateMeal, addFoodInMealSchema, initialValuesAddFoodInMeal } =
-    useMeals({
-      shouldUpdateStore: false,
-    });
   const { colors, fonts, effects } = useTheme();
+  const { updateMeal, addFoodInMealSchema, initialValuesAddFoodInMeal } =
+    useMeals();
 
   const renderCardInfo = ({ info, quantity }: CardInfoProps) => {
     return (
@@ -203,7 +201,7 @@ export const UpdateFoodInMeal = () => {
                 Alimentos que podem substituir
               </Label>
 
-              {foods?.slice(0, 10).map(food => (
+              {foods?.slice(0, 4).map(food => (
                 <Card
                   title={food.name}
                   type="bottomLine"

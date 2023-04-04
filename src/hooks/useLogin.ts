@@ -4,10 +4,10 @@ import { useCallback, useMemo, useState } from 'react';
 import { getUserByDoc } from '@services/firebase/repositories/users';
 import { useLoader } from './useLoader';
 import { useToast } from './useToast';
+import { useMeals } from './useMeals';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { buidSchemaAuth } from '@services/firebase/models/user';
 import * as Yup from 'yup';
-import { useMeals } from './useMeals';
 
 interface LoginWithEmailDTO {
   email: string;
@@ -19,7 +19,7 @@ export const useLogin = () => {
   const { login, logout: logoutStore, auth, setCreateUser } = useUserStore();
   const { show: showToast } = useToast();
   const { show: showLoader, hide: hideLoader } = useLoader();
-  const { createMealsDay } = useMeals({ shouldUpdateStore: false });
+  const { createMealsDay } = useMeals();
 
   const initialValuesLoginWithEmail = useMemo(() => {
     return {

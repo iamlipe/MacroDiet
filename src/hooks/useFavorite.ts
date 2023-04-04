@@ -5,13 +5,13 @@ import { useFoods } from './useFoods';
 export const useFavorite = () => {
   const [favoritesFoods, setFavoritesFoods] = useState([]);
   const { user } = useUserStore();
-  const { getFoodById } = useFoods({ shouldUpdateStore: true });
+  const { getFood } = useFoods();
 
   const handleFavorite = useCallback(() => {}, []);
 
   const getFavoritesFoods = useMemo(() => {
-    return user.preferences.favoritesFoods.map(id => getFoodById(id));
-  }, [getFoodById, user.preferences.favoritesFoods]);
+    return user.preferences.favoritesFoods.map(foodDoc => getFood(foodDoc));
+  }, [getFood, user.preferences.favoritesFoods]);
 
   useEffect(() => {
     setFavoritesFoods(getFavoritesFoods);

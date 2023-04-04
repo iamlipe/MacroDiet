@@ -1,18 +1,17 @@
+import React, { useState } from 'react';
 import { Background } from '@components/Backgroud';
 import { Card } from '@components/Card';
 import { Container } from '@components/Container';
 import { Header } from '@components/Header';
 import { Label } from '@components/Label';
 import { SearchBar } from '@components/SearchBar';
-import { useFoods } from '@hooks/useFoods';
-import { useSearch } from '@hooks/useSearch';
+import { useSearch } from '@hooks/index';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NavPropsLogged } from '@routes/logged';
 import { IFood } from '@services/firebase/models/food';
 import { IMeal } from '@services/firebase/models/meal';
 import { FlashList } from '@shopify/flash-list';
 import { useFoodStore } from '@stores/food';
-import React, { useState } from 'react';
 import { useTheme } from 'styled-components/native';
 
 type StackParamsList = {
@@ -29,7 +28,6 @@ export const ChoseFoodToAddInMeal = () => {
   const { foods } = useFoodStore();
   const { colors, fonts, effects } = useTheme();
   const { handleSearch } = useSearch<IFood>();
-  useFoods({ shouldUpdateStore: true });
 
   const renderEmpty = () => {
     return (
@@ -93,7 +91,7 @@ export const ChoseFoodToAddInMeal = () => {
             keySearch: 'name',
           })}
           estimatedItemSize={40}
-          keyExtractor={({ id }) => id}
+          keyExtractor={({ doc }) => doc}
           ListEmptyComponent={renderEmpty()}
           renderItem={renderCardFood}
         />

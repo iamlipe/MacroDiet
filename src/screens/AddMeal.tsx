@@ -15,9 +15,7 @@ import { NavPropsDiet } from '@routes/dietStack';
 
 export const AddMeal = () => {
   const { effects } = useTheme();
-  const { createMeal, initialValuesCreateMeal, createMealSchema } = useMeals({
-    shouldUpdateStore: false,
-  });
+  const { createMeal, initialValuesCreateMeal, createMealSchema } = useMeals();
   const { navigate } = useNavigation<NavPropsDiet>();
 
   return (

@@ -3,7 +3,12 @@ import moment from 'moment';
 import { IMeal } from '../models/meal';
 
 export type CreateMealDTO = {
-  meal: IMeal;
+  meal: Omit<IMeal, 'doc'>;
+};
+
+export type UpdateMealDTO = {
+  doc: string;
+  updatedMeal: Partial<IMeal>;
 };
 
 export const createMeal = async ({ meal }: CreateMealDTO) => {
@@ -16,10 +21,11 @@ export const getMealsDay = async (user: string) => {
     .where('user', '==', user)
     .get();
 
-  const meals: IMeal[] = data.docs.map(item => {
-    const meal = item.data();
+  const meals: IMeal[] = data.docs.map(doc => {
+    const meal = doc.data();
 
     return {
+      doc: doc.id,
       foods: meal.foods,
       time: meal.time,
       title: meal.title,
@@ -39,4 +45,8 @@ export const getMealsDay = async (user: string) => {
     .sort((a, b) => a.time.milliseconds - b.time.milliseconds);
 
   return { mealsDay };
+};
+
+export const updateMeal = async ({ doc, updatedMeal }: UpdateMealDTO) => {
+  await firestore().collection('Meals').doc(doc).update(updatedMeal);
 };

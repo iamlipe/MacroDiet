@@ -9,10 +9,10 @@ import { useToast } from './useToast';
 
 export const useSync = () => {
   const { setIsSync } = useSyncStore();
-  const { getMeasures } = useMeasures({ shouldUpdateStore: false });
-  const { getGoals } = useGoals({ shouldUpdateStore: false });
-  const { getActivities } = useActitivities({ shouldUpdateStore: false });
-  const { getGender } = useGender({ shouldUpdateStore: false });
+  const { getMeasures } = useMeasures();
+  const { getGoals } = useGoals();
+  const { getActivities } = useActitivities();
+  const { getGender } = useGender();
   const { show: showToast } = useToast();
 
   const sync = useCallback(async () => {

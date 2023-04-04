@@ -33,13 +33,13 @@ export const EditMeal = () => {
     useRoute<RouteProp<StackParamsList, 'UpdatedMeal'>>();
   const dataMeal = paramsUpdatedMeal || paramsMeal;
   const { goBack, navigate: navigateDiet } = useNavigation<NavPropsLogged>();
-  const { getFoodById } = useFoods({ shouldUpdateStore: false });
+  const { getFood } = useFoods();
   const { width } = useWindowDimensions();
   const { bottom } = useSafeAreaInsets();
   const { effects, fonts } = useTheme();
 
   const renderCardFood = ({ item }: { item: IFoodMeal }) => {
-    const food = getFoodById(item.foodId);
+    const food = getFood(item.foodDoc);
 
     return (
       <Card
@@ -90,7 +90,7 @@ export const EditMeal = () => {
               <FlashList
                 data={dataMeal.meal.foods}
                 estimatedItemSize={10}
-                keyExtractor={({ foodId }) => foodId}
+                keyExtractor={({ foodDoc }) => foodDoc}
                 ListEmptyComponent={<></>}
                 renderItem={({ item }) => renderCardFood({ item })}
               />

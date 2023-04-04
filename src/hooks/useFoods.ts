@@ -1,62 +1,59 @@
-import { foods as dataFoods } from '@__mocks__/foods';
 import { IFoodMeal } from '@services/firebase/models/meal';
 import { useFoodStore } from '@stores/food';
-import { useCallback, useEffect, useState } from 'react';
-
+import { useCallback, useState } from 'react';
 import { useMeasures } from './useMeasures';
-import { useToast } from './useToast';
+import { getFoods as getFoodFirebase } from '@services/firebase/repositories/foods';
+import { useHandleError } from './useHandleError';
 
-interface UseFoodsProps {
-  shouldUpdateStore?: boolean;
-}
-
-export const useFoods = ({ shouldUpdateStore = false }: UseFoodsProps) => {
+export const useFoods = () => {
   const [loading, setLoading] = useState(false);
-  const { setFoods } = useFoodStore();
-  const { show: showToast } = useToast();
-  const { getMeasureById } = useMeasures({ shouldUpdateStore: false });
+  const { setFoods, foods } = useFoodStore();
+  const { getMeasureById } = useMeasures();
+  const { handleFirestoreError } = useHandleError();
 
   const getFoods = useCallback(async () => {
     try {
       setLoading(true);
-      setFoods(dataFoods.data);
+
+      const { foods: queryFoods } = await getFoodFirebase();
+      setFoods(queryFoods);
     } catch (error) {
-      showToast({ type: 'error', message: '' });
+      handleFirestoreError(error);
     } finally {
       setLoading(false);
     }
-  }, [setFoods, showToast]);
+  }, [handleFirestoreError, setFoods]);
 
-  const getFoodById = useCallback((id: string) => {
-    return dataFoods.data.find(food => food.id === id);
-  }, []);
+  const getFood = useCallback(
+    (doc: string) => {
+      return foods.find(food => food.doc === doc);
+    },
+    [foods],
+  );
 
   const handleFood = useCallback(
     (food: IFoodMeal) => {
-      const foodData = getFoodById(food.foodId);
+      const foodData = getFood(food.foodDoc);
+
       const measureFoodData = getMeasureById({
         measure: 'mass',
         id: food.measureId,
       });
 
       const title = foodData?.name || '';
-      const kcal = `${
+
+      const kcal = `${(
         food.quantity *
         (measureFoodData?.multiple || 1) *
         (foodData?.info.kcalPerGram || 1)
-      }kcal`;
+      ).toFixed(0)}kcal`;
+
       const quantity = `${food.quantity * (measureFoodData?.multiple || 1)}g`;
 
       return { title, kcal, quantity };
     },
-    [getFoodById, getMeasureById],
+    [getFood, getMeasureById],
   );
 
-  useEffect(() => {
-    if (shouldUpdateStore) {
-      getFoods();
-    }
-  }, [getFoods, shouldUpdateStore]);
-
-  return { getFoods, getFoodById, handleFood, loading };
+  return { getFoods, getFood, handleFood, loading };
 };

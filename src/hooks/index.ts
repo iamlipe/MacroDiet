@@ -17,6 +17,7 @@ import { useToast } from './useToast';
 import { useGoalCalculate } from './useGoalCalculate';
 import { useHandleError } from './useHandleError';
 import { useRecoveryPassword } from './useRecoveryPassword';
+import { useNotification } from './useNotification';
 
 export {
   useActitivities,
@@ -38,4 +39,5 @@ export {
   useGoalCalculate,
   useHandleError,
   useRecoveryPassword,
+  useNotification,
 };

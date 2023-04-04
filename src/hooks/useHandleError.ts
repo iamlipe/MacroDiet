@@ -21,5 +21,15 @@ export const useHandleError = () => {
     [showToast],
   );
 
-  return { handleAuthError };
+  const handleFirestoreError = useCallback(
+    error => {
+      showToast({
+        type: 'error',
+        message: error.message,
+      });
+    },
+    [showToast],
+  );
+
+  return { handleAuthError, handleFirestoreError };
 };
