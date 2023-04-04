@@ -1,33 +1,38 @@
-import React, { useMemo } from 'react';
-import { Accordion } from '@components/Accordion';
-import { Background } from '@components/Backgroud';
-import { Button } from '@components/Button';
-import { Card } from '@components/Card';
-import { Container } from '@components/Container';
-import { Loading } from '@components/Loading';
-import { Divider } from '@components/Divider';
-import { Header } from '@components/Header';
-import { Label } from '@components/Label';
-import { ProgressBar } from '@components/ProgressBar';
-import { Scroll } from '@components/Scroll';
-import { useFoods } from '@hooks/useFoods';
-import { useMeals } from '@hooks/useMeals';
-import { useNavigation } from '@react-navigation/native';
-import { NavPropsLogged } from '@routes/logged';
-import { useMealStore } from '@stores/meal';
+import React, { useCallback, useMemo } from 'react';
 import { getFormatInHours } from '@utils/dateFormat';
+import { NavPropsLogged } from '@routes/logged';
+import { useFoods, useMeals } from '@hooks/index';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useMealStore } from '@stores/meal';
 import { useTheme } from 'styled-components/native';
-import { useNotification } from '@hooks/useNotification';
+import {
+  Accordion,
+  Background,
+  Button,
+  Card,
+  Container,
+  Loading,
+  Divider,
+  Header,
+  Label,
+  ProgressBar,
+  Scroll,
+} from '@components/index';
 
 export const HomeDiet = () => {
-  useNotification({ scheduleMealsNotificationToNextDays: 3 });
   const { effects, fonts } = useTheme();
   const { meals } = useMealStore();
-  const { handleFood } = useFoods({ shouldUpdateStore: false });
-  const { handleInfoMeal, handleInfoMealsDay } = useMeals({
-    shouldUpdateStore: true,
-  });
+  const { handleFood, getFoods } = useFoods();
+  const { handleInfoMeal, handleInfoMealsDay, getMeals } = useMeals();
   const { navigate: navigateLogged } = useNavigation<NavPropsLogged>();
+
+  useFocusEffect(
+    useCallback(() => {
+      getMeals();
+      getFoods();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   const renderMonitoringMealsDay = useMemo(() => {
     if (!meals) {
@@ -140,14 +145,14 @@ export const HomeDiet = () => {
                 ? effects.spacing.hg
                 : effects.spacing.lg
             }>
-            {meal.foods.map(food => {
+            {meal.foods.map(foodMeal => {
               return (
                 <Card
-                  key={`food-${food.foodId}`} // NOTE: somar foods com mesmo id
-                  title={handleFood(food).title}
+                  key={foodMeal.foodDoc}
+                  title={handleFood(foodMeal).title}
                   type="none"
-                  description={handleFood(food).kcal}
-                  subtitle={handleFood(food).quantity}
+                  description={handleFood(foodMeal).kcal}
+                  subtitle={handleFood(foodMeal).quantity}
                   marginBottom={effects.spacing.sm}
                 />
               );
