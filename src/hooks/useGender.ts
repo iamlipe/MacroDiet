@@ -1,14 +1,9 @@
-import { gender } from '@__mocks__/gender';
+import { useCallback, useState } from 'react';
 import { useGenderStore } from '@stores/gender';
-import { useCallback, useEffect, useState } from 'react';
-
 import { useToast } from './useToast';
+import { gender } from '@__mocks__/gender';
 
-interface UseGenderProps {
-  shouldUpdateStore?: boolean;
-}
-
-export const useGender = ({ shouldUpdateStore = false }: UseGenderProps) => {
+export const useGender = () => {
   const [loading, setLoading] = useState(false);
   const { setGender } = useGenderStore();
   const { show: showToast } = useToast();
@@ -23,12 +18,6 @@ export const useGender = ({ shouldUpdateStore = false }: UseGenderProps) => {
       setLoading(true);
     }
   }, [setGender, showToast]);
-
-  useEffect(() => {
-    if (shouldUpdateStore) {
-      getGender();
-    }
-  }, [getGender, shouldUpdateStore]);
 
   return { getGender, loading };
 };

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useUserStore } from '@stores/user';
 import { useAsyncStorage } from './useAsyncStorage';
 import notifee, {
@@ -17,15 +17,7 @@ interface ScheduleNotificationsProps {
   channelId: string;
 }
 
-interface UseNotificationProps {
-  scheduleMealsNotificationToNextDays?: number;
-  updateDisplayedNotifications?: boolean;
-}
-
-export const useNotification = ({
-  scheduleMealsNotificationToNextDays,
-  updateDisplayedNotifications,
-}: UseNotificationProps) => {
+export const useNotification = () => {
   const [displayedNotifications, setDisplayedNotifications] = useState<
     DisplayedNotification[]
   >([]);
@@ -154,18 +146,6 @@ export const useNotification = ({
     }
   }, [read, scheduleMealNotificationForTheNextDays]);
 
-  useEffect(() => {
-    if (scheduleMealsNotificationToNextDays) {
-      scheduleMealsNotification();
-    }
-  }, [scheduleMealsNotification, scheduleMealsNotificationToNextDays]);
-
-  useEffect(() => {
-    if (updateDisplayedNotifications) {
-      getDisplayedNotifications();
-    }
-  }, [getDisplayedNotifications, updateDisplayedNotifications]);
-
   return {
     displayedNotifications,
     displayedNotificationsGroupByDay,
@@ -173,5 +153,7 @@ export const useNotification = ({
     getAllTriggerNotifications,
     initialValuesNotifications,
     savePreferencesNotifications,
+    scheduleMealsNotification,
+    getDisplayedNotifications,
   };
 };

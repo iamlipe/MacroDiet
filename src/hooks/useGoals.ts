@@ -1,14 +1,9 @@
-import { goals } from '@__mocks__/goals';
+import { useCallback, useState } from 'react';
 import { useGoalStore } from '@stores/goal';
-import { useCallback, useEffect, useState } from 'react';
-
 import { useToast } from './useToast';
+import { goals } from '@__mocks__/goals';
 
-interface UseGoalsProps {
-  shouldUpdateStore?: boolean;
-}
-
-export const useGoals = ({ shouldUpdateStore = false }: UseGoalsProps) => {
+export const useGoals = () => {
   const [loading, setLoading] = useState(false);
   const { setGoals } = useGoalStore();
   const { show: showToast } = useToast();
@@ -23,12 +18,6 @@ export const useGoals = ({ shouldUpdateStore = false }: UseGoalsProps) => {
       setLoading(true);
     }
   }, [setGoals, showToast]);
-
-  useEffect(() => {
-    if (shouldUpdateStore) {
-      getGoals();
-    }
-  }, [getGoals, shouldUpdateStore]);
 
   return { getGoals, loading };
 };

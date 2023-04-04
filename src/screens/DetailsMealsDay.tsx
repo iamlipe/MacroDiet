@@ -20,7 +20,7 @@ interface ProgressInfoProps {
 
 export const DetailsMealsDay = () => {
   const { colors, effects, fonts } = useTheme();
-  const { handleInfoMealsDay } = useMeals({ shouldUpdateStore: true });
+  const { handleInfoMealsDay } = useMeals();
   const { meals } = useMealStore();
   const { goBack } = useNavigation<NavPropsDiet>();
 

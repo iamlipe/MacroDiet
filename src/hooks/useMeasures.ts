@@ -1,21 +1,14 @@
 import { measures as measuresData } from '@__mocks__/measures';
 import { useMeasureStore } from '@stores/measure';
-import { useCallback, useEffect, useState } from 'react';
-
+import { useCallback, useState } from 'react';
 import { useToast } from './useToast';
-
-interface UseMeasuresProps {
-  shouldUpdateStore?: boolean;
-}
 
 interface GetMeasureByIdProps {
   id: string;
   measure: keyof typeof measuresData.data;
 }
 
-export const useMeasures = ({
-  shouldUpdateStore = false,
-}: UseMeasuresProps) => {
+export const useMeasures = () => {
   const [loading, setLoading] = useState(false);
   const { setMeasures } = useMeasureStore();
   const { show: showToast } = useToast();
@@ -34,12 +27,6 @@ export const useMeasures = ({
   const getMeasureById = ({ measure, id }: GetMeasureByIdProps) => {
     return measuresData.data[measure].find(item => item.id === id);
   };
-
-  useEffect(() => {
-    if (shouldUpdateStore) {
-      getMeasures();
-    }
-  }, [getMeasures, shouldUpdateStore]);
 
   return { getMeasures, getMeasureById, loading };
 };
