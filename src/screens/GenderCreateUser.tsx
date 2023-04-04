@@ -10,10 +10,19 @@ import {
   Scroll,
 } from '@components/index';
 import { buildOptions } from '@components/Option';
+import * as Yup from 'yup';
 
 export const GenderCreateUser = () => {
   const { gender } = useGenderStore();
-  const { handleForm, initialValuesGender, genderSchema } = useCreateUser();
+  const { handleForm } = useCreateUser();
+
+  const initialValuesGender = {
+    genderId: 'Por favor, selecione o seu sexo biológico',
+  };
+
+  const genderSchema = Yup.object().shape({
+    genderId: Yup.string().required(),
+  });
 
   return (
     <Background>

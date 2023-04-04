@@ -1,26 +1,36 @@
 import React from 'react';
-import { Background } from '@components/Backgroud';
-import { Button } from '@components/Button';
-import { Container } from '@components/Container';
-import { Header } from '@components/Header';
-import { Input } from '@components/Input';
-import { Scroll } from '@components/Scroll';
+import * as Yup from 'yup';
 import { useLogin } from '@hooks/useLogin';
 import { useNavigation } from '@react-navigation/native';
 import { NavPropsAuth } from '@routes/auth';
-import { Formik } from 'formik';
-import { View } from 'react-native';
 import { useTheme } from 'styled-components/native';
+import { View } from 'react-native';
+import { Formik } from 'formik';
+import {
+  Background,
+  Button,
+  Container,
+  Header,
+  Input,
+  Scroll,
+} from '@components/index';
 
 export const LoginWithEmail = () => {
   const { goBack, navigate: navigateAuth } = useNavigation<NavPropsAuth>();
   const { effects } = useTheme();
-  const {
-    loginWithEmail,
-    initialValuesLoginWithEmail,
-    loginWithEmailSchema,
-    loading,
-  } = useLogin();
+  const { loginWithEmail, loading } = useLogin();
+
+  const initialValuesLoginWithEmail = {
+    email: '',
+    password: '',
+  };
+
+  const loginWithEmailSchema = Yup.object().shape({
+    email: Yup.string().email('email invalido').required(),
+    password: Yup.string()
+      .required()
+      .min(8, 'Senha deve ter no mínimo 8 caracteres'),
+  });
 
   return (
     <Background>

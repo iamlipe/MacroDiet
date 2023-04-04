@@ -8,14 +8,23 @@ import {
   DatePicker,
   Scroll,
 } from '@components/index';
+import * as Yup from 'yup';
 
 export const BirthDateCreateUser = () => {
-  const {
-    handleForm,
-    handleValuesForm,
-    birthDateSchema,
-    initialValuesBirthDate,
-  } = useCreateUser();
+  const { handleForm, handleValuesForm } = useCreateUser();
+
+  const initialValuesBirthDate = {
+    birthDate: '',
+  };
+
+  const birthDateSchema = Yup.object().shape({
+    birthDate: Yup.date()
+      .max(
+        new Date(),
+        'A data selecionada deve estar no passado em relação ao dia atual.',
+      )
+      .required('Por favor, selecione a sua data de nascimento.'),
+  });
 
   return (
     <Background>
