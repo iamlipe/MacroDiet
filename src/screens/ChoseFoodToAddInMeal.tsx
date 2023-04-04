@@ -56,6 +56,7 @@ export const ChoseFoodToAddInMeal = () => {
         marginBottom={effects.spacing.md}
         onPress={() =>
           navigateDiet('UpdateFoodInMeal', {
+            type: 'add',
             food: item,
             meal: paramsMeal.meal,
           })
