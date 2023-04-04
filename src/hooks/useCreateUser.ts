@@ -24,7 +24,7 @@ export const useCreateUser = () => {
   const { setCreateUser, login, userCreate, user } = useUserStore();
   const { show: showToast } = useToast();
   const { navigate: navigateCreateUser } = useNavigation<NavPropsCreateUser>();
-  const { createMealsDay } = useMeals({ shouldUpdateStore: false });
+  const { createMealsDay } = useMeals();
 
   const initialValuesGoal = useMemo(() => {
     return {
