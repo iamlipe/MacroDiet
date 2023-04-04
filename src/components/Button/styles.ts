@@ -68,6 +68,8 @@ export const StyledWrapperButton = styled.TouchableOpacity<StyledWrapperButtonPr
 export const StyledWrapperLink = styled.TouchableOpacity.attrs({
   containerStyle: { alignSelf: 'baseline' },
 })<StyledWrapperLinkProps>`
+  flex-direction: row;
+  justify-content: space-between;
   margin-top: ${({ marginTop }) => marginTop || 0}px;
   margin-right: ${({ marginRight }) => marginRight || 0}px;
   margin-bottom: ${({ marginBottom }) => marginBottom || 0}px;
