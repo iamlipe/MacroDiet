@@ -19,7 +19,7 @@ import * as Yup from 'yup';
 export const AddMeal = () => {
   const { effects } = useTheme();
   const { createMeal } = useMeals();
-  const { navigate } = useNavigation<NavPropsDiet>();
+  const { navigate: navigateDiet } = useNavigation<NavPropsDiet>();
 
   const initialValuesCreateMeal = {
     mealTime: '',
@@ -47,7 +47,7 @@ export const AddMeal = () => {
             title: title,
           });
 
-          navigate('HomeDiet');
+          navigateDiet('HomeDiet');
         }}>
         {({ handleChange, values, errors, touched, handleSubmit }) => (
           <Scroll>

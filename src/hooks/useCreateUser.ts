@@ -8,9 +8,8 @@ import { ICreatedUser, useUserStore } from '@stores/user';
 import { useCallback, useState } from 'react';
 import { useLoader } from './useLoader';
 import { useToast } from './useToast';
-import { useMeals } from './useMeals';
-import { createUser as createUserFirebase } from '@services/firebase/repositories/users';
 import { defaultPreferences } from '@__mocks__/users';
+import firestore from '@react-native-firebase/firestore';
 
 interface HandleFormProps {
   values: Partial<IInfo>;
@@ -23,7 +22,6 @@ export const useCreateUser = () => {
   const { setCreateUser, login, userCreate, user } = useUserStore();
   const { show: showToast } = useToast();
   const { navigate: navigateCreateUser } = useNavigation<NavPropsCreateUser>();
-  const { createMealsDay } = useMeals();
 
   const handleValuesForm = useCallback((data: any): Partial<IInfo> => {
     let values = {};
@@ -97,31 +95,18 @@ export const useCreateUser = () => {
         preferences: defaultPreferences,
       });
 
-      const { createdUser } = await createUserFirebase({
-        doc,
-        user: newUser,
-      });
+      await firestore()
+        .collection('Users')
+        .doc(doc)
+        .set({ ...user });
 
-      login(createdUser);
-      await createMealsDay({ mealsTime: defaultPreferences.mealsTime });
+      login(newUser);
     } catch (error) {
       showToast({ type: 'error', message: error.message });
     } finally {
       setTimeout(() => hideLoading(), 1000);
     }
-  }, [
-    createMealsDay,
-    hideLoading,
-    login,
-    showLoading,
-    showToast,
-    user.email,
-    user.lastName,
-    user.name,
-    user.phone,
-    user.photo,
-    userCreate,
-  ]);
+  }, [hideLoading, login, showLoading, showToast, user, userCreate]);
 
   return {
     handleValuesForm,

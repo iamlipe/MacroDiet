@@ -1,12 +1,11 @@
 import authFirebase from '@react-native-firebase/auth';
 import { useUserStore } from '@stores/user';
 import { useCallback, useState } from 'react';
-import { getUserByDoc } from '@services/firebase/repositories/users';
 import { useLoader } from './useLoader';
 import { useToast } from './useToast';
-import { useMeals } from './useMeals';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { buidSchemaAuth } from '@services/firebase/models/user';
+import { IUser, buidSchemaAuth } from '@services/firebase/models/user';
+import firestore from '@react-native-firebase/firestore';
 
 interface LoginWithEmailDTO {
   email: string;
@@ -15,10 +14,14 @@ interface LoginWithEmailDTO {
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
-  const { login, logout: logoutStore, auth, setCreateUser } = useUserStore();
+  const {
+    login,
+    logout: logoutStore,
+    auth: authLogin,
+    setCreateUser,
+  } = useUserStore();
   const { show: showToast } = useToast();
   const { show: showLoader, hide: hideLoader } = useLoader();
-  const { createMealsDay } = useMeals();
 
   const handleAuthError = useCallback(
     error => {
@@ -51,13 +54,17 @@ export const useLogin = () => {
         googleCredential,
       );
 
-      const { user } = await getUserByDoc({ doc: googleAuth.uid });
+      const resp = await firestore()
+        .collection('Users')
+        .doc(googleAuth.uid)
+        .get();
+
+      const user = resp.data() as IUser;
 
       if (user) {
         login(user);
-        await createMealsDay({ mealsTime: user.preferences.mealsTime });
       } else {
-        auth(buidSchemaAuth(googleAuth));
+        authLogin(buidSchemaAuth(googleAuth));
         setCreateUser({ doc: googleAuth.uid });
       }
     } catch (error) {
@@ -67,8 +74,7 @@ export const useLogin = () => {
       hideLoader();
     }
   }, [
-    auth,
-    createMealsDay,
+    authLogin,
     handleAuthError,
     hideLoader,
     login,
@@ -98,13 +104,17 @@ export const useLogin = () => {
             password.toLowerCase().trim(),
           );
 
-        const { user } = await getUserByDoc({ doc: userFirebaseAuth.uid });
+        const resp = await firestore()
+          .collection('Users')
+          .doc(userFirebaseAuth.uid)
+          .get();
+
+        const user = resp.data() as IUser;
 
         if (user) {
           login(user);
-          await createMealsDay({ mealsTime: user.preferences.mealsTime });
         } else {
-          auth(buidSchemaAuth(userFirebaseAuth));
+          authLogin(buidSchemaAuth(userFirebaseAuth));
           setCreateUser({ doc: userFirebaseAuth.uid });
         }
       } catch (error) {
@@ -114,15 +124,7 @@ export const useLogin = () => {
         hideLoader();
       }
     },
-    [
-      auth,
-      createMealsDay,
-      handleAuthError,
-      hideLoader,
-      login,
-      setCreateUser,
-      showLoader,
-    ],
+    [authLogin, handleAuthError, hideLoader, login, setCreateUser, showLoader],
   );
 
   const logout = useCallback(async () => {
