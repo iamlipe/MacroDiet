@@ -101,7 +101,7 @@ export const UpdateFoodInMeal = () => {
     <Background>
       <Header
         left={{ iconName: 'arrow-left', press: goBack }}
-        title="Adicionar"
+        title={paramsInfo.type === 'add' ? 'Adicionar' : 'Editar'}
       />
 
       <Formik
@@ -252,7 +252,14 @@ export const UpdateFoodInMeal = () => {
               backgroundColor={colors.background.dark}
               paddingBottom={bottom}
               paddingHorizontal={effects.spacing.md}>
-              <Button title="Adicionar alimento" onPress={handleSubmit} />
+              <Button
+                title={
+                  paramsInfo.type === 'add'
+                    ? 'Adicionar alimento'
+                    : 'Editar alimento'
+                }
+                onPress={handleSubmit}
+              />
             </Container>
           </>
         )}
