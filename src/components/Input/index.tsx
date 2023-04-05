@@ -8,14 +8,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useTheme } from 'styled-components/native';
-
 import {
-  Wrapper,
-  ContainerInput,
-  Label,
-  TextInput,
-  Error,
-  Column,
+  StyledContainerInput,
+  StyledLabel,
+  StyledTextInput,
+  StyledError,
+  StyledColumn,
 } from './styles';
 
 interface InputProps {
@@ -26,24 +24,16 @@ interface InputProps {
   label?: string;
   onChangeText?: (text: string) => void;
   secureTextEntry?: boolean;
-  flex?: number;
   inputStyle?: TextStyle;
   placeholder?: string;
+  flex?: number;
   marginTop?: number;
   marginRight?: number;
   marginBottom?: number;
   marginLeft?: number;
 }
 
-export const buildSelect = (raw: { id: string; title: string }) => {
-  return {
-    key: raw.id,
-    name: raw.title,
-  };
-};
-
 export const Input: React.FC<InputProps> = ({
-  flex = 1,
   name,
   value,
   onBlur,
@@ -60,35 +50,33 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <>
-      <Wrapper flex={flex} {...rest}>
-        {label && <Label>{firstLetterUppercase(label)}</Label>}
+      {label && <StyledLabel>{firstLetterUppercase(label)}</StyledLabel>}
 
-        <ContainerInput>
-          <Column>
-            <TextInput
-              name={name}
-              value={value}
-              placeholder={placeholder}
-              secureTextEntry={!!securityText}
-              onBlur={onBlur}
-              onChangeText={onChangeText}
-              style={inputStyle}
+      <StyledContainerInput {...rest}>
+        <StyledColumn>
+          <StyledTextInput
+            name={name}
+            value={value}
+            placeholder={placeholder}
+            secureTextEntry={!!securityText}
+            onBlur={onBlur}
+            onChangeText={onChangeText}
+            style={inputStyle}
+          />
+
+          {error && <StyledError>{error}</StyledError>}
+        </StyledColumn>
+
+        {secureTextEntry && (
+          <TouchableOpacity onPress={() => setSecurityText(!securityText)}>
+            <Icon
+              name={securityText ? 'eye' : 'eye-slash'}
+              size={fonts.size.s2}
+              color={colors.gray.white}
             />
-
-            {error && <Error>{error}</Error>}
-          </Column>
-
-          {secureTextEntry && (
-            <TouchableOpacity onPress={() => setSecurityText(!securityText)}>
-              <Icon
-                name={securityText ? 'eye' : 'eye-slash'}
-                size={fonts.size.s2}
-                color={colors.gray.white}
-              />
-            </TouchableOpacity>
-          )}
-        </ContainerInput>
-      </Wrapper>
+          </TouchableOpacity>
+        )}
+      </StyledContainerInput>
     </>
   );
 };

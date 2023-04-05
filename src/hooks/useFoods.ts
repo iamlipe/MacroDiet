@@ -2,12 +2,12 @@ import { IFoodMeal } from '@services/firebase/models/meal';
 import { useFoodStore } from '@stores/food';
 import { useCallback, useState } from 'react';
 import { useMeasures } from './useMeasures';
-import { getFoods as getFoodFirebase } from '@services/firebase/repositories/foods';
 import { useHandleError } from './useHandleError';
+import firestore from '@react-native-firebase/firestore';
 
 export const useFoods = () => {
   const [loading, setLoading] = useState(false);
-  const { setFoods, foods } = useFoodStore();
+  const { setFoods, foods: foodsInStore } = useFoodStore();
   const { getMeasureById } = useMeasures();
   const { handleFirestoreError } = useHandleError();
 
@@ -15,8 +15,19 @@ export const useFoods = () => {
     try {
       setLoading(true);
 
-      const { foods: queryFoods } = await getFoodFirebase();
-      setFoods(queryFoods);
+      const data = await firestore().collection('Foods').limit(20).get();
+
+      const foods = data.docs.map(doc => {
+        const food = doc.data();
+
+        return {
+          doc: doc.id,
+          info: food.info,
+          name: food.name,
+        };
+      });
+
+      setFoods(foods);
     } catch (error) {
       handleFirestoreError(error);
     } finally {
@@ -26,9 +37,9 @@ export const useFoods = () => {
 
   const getFood = useCallback(
     (doc: string) => {
-      return foods?.find(food => food.doc === doc);
+      return foodsInStore?.find(food => food.doc === doc);
     },
-    [foods],
+    [foodsInStore],
   );
 
   const handleFood = useCallback(

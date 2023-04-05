@@ -26,6 +26,9 @@ import {
   BottomSheet,
 } from '@components/index';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { NavPropsDiet } from '@routes/dietStack';
+import { useWindowDimensions } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type StackParamsList = {
   MealData: {
@@ -44,10 +47,13 @@ export const EditMeal = () => {
   const { params: paramsUpdatedMeal } =
     useRoute<RouteProp<StackParamsList, 'UpdatedMealData'>>();
   const [dataMeal, setDataMeal] = useState<IMeal | null>(null);
-  const { goBack, navigate: navigateDiet } = useNavigation<NavPropsLogged>();
+  const { navigate: navigateLogged } = useNavigation<NavPropsLogged>();
+  const { goBack, navigate: navigateDiet } = useNavigation<NavPropsDiet>();
   const { getFood, handleFood } = useFoods();
-  const { updateMeal, handleFoodsInMeal } = useMeals();
-  const { effects, fonts } = useTheme();
+  const { updateMeal, handleFoodsInMeal, removeMeal } = useMeals();
+  const { effects, fonts, colors } = useTheme();
+  const { bottom } = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   useFocusEffect(
@@ -71,88 +77,104 @@ export const EditMeal = () => {
   }
 
   return (
-    <Background>
-      <Header left={{ iconName: 'arrow-left', press: goBack }} title="Editar" />
+    <>
+      <Background>
+        <Header
+          left={{ iconName: 'arrow-left', press: goBack }}
+          title="Editar"
+        />
 
-      <Formik
-        initialValues={initialValues}
-        validationSchema={editMealSchema}
-        onSubmit={async values => {
-          const date = new Date(values.mealTime);
+        <Formik
+          initialValues={initialValues}
+          validationSchema={editMealSchema}
+          onSubmit={async values => {
+            const date = new Date(values.mealTime);
 
-          await updateMeal({
-            doc: dataMeal?.doc,
-            updatedMeal: {
-              title: values.name,
-              time: {
-                milliseconds: date.getTime(),
-                nanoseconds: date.getTime() * 1000000,
+            await updateMeal({
+              doc: dataMeal?.doc,
+              updatedMeal: {
+                title: values.name,
+                time: {
+                  milliseconds: date.getTime(),
+                  nanoseconds: date.getTime() * 1000000,
+                },
+                foods: dataMeal?.foods,
               },
-              foods: dataMeal?.foods,
-            },
-          });
-        }}>
-        {({ handleChange, values, handleSubmit, errors, touched }) => (
-          <Scroll>
+            });
+          }}>
+          {({ handleChange, values, handleSubmit, errors, touched }) => (
             <>
-              <Input
-                name="name"
-                label="Nome"
-                placeholder="dwdwef"
-                value={values.name}
-                onChangeText={handleChange('name')}
-                error={touched.name && errors.name ? errors.name : ''}
-                marginBottom={effects.spacing.md}
-              />
-
-              <DatePicker
-                name="mealTime"
-                label="Horario da refeição"
-                mode="time"
-                onChange={handleChange('mealTime')}
-                value={values.mealTime}
-                marginBottom={effects.spacing.hg}
-                error={
-                  touched.mealTime && errors.mealTime ? errors.mealTime : ''
-                }
-              />
-
-              <Label
-                fontFamily={fonts.family.medium}
-                fontSize={fonts.size.s1}
-                marginBottom={effects.spacing.md}>
-                Comidas
-              </Label>
-
-              <Container marginBottom={effects.spacing.hg}>
-                {dataMeal?.foods.map(food => (
-                  <Card
-                    title={handleFood(food).title}
-                    description={handleFood(food).kcal}
-                    subtitle={handleFood(food).quantity}
-                    type="bottomLine"
+              <Scroll>
+                <Container marginBottom={effects.spacing.hg}>
+                  <Input
+                    label="Nome"
+                    name="name"
+                    value={values.name}
+                    onChangeText={handleChange('name')}
+                    error={touched.name && errors.name ? errors.name : ''}
                     marginBottom={effects.spacing.md}
-                    onPress={() => {
-                      bottomSheetRef.current.present();
-                      setSelectedFood(food.foodDoc);
-                    }}
                   />
-                ))}
+
+                  <DatePicker
+                    name="mealTime"
+                    label="Horario da refeição"
+                    mode="time"
+                    onChange={handleChange('mealTime')}
+                    value={values.mealTime}
+                    error={
+                      touched.mealTime && errors.mealTime ? errors.mealTime : ''
+                    }
+                  />
+                </Container>
+
+                <Container marginBottom={effects.spacing.hg}>
+                  <Label
+                    fontFamily={fonts.family.medium}
+                    fontSize={fonts.size.s1}
+                    marginBottom={effects.spacing.md}>
+                    Comidas
+                  </Label>
+
+                  {dataMeal?.foods.map(food => (
+                    <Card
+                      title={handleFood(food).title}
+                      description={handleFood(food).kcal}
+                      subtitle={handleFood(food).quantity}
+                      type="bottomLine"
+                      marginBottom={effects.spacing.md}
+                      onPress={() => {
+                        bottomSheetRef.current.present();
+                        setSelectedFood(food.foodDoc);
+                      }}
+                    />
+                  ))}
+                </Container>
+              </Scroll>
+
+              <Container
+                position="absolute"
+                bottom={0}
+                width={width}
+                height={174 + bottom}
+                justifyContent="center"
+                backgroundColor={colors.background.dark}
+                paddingBottom={bottom}
+                paddingHorizontal={effects.spacing.md}>
+                <Button
+                  title="Excluir"
+                  type="outlined"
+                  marginBottom={effects.spacing.md}
+                  onPress={async () => {
+                    await removeMeal(dataMeal.doc);
+                    navigateDiet('HomeDiet');
+                  }}
+                />
+                <Button title="Editar" onPress={handleSubmit} />
               </Container>
             </>
-
-            <Container flex={1} justifyContent="flex-end">
-              <Button
-                title="Excluir"
-                type="outlined"
-                marginBottom={effects.spacing.md}
-                onPress={() => null}
-              />
-              <Button title="Editar" onPress={handleSubmit} />
-            </Container>
-          </Scroll>
-        )}
-      </Formik>
+          )}
+        </Formik>
+      </Background>
 
       <BottomSheet
         ref={bottomSheetRef}
@@ -164,7 +186,7 @@ export const EditMeal = () => {
             type="link"
             onPress={() => {
               if (selectedFood) {
-                navigateDiet('UpdateFoodInMeal', {
+                navigateLogged('UpdateFoodInMeal', {
                   type: 'edit',
                   food: getFood(selectedFood),
                   meal: dataMeal,
@@ -195,6 +217,6 @@ export const EditMeal = () => {
           />
         </Container>
       </BottomSheet>
-    </Background>
+    </>
   );
 };

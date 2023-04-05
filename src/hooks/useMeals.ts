@@ -9,18 +9,19 @@ import { useHandleError } from './useHandleError';
 import { IMeal, Meal } from '@services/firebase/models/meal';
 import { IFood, IInfoFood } from '@services/firebase/models/food';
 import { IMealTime } from '@services/firebase/models/user';
-import {
-  UpdateMealDTO,
-  createMeal as createMealFirebase,
-  getMealsDay,
-  updateMeal as updateMealFirebase,
-} from '@services/firebase/repositories/meals';
-import authFirebase from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
 
-interface CreateMealProps {
+interface CreateMealDTO {
   time: { hour: number; minutes: number };
   title: string;
 }
+
+export type UpdateMealDTO = {
+  doc: string;
+  updatedMeal: Partial<IMeal>;
+};
 
 interface GetInfoMeal {
   meal: IMeal;
@@ -49,23 +50,8 @@ export const useMeals = () => {
   const { navigate: navigateDiet } = useNavigation<NavPropsDiet>();
   const { handleFirestoreError } = useHandleError();
 
-  const getMeals = useCallback(async () => {
-    try {
-      setLoading(true);
-
-      if (user) {
-        const { mealsDay } = await getMealsDay(authFirebase().currentUser.uid);
-        setMeals(mealsDay);
-      }
-    } catch (error) {
-      handleFirestoreError(error);
-    } finally {
-      setLoading(true);
-    }
-  }, [handleFirestoreError, setMeals, user]);
-
   const createMeal = useCallback(
-    async ({ time, title }: CreateMealProps) => {
+    async ({ time, title }: CreateMealDTO) => {
       try {
         setLoading(false);
 
@@ -74,7 +60,7 @@ export const useMeals = () => {
         mealTime.setMinutes(time.minutes);
 
         const meal = new Meal({
-          user: authFirebase().currentUser.uid,
+          user: auth().currentUser.uid,
           title,
           time: {
             milliseconds: mealTime.getTime(),
@@ -83,7 +69,7 @@ export const useMeals = () => {
           foods: [],
         });
 
-        await createMealFirebase({ meal });
+        await firestore().collection('Meals').add(meal);
       } catch (error) {
         handleFirestoreError(error);
       } finally {
@@ -98,13 +84,9 @@ export const useMeals = () => {
       try {
         setLoading(true);
 
-        const { mealsDay } = await getMealsDay(authFirebase().currentUser.uid);
-
-        if (!mealsDay.length) {
-          mealsTime.map(async meal => {
-            await createMeal(meal);
-          });
-        }
+        mealsTime.map(async meal => {
+          await createMeal(meal);
+        });
       } catch (error) {
         handleFirestoreError(error);
       } finally {
@@ -112,6 +94,83 @@ export const useMeals = () => {
       }
     },
     [createMeal, handleFirestoreError],
+  );
+
+  const getMeals = useCallback(async () => {
+    try {
+      setLoading(true);
+
+      if (user) {
+        const data = await firestore()
+          .collection('Meals')
+          .where('user', '==', auth().currentUser.uid)
+          .get();
+
+        const meals: IMeal[] = data.docs.map(doc => {
+          const meal = doc.data();
+
+          return {
+            doc: doc.id,
+            foods: meal.foods,
+            time: meal.time,
+            title: meal.title,
+            user: meal.user,
+          };
+        });
+
+        const mealsDay = meals
+          .filter(meal => {
+            const currDate = new Date();
+            const mealDate = new Date(meal.time.milliseconds);
+
+            if (moment(mealDate).isSame(currDate, 'day')) {
+              return meal;
+            }
+          })
+          .sort((a, b) => a.time.milliseconds - b.time.milliseconds);
+
+        if (!mealsDay.length) {
+          await createMealsDay({ mealsTime: user.preferences.mealsTime });
+        }
+
+        setMeals(mealsDay);
+      }
+    } catch (error) {
+      handleFirestoreError(error);
+    } finally {
+      setLoading(true);
+    }
+  }, [createMealsDay, handleFirestoreError, setMeals, user]);
+
+  const updateMeal = useCallback(
+    async ({ doc, updatedMeal }: UpdateMealDTO) => {
+      try {
+        setLoading(true);
+
+        await firestore().collection('Meals').doc(doc).update(updatedMeal);
+
+        navigateDiet('HomeDiet');
+      } catch (error) {
+        handleFirestoreError(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [navigateDiet, handleFirestoreError],
+  );
+
+  const removeMeal = useCallback(
+    async (doc: string) => {
+      try {
+        setLoading(true);
+        await firestore().collection('Meals').doc(doc).delete();
+      } catch (error) {
+        handleFirestoreError(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [handleFirestoreError],
   );
 
   const handleFoodsInMeal = ({
@@ -145,26 +204,6 @@ export const useMeals = () => {
         return meal.foods;
     }
   };
-
-  const updateMeal = useCallback(
-    async ({ doc, updatedMeal }: UpdateMealDTO) => {
-      try {
-        setLoading(true);
-
-        await updateMealFirebase({
-          doc,
-          updatedMeal,
-        });
-
-        navigateDiet('HomeDiet');
-      } catch (error) {
-        handleFirestoreError(error);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [navigateDiet, handleFirestoreError],
-  );
 
   const getInfoMeal = useCallback(
     ({ meal, info }: GetInfoMeal) => {
@@ -269,6 +308,7 @@ export const useMeals = () => {
     handleInfoMealsDay,
     updateMeal,
     createMeal,
+    removeMeal,
     handleFoodsInMeal,
     loading,
   };

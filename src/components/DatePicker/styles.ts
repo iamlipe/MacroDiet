@@ -15,6 +15,7 @@ interface TitleProps {
 }
 
 export const StyledWrapper = styled.TouchableOpacity<WrapperProps>`
+  flex: 1;
   border-color: ${({ theme }) => theme.colors.gray.white};
   border-width: ${({ theme }) => theme.effects.border.width.df}px;
   border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
