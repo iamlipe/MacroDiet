@@ -16,7 +16,7 @@ import { buildOptionForm } from '@utils/help';
 
 export const HeightCreateUser = () => {
   const { effects } = useTheme();
-  const { measures } = useMeasureStore();
+  const { measuresLength } = useMeasureStore();
   const { handleForm, handleValuesForm } = useCreateUser();
 
   const initialValuesHeight = {
@@ -68,7 +68,7 @@ export const HeightCreateUser = () => {
                 flex={2}
                 name="height.measureDoc"
                 value={values.height.measureDoc}
-                options={measures?.length.map(buildOptionForm) || []}
+                options={measuresLength.map(buildOptionForm) || []}
                 onChange={handleChange('height.measureDoc')}
                 marginLeft={effects.spacing.md}
                 error={

@@ -15,7 +15,7 @@ import * as Yup from 'yup';
 import { buildOptionForm } from '@utils/help';
 
 export const WeightCreateUser = () => {
-  const { measures } = useMeasureStore();
+  const { measuresMass } = useMeasureStore();
   const { effects } = useTheme();
   const { handleForm, handleValuesForm } = useCreateUser();
 
@@ -68,7 +68,7 @@ export const WeightCreateUser = () => {
                 flex={2}
                 name="weigth.measureDoc"
                 value={values.weigth.measureDoc}
-                options={measures?.mass.map(buildOptionForm) || []}
+                options={measuresMass?.map(buildOptionForm) || []}
                 onChange={handleChange('weigth.measureDoc')}
                 marginLeft={effects.spacing.md}
                 error={

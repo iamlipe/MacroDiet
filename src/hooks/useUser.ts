@@ -9,7 +9,7 @@ export const useUser = () => {
   const { acitivities } = useActivityStore();
   const { genders } = useGenderStore();
   const { goals } = useGoalStore();
-  const { measures } = useMeasureStore();
+  const { measuresMass, measuresLength } = useMeasureStore();
 
   const getUserActivityLevel = (activityDoc: string) => {
     return acitivities.find(item => item.doc === activityDoc);
@@ -28,7 +28,7 @@ export const useUser = () => {
   };
 
   const getUserHeight = (height: { quantity: number; measureDoc: string }) => {
-    const measureMultiple = measures.length.find(
+    const measureMultiple = measuresLength.find(
       item => item.doc === height.measureDoc,
     ).multiple;
 
@@ -36,7 +36,7 @@ export const useUser = () => {
   };
 
   const getUserWeight = (weigth: { quantity: number; measureDoc: string }) => {
-    const measureMultiple = measures.mass.find(
+    const measureMultiple = measuresMass.find(
       item => item.doc === weigth.measureDoc,
     ).multiple;
 
