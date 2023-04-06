@@ -3,8 +3,8 @@ import { useMeasureStore } from '@stores/measure';
 import { useCallback, useState } from 'react';
 import { useToast } from './useToast';
 
-interface GetMeasureByIdProps {
-  id: string;
+interface GetMeasureProps {
+  doc: string;
   measure: keyof typeof measuresData.data;
 }
 
@@ -24,9 +24,9 @@ export const useMeasures = () => {
     }
   }, [setMeasures, showToast]);
 
-  const getMeasureById = ({ measure, id }: GetMeasureByIdProps) => {
-    return measuresData.data[measure].find(item => item.id === id);
+  const getMeasure = ({ measure, doc }: GetMeasureProps) => {
+    return measuresData.data[measure].find(item => item.doc === doc);
   };
 
-  return { getMeasures, getMeasureById, loading };
+  return { getMeasures, getMeasure, loading };
 };
