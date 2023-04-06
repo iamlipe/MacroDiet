@@ -1,5 +1,4 @@
 import React from 'react';
-import { buildOptions } from '@components/Option';
 import { useCreateUser } from '@hooks/useCreateUser';
 import { useMeasureStore } from '@stores/measure';
 import { useTheme } from 'styled-components/native';
@@ -13,6 +12,7 @@ import {
   Select,
 } from '@components/index';
 import * as Yup from 'yup';
+import { buildOptionForm } from '@utils/help';
 
 export const WeightCreateUser = () => {
   const { measures } = useMeasureStore();
@@ -22,7 +22,7 @@ export const WeightCreateUser = () => {
   const initialValuesWeigth = {
     weigth: {
       quantity: '',
-      measureId: '',
+      measureDoc: '',
     },
   };
 
@@ -31,7 +31,7 @@ export const WeightCreateUser = () => {
       quantity: Yup.string()
         .min(1, 'Digite um peso valido')
         .required('Informe o seu peso atual.'),
-      measureId: Yup.string().required('Selecione uma unidade de medida.'),
+      measureDoc: Yup.string().required('Selecione uma unidade de medida.'),
     }),
   });
 
@@ -50,6 +50,7 @@ export const WeightCreateUser = () => {
           <Scroll>
             <Container flexDirection="row" alignItems="flex-end">
               <Input
+                flex={1}
                 name="weigth.quantity"
                 label="Peso"
                 placeholder="0"
@@ -65,14 +66,14 @@ export const WeightCreateUser = () => {
 
               <Select
                 flex={2}
-                name="weigth.measureId"
-                value={values.weigth.measureId}
-                options={measures?.mass.map(buildOptions) || []}
-                onChange={handleChange('weigth.measureId')}
+                name="weigth.measureDoc"
+                value={values.weigth.measureDoc}
+                options={measures?.mass.map(buildOptionForm) || []}
+                onChange={handleChange('weigth.measureDoc')}
                 marginLeft={effects.spacing.md}
                 error={
-                  touched.weigth?.measureId && errors.weigth?.measureId
-                    ? errors.weigth?.measureId
+                  touched.weigth?.measureDoc && errors.weigth?.measureDoc
+                    ? errors.weigth?.measureDoc
                     : ''
                 }
                 inputStyle={{ textAlign: 'center' }}

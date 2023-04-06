@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Yup from 'yup';
 import { TouchableOpacity, useWindowDimensions } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NavPropsDiet } from '@routes/dietStack';
@@ -10,6 +11,7 @@ import { useMeasureStore } from '@stores/measure';
 import { useFoodStore } from '@stores/food';
 import { useMeals, useFavorite } from '@hooks/index';
 import { useTheme } from 'styled-components/native';
+import { buildOptionForm } from '@utils/help';
 import { Formik } from 'formik';
 import {
   Background,
@@ -23,8 +25,6 @@ import {
   Scroll,
   Select,
 } from '@components/index';
-import { buildOptions } from '@components/Option';
-import * as Yup from 'yup';
 
 interface CardInfoProps {
   info: string;
@@ -64,14 +64,14 @@ export const UpdateFoodInMeal = () => {
   const initialValuesAddFoodInMeal = {
     food: {
       quantity: '',
-      measureId: '',
+      measureDoc: '',
     },
   };
 
   const addFoodInMealSchema = Yup.object().shape({
     food: Yup.object().shape({
       quantity: Yup.string().required(),
-      measureId: Yup.string().required(),
+      measureDoc: Yup.string().required(),
     }),
   });
 
@@ -112,7 +112,7 @@ export const UpdateFoodInMeal = () => {
             type: paramsInfo.type,
             food: paramsFood.food,
             meal: paramsMeal.meal,
-            measureId: values.food.measureId,
+            measureDoc: values.food.measureDoc,
             quantity: Number(values.food.quantity),
           });
 
@@ -154,6 +154,7 @@ export const UpdateFoodInMeal = () => {
                 alignItems="flex-end"
                 marginBottom={effects.spacing.vl}>
                 <Input
+                  flex={1}
                   name="food.quantity"
                   placeholder="0"
                   value={values.food.quantity}
@@ -168,14 +169,14 @@ export const UpdateFoodInMeal = () => {
 
                 <Select
                   flex={2}
-                  name="food.measureId"
-                  value={values.food.measureId}
-                  options={measures?.mass.map(buildOptions) || []}
-                  onChange={handleChange('food.measureId')}
+                  name="food.measureDoc"
+                  value={values.food.measureDoc}
+                  options={measures?.mass.map(buildOptionForm) || []}
+                  onChange={handleChange('food.measureDoc')}
                   marginLeft={effects.spacing.md}
                   error={
-                    touched.food?.measureId && errors.food?.measureId
-                      ? errors.food?.measureId
+                    touched.food?.measureDoc && errors.food?.measureDoc
+                      ? errors.food?.measureDoc
                       : ''
                   }
                   inputStyle={{ textAlign: 'center' }}
