@@ -21,8 +21,8 @@ export class Meal implements Omit<IMeal, 'doc'> {
   public foods: { foodDoc: string; measureDoc: string; quantity: number }[];
 
   constructor(meal: Omit<IMeal, 'doc'>) {
-    this.user = meal.user;
-    this.title = meal.title;
+    this.user = meal.user.trim();
+    this.title = meal.title.trim();
     this.time = meal.time;
     this.foods = meal.foods;
   }
