@@ -52,7 +52,7 @@ export const HomeDiet = () => {
 
   return (
     <Background>
-      <Header title="Dieta" />
+      <Header hasLogo={true} />
 
       <Scroll>
         {meals && !loadingMeals && (

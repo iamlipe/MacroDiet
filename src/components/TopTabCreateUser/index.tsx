@@ -6,7 +6,6 @@ import { useTheme } from 'styled-components/native';
 import { ProgressBar } from '../ProgressBar';
 import { Icon } from '@components/Icon';
 import { SafeAreaView } from 'react-native';
-import { Logo } from '../Logo';
 import {
   StyledContainer,
   StyledBaseButton,
@@ -31,9 +30,9 @@ export const TopTabCreateUser = ({ state }: MaterialTopTabBarProps) => {
         </StyledBaseButton>
 
         <StyledWrapperProgressbar>
-          <Logo marginBottom={effects.spacing.md} />
+          <Icon name="logo" color={colors.primary[500]} size={32} />
 
-          <ProgressBar percentage={0.2} />
+          <ProgressBar marginTop={effects.spacing.md} percentage={0.2} />
         </StyledWrapperProgressbar>
 
         <StyledBaseButton disabled activeOpacity={0} />

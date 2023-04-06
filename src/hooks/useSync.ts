@@ -8,7 +8,7 @@ import { useToast } from './useToast';
 
 export const useSync = () => {
   const { setIsSync } = useSyncStore();
-  const { getMeasures } = useMeasures();
+  const { getMeasures, getMesuresLength, getMesuresMass } = useMeasures();
   const { getGoals } = useGoals();
   const { getActivities } = useActitivities();
   const { getGenders } = useGender();
@@ -19,15 +19,26 @@ export const useSync = () => {
       setIsSync(true);
 
       await getMeasures();
+      await getMesuresLength();
+      await getMesuresMass();
       await getGoals();
       await getActivities();
       await getGenders();
     } catch (error) {
-      showToast({ type: 'error', message: '' });
+      showToast({ type: 'error', message: 'Something went wrong' });
     } finally {
       setIsSync(false);
     }
-  }, [getActivities, getGenders, getGoals, getMeasures, setIsSync, showToast]);
+  }, [
+    getActivities,
+    getGenders,
+    getGoals,
+    getMeasures,
+    getMesuresLength,
+    getMesuresMass,
+    setIsSync,
+    showToast,
+  ]);
 
   return { sync };
 };

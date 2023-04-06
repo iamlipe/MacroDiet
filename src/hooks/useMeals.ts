@@ -236,10 +236,7 @@ export const useMeals = () => {
     ({ meal, info }: GetInfoMeal) => {
       const sum = meal.foods.reduce((acc, curr) => {
         const foodData = getFood(curr.foodDoc);
-        const measureFoodData = getMeasure({
-          measure: 'mass',
-          doc: curr.measureDoc,
-        });
+        const measureFoodData = getMeasure(curr.measureDoc);
 
         return (
           acc +

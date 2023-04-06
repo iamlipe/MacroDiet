@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { Card } from '@components/Card';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { firstLetterUppercase } from '@utils/stringFormat';
@@ -51,6 +51,7 @@ export const Select: React.FC<SelectProps> = ({
   ...rest
 }) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+
   const selected = useMemo(
     () => options.filter(option => option.key === value)[0]?.name,
     [options, value],
@@ -59,6 +60,11 @@ export const Select: React.FC<SelectProps> = ({
   const renderBackDrop = () => {
     return <StyledBackdrop onPress={() => bottomSheetRef.current?.close()} />;
   };
+
+  useEffect(() => {
+    onChange(options[0].key);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <StyledWrapper flex={flex} name={name} {...rest}>

@@ -7,9 +7,9 @@ import { NavPropsLogged } from '@routes/logged';
 import { IFood } from '@services/firebase/models/food';
 import { IMeal } from '@services/firebase/models/meal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useMeasureStore } from '@stores/measure';
 import { useFoodStore } from '@stores/food';
-import { useMeals, useFavorite } from '@hooks/index';
+import { useMeasureStore } from '@stores/measure';
+import { useMeals, useFavorite, useMeasures } from '@hooks/index';
 import { useTheme } from 'styled-components/native';
 import { buildOptionForm } from '@utils/help';
 import { Formik } from 'formik';
@@ -46,20 +46,25 @@ type StackParamsList = {
 };
 
 export const UpdateFoodInMeal = () => {
-  const { params: paramsMeal } =
-    useRoute<RouteProp<StackParamsList, 'MealData'>>();
-  const { params: paramsFood } =
-    useRoute<RouteProp<StackParamsList, 'FoodData'>>();
-  const { params: paramsInfo } = useRoute<RouteProp<StackParamsList, 'Info'>>();
+  const {
+    params: { meal },
+  } = useRoute<RouteProp<StackParamsList, 'MealData'>>();
+  const {
+    params: { food },
+  } = useRoute<RouteProp<StackParamsList, 'FoodData'>>();
+  const {
+    params: { type },
+  } = useRoute<RouteProp<StackParamsList, 'Info'>>();
   const { goBack } = useNavigation<NavPropsDiet>();
   const { navigate: navigateLogged } = useNavigation<NavPropsLogged>();
   const { bottom } = useSafeAreaInsets();
   const { width } = useWindowDimensions();
-  const { measures } = useMeasureStore();
+  const { getMeasure } = useMeasures();
   const { foods } = useFoodStore();
   const { handleFavorite } = useFavorite();
   const { colors, fonts, effects } = useTheme();
   const { handleFoodsInMeal, updateMeal } = useMeals();
+  const { measureMassDefault } = useMeasureStore();
 
   const initialValuesAddFoodInMeal = {
     food: {
@@ -91,7 +96,7 @@ export const UpdateFoodInMeal = () => {
           textAlign="center">
           {info}
           {'\n'}
-          {quantity}
+          {quantity.toFixed(0)}
         </Label>
       </Container>
     );
@@ -101,7 +106,7 @@ export const UpdateFoodInMeal = () => {
     <Background>
       <Header
         left={{ iconName: 'arrow-left', press: goBack }}
-        title={paramsInfo.type === 'add' ? 'Adicionar' : 'Editar'}
+        title={type === 'add' ? 'Adicionar' : 'Editar'}
       />
 
       <Formik
@@ -109,21 +114,21 @@ export const UpdateFoodInMeal = () => {
         validationSchema={addFoodInMealSchema}
         onSubmit={async values => {
           const foodsInMeal = handleFoodsInMeal({
-            type: paramsInfo.type,
-            food: paramsFood.food,
-            meal: paramsMeal.meal,
+            type,
+            food,
+            meal,
             measureDoc: values.food.measureDoc,
             quantity: Number(values.food.quantity),
           });
 
-          if (paramsInfo.type === 'add') {
+          if (type === 'add') {
             await updateMeal({
-              doc: paramsMeal.meal.doc,
+              doc: meal.doc,
               updatedMeal: { foods: foodsInMeal },
             });
           } else {
             navigateLogged('EditMeal', {
-              updatedMeal: { ...paramsMeal.meal, foods: foodsInMeal },
+              updatedMeal: { ...meal, foods: foodsInMeal },
             });
           }
         }}>
@@ -137,7 +142,7 @@ export const UpdateFoodInMeal = () => {
                 <Label
                   fontFamily={fonts.family.medium}
                   fontSize={fonts.size.tl}>
-                  {paramsFood.food.name}
+                  {food.name}
                 </Label>
 
                 <TouchableOpacity onPress={handleFavorite}>
@@ -171,7 +176,13 @@ export const UpdateFoodInMeal = () => {
                   flex={2}
                   name="food.measureDoc"
                   value={values.food.measureDoc}
-                  options={measures?.mass.map(buildOptionForm) || []}
+                  options={
+                    food.measures
+                      ? food.measures
+                          .map(measureDoc => getMeasure(measureDoc))
+                          .map(buildOptionForm)
+                      : [buildOptionForm(measureMassDefault)]
+                  }
                   onChange={handleChange('food.measureDoc')}
                   marginLeft={effects.spacing.md}
                   error={
@@ -203,27 +214,27 @@ export const UpdateFoodInMeal = () => {
                   flexWrap="wrap">
                   {renderCardInfo({
                     info: 'kcal',
-                    quantity: paramsFood.food.info.kcalPerGram * 100,
+                    quantity: food.info.kcalPerGram * 100,
                   })}
                   {renderCardInfo({
                     info: 'carb',
-                    quantity: paramsFood.food.info.carbPerGram * 100,
+                    quantity: food.info.carbPerGram * 100,
                   })}
                   {renderCardInfo({
                     info: 'prot',
-                    quantity: paramsFood.food.info.protPerGram * 100,
+                    quantity: food.info.protPerGram * 100,
                   })}
                   {renderCardInfo({
                     info: 'gord',
-                    quantity: paramsFood.food.info.fatPerGram * 100,
+                    quantity: food.info.fatPerGram * 100,
                   })}
                   {renderCardInfo({
                     info: 'sódio',
-                    quantity: paramsFood.food.info.sodiumPerGram * 100,
+                    quantity: food.info.sodiumPerGram * 100,
                   })}
                   {renderCardInfo({
                     info: 'fibra',
-                    quantity: paramsFood.food.info.fiberPerGram * 100,
+                    quantity: food.info.fiberPerGram * 100,
                   })}
                 </Container>
               </Container>
@@ -235,9 +246,9 @@ export const UpdateFoodInMeal = () => {
                 Alimentos que podem substituir
               </Label>
 
-              {foods?.slice(0, 4).map(food => (
+              {foods?.slice(0, 4).map(item => (
                 <Card
-                  title={food.name}
+                  title={item.name}
                   type="bottomLine"
                   marginBottom={effects.spacing.md}
                 />
@@ -255,9 +266,7 @@ export const UpdateFoodInMeal = () => {
               paddingHorizontal={effects.spacing.md}>
               <Button
                 title={
-                  paramsInfo.type === 'add'
-                    ? 'Adicionar alimento'
-                    : 'Editar alimento'
+                  type === 'add' ? 'Adicionar alimento' : 'Editar alimento'
                 }
                 onPress={handleSubmit}
               />

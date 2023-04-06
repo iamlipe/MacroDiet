@@ -16,7 +16,7 @@ export const MenuProfile = () => {
 
   return (
     <Background>
-      <Header title="Perfil" />
+      <Header title="menu" />
 
       <Scroll>
         <Container
