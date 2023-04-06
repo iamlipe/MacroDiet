@@ -2,13 +2,12 @@ import { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NavPropsDiet } from '@routes/dietStack';
 import { useMealStore } from '@stores/meal';
-import { useUserStore } from '@stores/user';
 import { useMeasures } from './useMeasures';
 import { useFoods } from './useFoods';
 import { useHandleError } from './useHandleError';
 import { IMeal, Meal } from '@services/firebase/models/meal';
 import { IFood, IInfoFood } from '@services/firebase/models/food';
-import { IMealTime } from '@services/firebase/models/user';
+import { IMealTime, IUser } from '@services/firebase/models/user';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
@@ -22,6 +21,11 @@ export type UpdateMealDTO = {
   doc: string;
   updatedMeal: Partial<IMeal>;
 };
+
+interface GetMeals {
+  user: Partial<IUser>;
+  userDoc: string;
+}
 
 interface GetInfoMeal {
   meal: IMeal;
@@ -38,15 +42,14 @@ interface HandleFoodsInMeal {
   meal: IMeal;
   food: IFood;
   quantity?: number;
-  measureId?: string;
+  measureDoc?: string;
 }
 
 export const useMeals = () => {
   const [loading, setLoading] = useState(false);
   const { setMeals } = useMealStore();
-  const { user } = useUserStore();
   const { getFood } = useFoods();
-  const { getMeasureById } = useMeasures();
+  const { getMeasure } = useMeasures();
   const { navigate: navigateDiet } = useNavigation<NavPropsDiet>();
   const { handleFirestoreError } = useHandleError();
 
@@ -84,29 +87,52 @@ export const useMeals = () => {
       try {
         setLoading(true);
 
-        mealsTime.map(async meal => {
-          await createMeal(meal);
+        const batch = firestore().batch();
+
+        const meals = mealsTime.map(({ time, title }) => {
+          const mealTime = new Date();
+          mealTime.setHours(time.hour);
+          mealTime.setMinutes(time.minutes);
+
+          const meal = new Meal({
+            user: auth().currentUser.uid,
+            title,
+            time: {
+              milliseconds: mealTime.getTime(),
+              nanoseconds: mealTime.getTime() * 1000000,
+            },
+            foods: [],
+          });
+
+          const docRef = firestore().collection('Meals').doc();
+
+          batch.set(docRef, meal);
+
+          return meal;
         });
+
+        await batch.commit();
+        setMeals(meals);
       } catch (error) {
         handleFirestoreError(error);
       } finally {
         setLoading(true);
       }
     },
-    [createMeal, handleFirestoreError],
+    [handleFirestoreError, setMeals],
   );
 
-  const getMeals = useCallback(async () => {
-    try {
-      setLoading(true);
+  const getMeals = useCallback(
+    async ({ user: user, userDoc }: GetMeals) => {
+      try {
+        setLoading(true);
 
-      if (user) {
         const data = await firestore()
           .collection('Meals')
-          .where('user', '==', auth().currentUser.uid)
+          .where('user', '==', userDoc)
           .get();
 
-        const meals: IMeal[] = data.docs.map(doc => {
+        const meals: IMeal[] = data?.docs.map(doc => {
           const meal = doc.data();
 
           return {
@@ -131,16 +157,17 @@ export const useMeals = () => {
 
         if (!mealsDay.length) {
           await createMealsDay({ mealsTime: user.preferences.mealsTime });
+        } else {
+          setMeals(mealsDay);
         }
-
-        setMeals(mealsDay);
+      } catch (error) {
+        handleFirestoreError(error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      handleFirestoreError(error);
-    } finally {
-      setLoading(true);
-    }
-  }, [createMealsDay, handleFirestoreError, setMeals, user]);
+    },
+    [createMealsDay, handleFirestoreError, setMeals],
+  );
 
   const updateMeal = useCallback(
     async ({ doc, updatedMeal }: UpdateMealDTO) => {
@@ -178,7 +205,7 @@ export const useMeals = () => {
     meal,
     food,
     quantity,
-    measureId,
+    measureDoc,
   }: HandleFoodsInMeal) => {
     switch (type) {
       case 'add':
@@ -190,13 +217,13 @@ export const useMeals = () => {
               quantity +
               (meal.foods.find(item => item.foodDoc === food.doc)?.quantity ||
                 0),
-            measureId,
+            measureDoc,
           },
         ];
       case 'edit':
         return [
           ...meal.foods.filter(item => item.foodDoc !== food.doc),
-          { foodDoc: food.doc, quantity, measureId },
+          { foodDoc: food.doc, quantity, measureDoc },
         ];
       case 'remove':
         return [...meal.foods.filter(item => item.foodDoc !== food.doc, [])];
@@ -209,9 +236,9 @@ export const useMeals = () => {
     ({ meal, info }: GetInfoMeal) => {
       const sum = meal.foods.reduce((acc, curr) => {
         const foodData = getFood(curr.foodDoc);
-        const measureFoodData = getMeasureById({
+        const measureFoodData = getMeasure({
           measure: 'mass',
-          id: curr.measureId,
+          doc: curr.measureDoc,
         });
 
         return (
@@ -224,7 +251,7 @@ export const useMeals = () => {
 
       return sum;
     },
-    [getFood, getMeasureById],
+    [getFood, getMeasure],
   );
 
   const getTotalInfoMealsDay = useCallback(
@@ -264,30 +291,42 @@ export const useMeals = () => {
 
   const handleInfoMealsDay = useCallback(
     (meals: IMeal[]) => {
-      const totalKcalMeals = getTotalInfoMealsDay({
-        meals,
-        info: 'kcalPerGram',
-      }).toFixed(0);
-      const totalCarbMeals = getTotalInfoMealsDay({
-        meals,
-        info: 'carbPerGram',
-      }).toFixed(0);
-      const totalProtMeals = getTotalInfoMealsDay({
-        meals,
-        info: 'protPerGram',
-      }).toFixed(0);
-      const totalFatMeals = getTotalInfoMealsDay({
-        meals,
-        info: 'fatPerGram',
-      }).toFixed(0);
-      const totalSodiumMeals = getTotalInfoMealsDay({
-        meals,
-        info: 'sodiumPerGram',
-      }).toFixed(0);
-      const totalFiberMeals = getTotalInfoMealsDay({
-        meals,
-        info: 'fiberPerGram',
-      }).toFixed(0);
+      const totalKcalMeals = Number(
+        getTotalInfoMealsDay({
+          meals,
+          info: 'kcalPerGram',
+        }).toFixed(0),
+      );
+      const totalCarbMeals = Number(
+        getTotalInfoMealsDay({
+          meals,
+          info: 'carbPerGram',
+        }).toFixed(0),
+      );
+      const totalProtMeals = Number(
+        getTotalInfoMealsDay({
+          meals,
+          info: 'protPerGram',
+        }).toFixed(0),
+      );
+      const totalFatMeals = Number(
+        getTotalInfoMealsDay({
+          meals,
+          info: 'fatPerGram',
+        }).toFixed(0),
+      );
+      const totalSodiumMeals = Number(
+        getTotalInfoMealsDay({
+          meals,
+          info: 'sodiumPerGram',
+        }).toFixed(0),
+      );
+      const totalFiberMeals = Number(
+        getTotalInfoMealsDay({
+          meals,
+          info: 'fiberPerGram',
+        }).toFixed(0),
+      );
 
       return {
         totalKcalMeals,

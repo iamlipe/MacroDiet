@@ -8,7 +8,7 @@ import firestore from '@react-native-firebase/firestore';
 export const useFoods = () => {
   const [loading, setLoading] = useState(false);
   const { setFoods, foods: foodsInStore } = useFoodStore();
-  const { getMeasureById } = useMeasures();
+  const { getMeasure } = useMeasures();
   const { handleFirestoreError } = useHandleError();
 
   const getFoods = useCallback(async () => {
@@ -46,9 +46,9 @@ export const useFoods = () => {
     (food: IFoodMeal) => {
       const foodData = getFood(food.foodDoc);
 
-      const measureFoodData = getMeasureById({
+      const measureFoodData = getMeasure({
         measure: 'mass',
-        id: food.measureId,
+        doc: food.measureDoc,
       });
 
       const title = foodData?.name || '';
@@ -63,7 +63,7 @@ export const useFoods = () => {
 
       return { title, kcal, quantity };
     },
-    [getFood, getMeasureById],
+    [getFood, getMeasure],
   );
 
   return { getFoods, getFood, handleFood, loading };
