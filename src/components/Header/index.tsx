@@ -1,17 +1,22 @@
-import { Icon } from '@components/Icon';
-import { firstLetterUppercase } from '@utils/stringFormat';
 import React from 'react';
+import { firstLetterUppercase } from '@utils/stringFormat';
 import { useTheme } from 'styled-components/native';
-
 import { Wrapper, BaseButton, Title } from './styles';
+import { Icon } from '@components/Icon';
 
 interface HeaderProps {
-  title: string;
+  title?: string;
+  hasLogo?: boolean;
   left?: { iconName?: string; press: () => void };
   right?: { iconName?: string; press: () => void };
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, left, right }) => {
+export const Header: React.FC<HeaderProps> = ({
+  title,
+  left,
+  right,
+  hasLogo = false,
+}) => {
   const { colors, fonts } = useTheme();
 
   return (
@@ -24,7 +29,11 @@ export const Header: React.FC<HeaderProps> = ({ title, left, right }) => {
         />
       </BaseButton>
 
-      <Title>{firstLetterUppercase(title)}</Title>
+      {hasLogo ? (
+        <Icon name="logo" color={colors.primary[500]} size={32} />
+      ) : (
+        <Title>{firstLetterUppercase(title)}</Title>
+      )}
 
       <BaseButton show={!!right} onPress={right?.press}>
         <Icon
