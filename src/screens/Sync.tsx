@@ -1,13 +1,18 @@
 import { Container } from '@components/Container';
 import { Label } from '@components/Label';
 import { useSync } from '@hooks/useSync';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
 export const Sync = () => {
   const { effects, colors, fonts } = useTheme();
-  useSync();
+  const { sync } = useSync();
+
+  useEffect(() => {
+    sync();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Container

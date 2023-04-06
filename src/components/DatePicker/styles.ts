@@ -2,28 +2,37 @@ import styled from 'styled-components/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
-interface WrapperProps {
-  name: string;
+interface StyledWrapperProps {
+  flex?: number;
   marginTop?: number;
   marginRight?: number;
   marginBottom?: number;
   marginLeft?: number;
 }
 
+interface StyledContainer {
+  name: string;
+}
+
 interface TitleProps {
   selected: boolean;
 }
 
-export const StyledWrapper = styled.TouchableOpacity<WrapperProps>`
+export const StyledWrapper = styled.View<StyledWrapperProps>`
+  flex: ${({ flex }) => flex || 0};
+  margin-top: ${({ marginTop }) => marginTop || 0}px;
+  margin-right: ${({ marginRight }) => marginRight || 0}px;
+  margin-bottom: ${({ marginBottom }) => marginBottom || 0}px;
+  margin-left: ${({ marginLeft }) => marginLeft || 0}px;
+`;
+
+export const StyledContainer = styled.TouchableOpacity<StyledContainer>`
+  min-height: 56px;
   flex: 1;
   border-color: ${({ theme }) => theme.colors.gray.white};
   border-width: ${({ theme }) => theme.effects.border.width.df}px;
   border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
   padding: ${({ theme }) => theme.effects.spacing.md}px;
-  margin-top: ${({ marginTop }) => marginTop || 0}px;
-  margin-right: ${({ marginRight }) => marginRight || 0}px;
-  margin-bottom: ${({ marginBottom }) => marginBottom || 0}px;
-  margin-left: ${({ marginLeft }) => marginLeft || 0}px;
 `;
 
 export const StyledLabel = styled.Text`

@@ -1,11 +1,18 @@
 import React from 'react';
+import { StyledProgressBar, StyledContainerProgressBar } from './styles';
 
-import { StyledProgressBar, StyledWrapperProgressBar } from './styles';
+interface ProgressBarProps {
+  percentage: number;
+  marginTop?: number;
+  marginRight?: number;
+  marginBottom?: number;
+  marginLeft?: number;
+}
 
-export const ProgressBar = () => {
+export const ProgressBar = ({ percentage, ...rest }: ProgressBarProps) => {
   return (
-    <StyledWrapperProgressBar>
-      <StyledProgressBar />
-    </StyledWrapperProgressBar>
+    <StyledContainerProgressBar {...rest}>
+      <StyledProgressBar percentage={percentage <= 1 ? percentage : 1} />
+    </StyledContainerProgressBar>
   );
 };

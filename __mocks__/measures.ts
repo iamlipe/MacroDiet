@@ -11,13 +11,13 @@ export const measures: MeasuresData = {
   data: {
     mass: [
       {
-        id: '1',
+        doc: '1',
         acronym: 'g',
         title: 'gram',
         multiple: 1,
       },
       {
-        id: '2',
+        doc: '2',
         acronym: 'kg',
         title: 'kilograma',
         multiple: 1000,
@@ -25,7 +25,7 @@ export const measures: MeasuresData = {
     ],
     length: [
       {
-        id: '2',
+        doc: '3',
         acronym: 'cm',
         title: 'centimeter',
         multiple: 1,

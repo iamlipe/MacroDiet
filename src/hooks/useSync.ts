@@ -1,6 +1,5 @@
 import { useSyncStore } from '@stores/sync';
-import { useCallback, useEffect } from 'react';
-
+import { useCallback } from 'react';
 import { useActitivities } from './useActitivities';
 import { useGender } from './useGender';
 import { useGoals } from './useGoals';
@@ -12,32 +11,23 @@ export const useSync = () => {
   const { getMeasures } = useMeasures();
   const { getGoals } = useGoals();
   const { getActivities } = useActitivities();
-  const { getGender } = useGender();
+  const { getGenders } = useGender();
   const { show: showToast } = useToast();
-
-  useEffect(() => {
-    getActivities();
-    getGender();
-    getGoals();
-    getMeasures();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const sync = useCallback(async () => {
     try {
       setIsSync(true);
+
       await getMeasures();
       await getGoals();
       await getActivities();
-      await getGender();
+      await getGenders();
     } catch (error) {
       showToast({ type: 'error', message: '' });
     } finally {
-      setTimeout(() => setIsSync(false), 3000);
+      setIsSync(false);
     }
-  }, [getActivities, getGender, getGoals, getMeasures, setIsSync, showToast]);
+  }, [getActivities, getGenders, getGoals, getMeasures, setIsSync, showToast]);
 
-  useEffect(() => {
-    sync();
-  }, [sync]);
+  return { sync };
 };

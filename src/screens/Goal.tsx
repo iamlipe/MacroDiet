@@ -15,7 +15,7 @@ import {
 import { useGoalCalculate } from '@hooks/index';
 import { useNavigation } from '@react-navigation/native';
 import { useActivityStore } from '@stores/acitivity';
-import { buildOptions } from '@components/Option';
+import { buildOptionForm } from '@utils/help';
 
 export const Goal = () => {
   const { effects, fonts } = useTheme();
@@ -72,7 +72,7 @@ export const Goal = () => {
                 label="nivel de atividade fisica"
                 name="actitvityLevel"
                 value={values.actitvityLevel}
-                options={acitivities.map(buildOptions)}
+                options={acitivities.map(buildOptionForm)}
                 onChange={handleChange('actitvityLevel')}
                 marginBottom={effects.spacing.md}
                 error={

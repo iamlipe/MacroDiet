@@ -10,6 +10,9 @@ import { useLoader } from './useLoader';
 import { useToast } from './useToast';
 import { defaultPreferences } from '@__mocks__/users';
 import firestore from '@react-native-firebase/firestore';
+import { useHandleError } from './useHandleError';
+import { useNutritionInfo } from './useNutritionInfo';
+import { useUser } from './useUser';
 
 interface HandleFormProps {
   values: Partial<IInfo>;
@@ -22,6 +25,9 @@ export const useCreateUser = () => {
   const { setCreateUser, login, userCreate, user } = useUserStore();
   const { show: showToast } = useToast();
   const { navigate: navigateCreateUser } = useNavigation<NavPropsCreateUser>();
+  const { handleFirestoreError } = useHandleError();
+  const { getUserNutritionInfo } = useNutritionInfo();
+  const { handleInfoUser } = useUser();
 
   const handleValuesForm = useCallback((data: any): Partial<IInfo> => {
     let values = {};
@@ -40,7 +46,7 @@ export const useCreateUser = () => {
     if (data.height) {
       const height = {
         quantity: Number(data.height.quantity),
-        measureId: data.height.measureId,
+        measureDoc: data.height.measureDoc,
       };
 
       values = { ...values, height };
@@ -49,7 +55,7 @@ export const useCreateUser = () => {
     if (data.weigth) {
       const weigth = {
         quantity: Number(data.weigth.quantity),
-        measureId: data.weigth.measureId,
+        measureDoc: data.weigth.measureDoc,
       };
 
       values = { ...values, weigth };
@@ -72,8 +78,15 @@ export const useCreateUser = () => {
 
   const createUser = useCallback(async () => {
     try {
-      const { doc, activityId, birthDate, genderId, goalId, height, weigth } =
-        userCreate as unknown as ICreatedUser;
+      const {
+        doc,
+        activityDoc,
+        genderDoc,
+        goalDoc,
+        birthDate,
+        height,
+        weigth,
+      } = userCreate as unknown as ICreatedUser;
 
       setLoading(true);
       showLoading();
@@ -85,10 +98,10 @@ export const useCreateUser = () => {
         phone: user.phone,
         photo: user.photo,
         info: {
-          activityId,
+          activityDoc,
           birthDate,
-          genderId,
-          goalId,
+          genderDoc,
+          goalDoc,
           height,
           weigth,
         },
@@ -98,15 +111,35 @@ export const useCreateUser = () => {
       await firestore()
         .collection('Users')
         .doc(doc)
-        .set({ ...user });
+        .set({ ...newUser });
 
-      login(newUser);
+      const infoUser = handleInfoUser(newUser);
+
+      const nutritionInfo = getUserNutritionInfo({
+        activityLevelFactor: infoUser.activityLevel.factor,
+        age: infoUser.age,
+        gender: infoUser.gender.title,
+        goalFactor: infoUser.goal.factor,
+        height: infoUser.height,
+        weight: infoUser.weight,
+      });
+
+      login({ ...newUser, nutritionInfo });
     } catch (error) {
-      showToast({ type: 'error', message: error.message });
+      handleFirestoreError(error);
     } finally {
       setTimeout(() => hideLoading(), 1000);
     }
-  }, [hideLoading, login, showLoading, showToast, user, userCreate]);
+  }, [
+    getUserNutritionInfo,
+    handleFirestoreError,
+    handleInfoUser,
+    hideLoading,
+    login,
+    showLoading,
+    user,
+    userCreate,
+  ]);
 
   return {
     handleValuesForm,

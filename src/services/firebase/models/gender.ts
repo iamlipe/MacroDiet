@@ -1,6 +1,6 @@
 export interface IGender {
-  id: string;
-  title: string;
+  doc?: string;
+  title: 'male' | 'female';
 }
 
 export const buildSchemaGender = () => {};

@@ -7,19 +7,19 @@ interface GoalsData {
 export const goals: GoalsData = {
   data: [
     {
-      id: '1',
-      title: 'ganhar massa',
-      factor: 0,
+      doc: '1',
+      title: 'gain',
+      factor: 0.8,
     },
     {
-      id: '2',
-      title: 'manter peso',
-      factor: 0,
+      doc: '2',
+      title: 'maintain',
+      factor: 1,
     },
     {
-      id: '3',
-      title: 'emagrecer',
-      factor: 0,
+      doc: '3',
+      title: 'lose',
+      factor: 1.2,
     },
   ],
 };

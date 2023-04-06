@@ -39,16 +39,18 @@ export const BirthDateCreateUser = () => {
         }}>
         {({ handleChange, values, handleSubmit, errors, touched }) => (
           <Scroll>
-            <DatePicker
-              name="birthDate"
-              label="Qual a sua data de nascimento?"
-              value={values.birthDate}
-              placeholder="Selecione uma data"
-              onChange={handleChange('birthDate')}
-              error={
-                touched.birthDate && errors.birthDate ? errors.birthDate : ''
-              }
-            />
+            <>
+              <DatePicker
+                name="birthDate"
+                label="Qual a sua data de nascimento?"
+                value={values.birthDate}
+                placeholder="Selecione uma data"
+                onChange={handleChange('birthDate')}
+                error={
+                  touched.birthDate && errors.birthDate ? errors.birthDate : ''
+                }
+              />
+            </>
 
             <Container flex={1} justifyContent="flex-end">
               <Button

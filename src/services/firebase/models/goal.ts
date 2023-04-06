@@ -1,5 +1,5 @@
 export interface IGoal {
-  id: string;
+  doc?: string;
   title: string;
   factor: number;
 }

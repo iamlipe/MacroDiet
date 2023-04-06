@@ -1,12 +1,21 @@
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 export interface IInfo {
-  height: { quantity: number; measureId: string };
-  weigth: { quantity: number; measureId: string };
+  height: { quantity: number; measureDoc: string };
+  weigth: { quantity: number; measureDoc: string };
   birthDate: { nanoseconds: number; milliseconds: number };
-  activityId: string;
-  goalId: string;
-  genderId: string;
+  activityDoc: string;
+  goalDoc: string;
+  genderDoc: string;
+}
+
+export interface INutritionInfo {
+  kcalGoal: number;
+  prot: number;
+  carb: number;
+  fat: number;
+  fiber: number;
+  sodium: number;
 }
 
 export interface IMealTime {
@@ -32,6 +41,7 @@ export interface IUser {
   photo?: string | null;
   phone?: string | null;
   info: IInfo;
+  nutritionInfo?: INutritionInfo;
   preferences: IPreferences;
 }
 
@@ -50,6 +60,7 @@ export class User implements IUser {
   photo?: string | null | undefined;
   phone?: string | null | undefined;
   info: IInfo;
+  nutritionInfo?: INutritionInfo;
   preferences: {
     mealsTime: IMealTime[];
     favoritesFoods: string[];

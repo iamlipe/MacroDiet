@@ -1,5 +1,5 @@
 export interface IAcitivity {
-  id: string;
+  doc?: string;
   title: string;
   factor: number;
 }

@@ -1,8 +1,8 @@
-import { activities } from '@__mocks__/activities';
 import { useActivityStore } from '@stores/acitivity';
 import { useCallback, useState } from 'react';
-
 import { useToast } from './useToast';
+import { IAcitivity } from '@services/firebase/models/acitivity';
+import firestore from '@react-native-firebase/firestore';
 
 export const useActitivities = () => {
   const [loading, setLoading] = useState(false);
@@ -12,7 +12,20 @@ export const useActitivities = () => {
   const getActivities = useCallback(async () => {
     try {
       setLoading(true);
-      setAcitivities(activities.data);
+
+      const data = await firestore().collection('Activities').get();
+
+      const activities: IAcitivity[] = data.docs.map(doc => {
+        const goal = doc.data();
+
+        return {
+          doc: doc.id,
+          factor: goal.factor,
+          title: goal.title,
+        };
+      });
+
+      setAcitivities(activities);
     } catch (error) {
       showToast({ type: 'error', message: '' });
     } finally {
