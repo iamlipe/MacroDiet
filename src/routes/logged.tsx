@@ -21,6 +21,7 @@ import { useTheme } from 'styled-components/native';
 import { AppStack } from './app';
 import { CreateUserStack } from './createUserStack';
 import { GoalResult } from '@screens/GoalResul';
+import { AddFood } from '@screens/AddFood';
 
 export type LoggedStackParamsList = {
   CreateUser: undefined;
@@ -37,6 +38,7 @@ export type LoggedStackParamsList = {
   Info: undefined;
   Notifications: undefined;
   GoalResult: undefined;
+  AddFood: undefined;
 };
 
 const Logged = createNativeStackNavigator<LoggedStackParamsList>();
@@ -71,6 +73,7 @@ export const LoggedStack = () => {
       <Logged.Screen name="Info" component={Info} />
       <Logged.Screen name="Notifications" component={Notifications} />
       <Logged.Screen name="GoalResult" component={GoalResult} />
+      <Logged.Screen name="AddFood" component={AddFood} />
     </Logged.Navigator>
   );
 };
