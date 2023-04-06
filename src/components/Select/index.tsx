@@ -1,18 +1,18 @@
+import React, { useMemo, useRef } from 'react';
 import { Card } from '@components/Card';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { firstLetterUppercase } from '@utils/stringFormat';
-import React, { useMemo, useRef } from 'react';
 import { TextStyle, ViewStyle } from 'react-native';
 
 import {
-  Wrapper,
-  Label,
-  Container,
-  Selected,
-  BottomSheet,
-  BottomSheetScroll,
-  Backdrop,
-  Error,
+  StyledWrapper,
+  StyledLabel,
+  StyledContainer,
+  StyledSelected,
+  StyledBottomSheet,
+  StyledBottomSheetScroll,
+  StyledBackdrop,
+  StyledError,
 } from './styles';
 
 export interface Option {
@@ -57,28 +57,28 @@ export const Select: React.FC<SelectProps> = ({
   );
 
   const renderBackDrop = () => {
-    return <Backdrop onPress={() => bottomSheetRef.current?.close()} />;
+    return <StyledBackdrop onPress={() => bottomSheetRef.current?.close()} />;
   };
 
   return (
-    <Wrapper flex={flex} name={name} {...rest}>
-      {label && <Label>{firstLetterUppercase(label)}</Label>}
+    <StyledWrapper flex={flex} name={name} {...rest}>
+      {label && <StyledLabel>{firstLetterUppercase(label)}</StyledLabel>}
 
-      <Container
+      <StyledContainer
         onPress={() => bottomSheetRef.current?.present()}
         style={contentStyle}>
-        <Selected style={inputStyle}>
+        <StyledSelected style={inputStyle}>
           {selected ? firstLetterUppercase(selected) : placeholder}
-        </Selected>
+        </StyledSelected>
 
-        {error && <Error>{error}</Error>}
-      </Container>
+        {error && <StyledError>{error}</StyledError>}
+      </StyledContainer>
 
-      <BottomSheet
+      <StyledBottomSheet
         ref={bottomSheetRef}
         snapPoints={['35%']}
         backdropComponent={renderBackDrop}>
-        <BottomSheetScroll>
+        <StyledBottomSheetScroll>
           {options.map(option => (
             <Card
               key={option.key}
@@ -90,8 +90,8 @@ export const Select: React.FC<SelectProps> = ({
               }}
             />
           ))}
-        </BottomSheetScroll>
-      </BottomSheet>
-    </Wrapper>
+        </StyledBottomSheetScroll>
+      </StyledBottomSheet>
+    </StyledWrapper>
   );
 };
