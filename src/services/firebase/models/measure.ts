@@ -1,5 +1,5 @@
 export interface IMeasure {
-  id: string;
+  doc?: string;
   acronym: string;
   title: string;
   multiple: number;

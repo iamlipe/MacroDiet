@@ -8,7 +8,7 @@ export interface IInfoFood {
 }
 
 export interface IFood {
-  doc: string;
+  doc?: string;
   name: string;
   info: IInfoFood;
 }

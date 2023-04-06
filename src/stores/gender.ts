@@ -2,11 +2,11 @@ import { IGender } from '@services/firebase/models/gender';
 import { create } from 'zustand';
 
 type State = {
-  gender: IGender[] | null;
-  setGender: (goals: IGender[]) => void;
+  genders: IGender[] | null;
+  setGenders: (genders: IGender[]) => void;
 };
 
 export const useGenderStore = create<State>(set => ({
-  gender: null,
-  setGender: (gender: IGender[]) => set(() => ({ gender })),
+  genders: null,
+  setGenders: (genders: IGender[]) => set(() => ({ genders })),
 }));
