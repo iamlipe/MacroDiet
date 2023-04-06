@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-interface ContainerInputProps {
+interface StyledWrapperProps {
   flex?: number;
   marginTop?: number;
   marginRight?: number;
@@ -12,8 +12,17 @@ interface InputProps {
   name: string;
 }
 
-export const StyledContainerInput = styled.View<ContainerInputProps>`
-  flex: ${({ flex }) => flex || 1};
+export const StyledWrapper = styled.View<StyledWrapperProps>`
+  flex: ${({ flex }) => flex || 0};
+  margin-top: ${({ marginTop }) => marginTop || 0}px;
+  margin-right: ${({ marginRight }) => marginRight || 0}px;
+  margin-bottom: ${({ marginBottom }) => marginBottom || 0}px;
+  margin-left: ${({ marginLeft }) => marginLeft || 0}px;
+`;
+
+export const StyledContainerInput = styled.View`
+  min-height: 56px;
+  flex: 1;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -21,10 +30,6 @@ export const StyledContainerInput = styled.View<ContainerInputProps>`
   border-width: ${({ theme }) => theme.effects.border.width.df}px;
   border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
   padding: ${({ theme }) => theme.effects.spacing.md}px;
-  margin-top: ${({ marginTop }) => marginTop || 0}px;
-  margin-right: ${({ marginRight }) => marginRight || 0}px;
-  margin-bottom: ${({ marginBottom }) => marginBottom || 0}px;
-  margin-left: ${({ marginLeft }) => marginLeft || 0}px;
 `;
 
 export const StyledLabel = styled.Text`

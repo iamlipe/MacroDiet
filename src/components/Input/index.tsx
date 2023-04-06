@@ -14,6 +14,7 @@ import {
   StyledTextInput,
   StyledError,
   StyledColumn,
+  StyledWrapper,
 } from './styles';
 
 interface InputProps {
@@ -43,13 +44,14 @@ export const Input: React.FC<InputProps> = ({
   label,
   secureTextEntry,
   placeholder,
+  flex,
   ...rest
 }) => {
   const [securityText, setSecurityText] = useState(secureTextEntry);
   const { colors, fonts } = useTheme();
 
   return (
-    <>
+    <StyledWrapper flex={flex}>
       {label && <StyledLabel>{firstLetterUppercase(label)}</StyledLabel>}
 
       <StyledContainerInput {...rest}>
@@ -77,6 +79,6 @@ export const Input: React.FC<InputProps> = ({
           </TouchableOpacity>
         )}
       </StyledContainerInput>
-    </>
+    </StyledWrapper>
   );
 };

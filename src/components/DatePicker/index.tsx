@@ -8,8 +8,9 @@ import {
   StyledLabel,
   StyledBottomSheet,
   StyledDatePicker,
+  StyledContainer,
+  StyledBackdrop,
 } from './styles';
-import { Backdrop } from '@components/Select/styles';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -65,14 +66,14 @@ export const DatePicker = ({
   );
 
   const renderBackDrop = () => {
-    return <Backdrop onPress={() => bottomSheetRef.current?.close()} />;
+    return <StyledBackdrop onPress={() => bottomSheetRef.current?.close()} />;
   };
 
   return (
-    <>
+    <StyledWrapper>
       {label && <StyledLabel>{firstLetterUppercase(label)}</StyledLabel>}
 
-      <StyledWrapper
+      <StyledContainer
         name={name}
         onPress={() => bottomSheetRef.current?.present()}
         {...rest}>
@@ -81,7 +82,7 @@ export const DatePicker = ({
         </StyledTitle>
 
         {error && <StyledError>{error}</StyledError>}
-      </StyledWrapper>
+      </StyledContainer>
 
       <StyledBottomSheet
         ref={bottomSheetRef}
@@ -103,6 +104,6 @@ export const DatePicker = ({
           />
         </Container>
       </StyledBottomSheet>
-    </>
+    </StyledWrapper>
   );
 };
