@@ -1,23 +1,39 @@
 import { useCallback, useState } from 'react';
 import { useGenderStore } from '@stores/gender';
 import { useToast } from './useToast';
-import { gender } from '@__mocks__/gender';
+import firestore from '@react-native-firebase/firestore';
+import { IGender } from '@services/firebase/models/gender';
 
 export const useGender = () => {
   const [loading, setLoading] = useState(false);
-  const { setGender } = useGenderStore();
+  const { setGenders } = useGenderStore();
   const { show: showToast } = useToast();
 
-  const getGender = useCallback(async () => {
+  const getGenders = useCallback(async () => {
     try {
       setLoading(true);
-      setGender(gender.data);
+
+      const data = await firestore().collection('Gender').get();
+
+      const genders: IGender[] = data.docs.map(doc => {
+        const gender = doc.data();
+
+        return {
+          doc: doc.id,
+          factor: gender.factor,
+          title: gender.title,
+        };
+      });
+
+      setGenders(genders);
     } catch (error) {
       showToast({ type: 'error', message: '' });
     } finally {
       setLoading(true);
     }
-  }, [setGender, showToast]);
+  }, [setGenders, showToast]);
 
-  return { getGender, loading };
+  const getGender = useCallback(() => {}, []);
+
+  return { getGenders, getGender, loading };
 };

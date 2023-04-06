@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react';
 import { useGoalStore } from '@stores/goal';
 import { useToast } from './useToast';
-import { goals } from '@__mocks__/goals';
+import { IGoal } from '@services/firebase/models/goal';
+import firestore from '@react-native-firebase/firestore';
 
 export const useGoals = () => {
   const [loading, setLoading] = useState(false);
@@ -11,7 +12,20 @@ export const useGoals = () => {
   const getGoals = useCallback(async () => {
     try {
       setLoading(true);
-      setGoals(goals.data);
+
+      const data = await firestore().collection('Goals').get();
+
+      const goals: IGoal[] = data.docs.map(doc => {
+        const goal = doc.data();
+
+        return {
+          doc: doc.id,
+          factor: goal.factor,
+          title: goal.title,
+        };
+      });
+
+      setGoals(goals);
     } catch (error) {
       showToast({ type: 'error', message: '' });
     } finally {
