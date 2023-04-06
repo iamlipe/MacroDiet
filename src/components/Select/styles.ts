@@ -42,6 +42,7 @@ export const StyledSelected = styled.Text`
 
 export const StyledBottomSheet = styled(BottomSheetModal).attrs(
   ({ theme }) => ({
+    backgroundStyle: { backgroundColor: theme.colors.background.dark },
     handleStyle: {
       height: 40,
       backgroundColor: theme.colors.background.dark,
@@ -58,8 +59,8 @@ export const StyledBottomSheet = styled(BottomSheetModal).attrs(
 
 export const StyledBottomSheetScroll = styled(BottomSheetScrollView)`
   background-color: ${({ theme }) => theme.colors.background.dark};
-  padding: ${({ theme }) =>
-    `${theme.effects.spacing.lg}px ${theme.effects.spacing.md}px`};
+  padding: ${({ theme }) => `0 ${theme.effects.spacing.md}px`};
+  margin-bottom: 32px;
 `;
 
 export const StyledBackdrop = styled.Pressable`
