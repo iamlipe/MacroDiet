@@ -1,17 +1,33 @@
 import { IMeasure } from '@services/firebase/models/measure';
 import { create } from 'zustand';
 
-interface Measures {
-  mass: IMeasure[];
-  length: IMeasure[];
-}
-
 type State = {
-  measures: Measures | null;
-  setMeasures: (measures: Measures) => void;
+  allMeasures: Array<IMeasure>;
+  setAllMeasures: (allMeasures: Array<IMeasure>) => void;
+  measuresMass: Array<IMeasure>;
+  measuresLength: Array<IMeasure>;
+  measureMassDefault: IMeasure;
+  measureLengthDefault: IMeasure;
+  setMeasuresMass: (measuresMass: Array<IMeasure>) => void;
+  setMeasuresLenght: (measuresLength: Array<IMeasure>) => void;
+  setMeasureMassDefault: (measureMassDefault: IMeasure) => void;
+  setMeasureLenghtDefault: (measureMassDefault: IMeasure) => void;
 };
 
 export const useMeasureStore = create<State>(set => ({
-  measures: null,
-  setMeasures: (measures: Measures) => set(() => ({ measures })),
+  allMeasures: null,
+  setAllMeasures: (allMeasures: Array<IMeasure>) =>
+    set(() => ({ allMeasures })),
+  measuresMass: null,
+  setMeasuresMass: (measuresMass: Array<IMeasure>) =>
+    set(() => ({ measuresMass })),
+  measureLengthDefault: null,
+  setMeasuresLenght: (measuresLength: Array<IMeasure>) =>
+    set(() => ({ measuresLength })),
+  measureMassDefault: null,
+  setMeasureMassDefault: (measureMassDefault: IMeasure) =>
+    set(() => ({ measureMassDefault })),
+  measuresLength: null,
+  setMeasureLenghtDefault: (measureLengthDefault: IMeasure) =>
+    set(() => ({ measureLengthDefault })),
 }));
