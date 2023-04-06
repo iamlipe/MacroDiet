@@ -5,7 +5,10 @@ import { useLoader } from './useLoader';
 import { useToast } from './useToast';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { IUser, buidSchemaAuth } from '@services/firebase/models/user';
+import { useNutritionInfo } from './useNutritionInfo';
+import { useUser } from './useUser';
 import firestore from '@react-native-firebase/firestore';
+import { useHandleError } from './useHandleError';
 
 interface LoginWithEmailDTO {
   email: string;
@@ -20,25 +23,11 @@ export const useLogin = () => {
     auth: authLogin,
     setCreateUser,
   } = useUserStore();
+  const { getUserNutritionInfo } = useNutritionInfo();
+  const { handleInfoUser } = useUser();
   const { show: showToast } = useToast();
   const { show: showLoader, hide: hideLoader } = useLoader();
-
-  const handleAuthError = useCallback(
-    error => {
-      if (error.message) {
-        showToast({
-          type: 'error',
-          message: error.code,
-        });
-      } else {
-        showToast({
-          type: 'error',
-          message: 'something went wrong',
-        });
-      }
-    },
-    [showToast],
-  );
+  const { handleAuthError } = useHandleError();
 
   const loginWithGoogle = useCallback(async () => {
     try {
@@ -62,7 +51,18 @@ export const useLogin = () => {
       const user = resp.data() as IUser;
 
       if (user) {
-        login(user);
+        const infoUser = handleInfoUser(user);
+
+        const nutritionInfo = getUserNutritionInfo({
+          activityLevelFactor: infoUser.activityLevel.factor,
+          age: infoUser.age,
+          gender: infoUser.gender.title,
+          goalFactor: infoUser.goal.factor,
+          height: infoUser.height,
+          weight: infoUser.weight,
+        });
+
+        login({ ...user, nutritionInfo });
       } else {
         authLogin(buidSchemaAuth(googleAuth));
         setCreateUser({ doc: googleAuth.uid });
@@ -74,12 +74,14 @@ export const useLogin = () => {
       hideLoader();
     }
   }, [
+    showLoader,
+    login,
+    handleInfoUser,
+    getUserNutritionInfo,
     authLogin,
+    setCreateUser,
     handleAuthError,
     hideLoader,
-    login,
-    setCreateUser,
-    showLoader,
   ]);
 
   // NOTE: implement when have a developer team
@@ -112,7 +114,18 @@ export const useLogin = () => {
         const user = resp.data() as IUser;
 
         if (user) {
-          login(user);
+          const infoUser = handleInfoUser(user);
+
+          const nutritionInfo = getUserNutritionInfo({
+            activityLevelFactor: infoUser.activityLevel.factor,
+            age: infoUser.age,
+            gender: infoUser.gender.title,
+            goalFactor: infoUser.goal.factor,
+            height: infoUser.height,
+            weight: infoUser.weight,
+          });
+
+          login({ ...user, nutritionInfo });
         } else {
           authLogin(buidSchemaAuth(userFirebaseAuth));
           setCreateUser({ doc: userFirebaseAuth.uid });
@@ -124,7 +137,16 @@ export const useLogin = () => {
         hideLoader();
       }
     },
-    [authLogin, handleAuthError, hideLoader, login, setCreateUser, showLoader],
+    [
+      authLogin,
+      getUserNutritionInfo,
+      handleAuthError,
+      handleInfoUser,
+      hideLoader,
+      login,
+      setCreateUser,
+      showLoader,
+    ],
   );
 
   const logout = useCallback(async () => {
