@@ -31,13 +31,13 @@ export const toSectionListData = <T>(
 };
 
 interface BuildOptionFormProps {
-  id: string;
+  doc?: string;
   title: string;
 }
 
 export const buildOptionForm = (raw: BuildOptionFormProps) => {
   return {
-    key: raw.id,
+    key: raw.doc,
     name: raw.title,
   };
 };
