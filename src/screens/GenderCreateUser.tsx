@@ -9,19 +9,19 @@ import {
   Option,
   Scroll,
 } from '@components/index';
-import { buildOptions } from '@components/Option';
 import * as Yup from 'yup';
+import { buildOptionForm } from '@utils/help';
 
 export const GenderCreateUser = () => {
-  const { gender } = useGenderStore();
+  const { genders } = useGenderStore();
   const { handleForm } = useCreateUser();
 
   const initialValuesGender = {
-    genderId: 'Por favor, selecione o seu sexo biológico',
+    genderDoc: 'Por favor, selecione o seu sexo biológico',
   };
 
   const genderSchema = Yup.object().shape({
-    genderId: Yup.string().required(),
+    genderDoc: Yup.string().required(),
   });
 
   return (
@@ -35,12 +35,14 @@ export const GenderCreateUser = () => {
         {({ handleChange, values, handleSubmit, errors, touched }) => (
           <Scroll>
             <Option
-              name="goalId"
+              name="goalDoc"
               label="sexo"
-              value={values.genderId}
-              options={gender?.map(buildOptions) || []}
-              onChange={handleChange('genderId')}
-              error={touched.genderId && errors.genderId ? errors.genderId : ''}
+              value={values.genderDoc}
+              options={genders?.map(buildOptionForm) || []}
+              onChange={handleChange('genderDoc')}
+              error={
+                touched.genderDoc && errors.genderDoc ? errors.genderDoc : ''
+              }
             />
 
             <Container flex={1} justifyContent="flex-end">

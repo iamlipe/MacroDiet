@@ -1,5 +1,4 @@
 import React from 'react';
-import { buildOptions } from '@components/Option';
 import { useCreateUser } from '@hooks/useCreateUser';
 import { useActivityStore } from '@stores/acitivity';
 import { Formik } from 'formik';
@@ -11,17 +10,18 @@ import {
   Scroll,
 } from '@components/index';
 import * as Yup from 'yup';
+import { buildOptionForm } from '@utils/help';
 
 export const ActivityCreateUser = () => {
   const { handleForm } = useCreateUser();
   const { acitivities } = useActivityStore();
 
   const initialValuesActivity = {
-    activityId: '',
+    activityDoc: '',
   };
 
   const activitySchema = Yup.object().shape({
-    activityId: Yup.string().required(
+    activityDoc: Yup.string().required(
       'Por favor, selecione um nível de atividade.',
     ),
   });
@@ -37,13 +37,15 @@ export const ActivityCreateUser = () => {
         {({ handleChange, values, handleSubmit, errors, touched }) => (
           <Scroll>
             <Option
-              name="activityId"
+              name="activityDoc"
               label="Defina seu nível de atividade física diária"
-              value={values.activityId}
-              options={acitivities?.map(buildOptions) || []}
-              onChange={handleChange('activityId')}
+              value={values.activityDoc}
+              options={acitivities?.map(buildOptionForm) || []}
+              onChange={handleChange('activityDoc')}
               error={
-                touched.activityId && errors.activityId ? errors.activityId : ''
+                touched.activityDoc && errors.activityDoc
+                  ? errors.activityDoc
+                  : ''
               }
             />
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { buildOptions } from '@components/Option';
 import { useCreateUser } from '@hooks/useCreateUser';
 import { useMeasureStore } from '@stores/measure';
 import { useTheme } from 'styled-components/native';
@@ -13,6 +12,7 @@ import {
   Select,
 } from '@components/index';
 import * as Yup from 'yup';
+import { buildOptionForm } from '@utils/help';
 
 export const HeightCreateUser = () => {
   const { effects } = useTheme();
@@ -22,7 +22,7 @@ export const HeightCreateUser = () => {
   const initialValuesHeight = {
     height: {
       quantity: '',
-      measureId: '',
+      measureDoc: '',
     },
   };
 
@@ -31,7 +31,7 @@ export const HeightCreateUser = () => {
       quantity: Yup.string()
         .min(1, 'Digite uma altura valida')
         .required('Digite a sua altura'),
-      measureId: Yup.string().required('Selecione uma unidade de medida.'),
+      measureDoc: Yup.string().required('Selecione uma unidade de medida.'),
     }),
   });
 
@@ -50,6 +50,7 @@ export const HeightCreateUser = () => {
           <Scroll>
             <Container flexDirection="row" alignItems="flex-end">
               <Input
+                flex={1}
                 name="height.quantity"
                 label="altura"
                 placeholder="0"
@@ -65,14 +66,14 @@ export const HeightCreateUser = () => {
 
               <Select
                 flex={2}
-                name="height.measureId"
-                value={values.height.measureId}
-                options={measures?.length.map(buildOptions) || []}
-                onChange={handleChange('height.measureId')}
+                name="height.measureDoc"
+                value={values.height.measureDoc}
+                options={measures?.length.map(buildOptionForm) || []}
+                onChange={handleChange('height.measureDoc')}
                 marginLeft={effects.spacing.md}
                 error={
-                  touched.height?.measureId && errors.height?.measureId
-                    ? errors.height?.measureId
+                  touched.height?.measureDoc && errors.height?.measureDoc
+                    ? errors.height?.measureDoc
                     : ''
                 }
                 inputStyle={{ textAlign: 'center' }}

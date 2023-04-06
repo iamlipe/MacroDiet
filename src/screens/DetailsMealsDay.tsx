@@ -9,13 +9,15 @@ import { useMeals } from '@hooks/useMeals';
 import { useNavigation } from '@react-navigation/native';
 import { NavPropsDiet } from '@routes/dietStack';
 import { useMealStore } from '@stores/meal';
+import { useUserStore } from '@stores/user';
 import React from 'react';
 import { ProgressCircle } from 'react-native-svg-charts';
 import { useTheme } from 'styled-components/native';
 
 interface ProgressInfoProps {
   title: string;
-  progressBar?: boolean;
+  consumed: number;
+  goal: number;
 }
 
 export const DetailsMealsDay = () => {
@@ -23,18 +25,10 @@ export const DetailsMealsDay = () => {
   const { handleInfoMealsDay } = useMeals();
   const { meals } = useMealStore();
   const { goBack } = useNavigation<NavPropsDiet>();
+  const { user } = useUserStore();
 
-  const renderProgressInfo = ({
-    title,
-    progressBar = true,
-  }: ProgressInfoProps) => {
-    if (!progressBar) {
-      return (
-        <Container flexDirection="row" marginBottom={effects.spacing.lg}>
-          <Label fontFamily={fonts.family.medium}>{`${title} 20g`}</Label>
-        </Container>
-      );
-    }
+  const renderProgressInfo = ({ title, consumed, goal }: ProgressInfoProps) => {
+    const isMilligram = title === 'Sodio';
 
     return (
       <Container marginBottom={effects.spacing.lg}>
@@ -45,11 +39,13 @@ export const DetailsMealsDay = () => {
           <Label fontFamily={fonts.family.medium} fontSize={fonts.size.lg}>
             {title}
           </Label>
-          <Label>200kcal</Label>
+          <Label>{`${goal.toFixed(0)} ${isMilligram ? 'mg' : 'g'}`}</Label>
         </Container>
-        <ProgressBar />
+        <ProgressBar percentage={consumed / goal} />
         <Label fontFamily={fonts.family.medium} marginTop={effects.spacing.sm}>
-          Remain: 200kcal
+          {`Remain: ${(goal - consumed).toFixed(0)} ${
+            isMilligram ? 'mg' : 'g'
+          }`}
         </Label>
       </Container>
     );
@@ -63,7 +59,7 @@ export const DetailsMealsDay = () => {
     <Background>
       <Header
         left={{ iconName: 'arrow-left', press: goBack }}
-        title="Overview"
+        title="Detalhes"
       />
 
       <Scroll>
@@ -71,7 +67,10 @@ export const DetailsMealsDay = () => {
           <ProgressCircle
             animate
             style={{ height: 180, marginBottom: effects.spacing.lg }}
-            progress={0.7}
+            progress={
+              handleInfoMealsDay(meals).totalKcalMeals /
+              user.nutritionInfo.kcalGoal
+            }
             progressColor={colors.primary[500]}
             backgroundColor={colors.primary[300]}
             strokeWidth={16}
@@ -84,11 +83,31 @@ export const DetailsMealsDay = () => {
             {`${handleInfoMealsDay(meals).totalKcalMeals}kcal`}
           </Label>
 
-          {renderProgressInfo({ title: 'Proteina' })}
-          {renderProgressInfo({ title: 'Carboidrato' })}
-          {renderProgressInfo({ title: 'Gordura' })}
-          {renderProgressInfo({ title: 'Fibra', progressBar: false })}
-          {renderProgressInfo({ title: 'Sodio', progressBar: false })}
+          {renderProgressInfo({
+            title: 'Proteina',
+            consumed: handleInfoMealsDay(meals).totalProtMeals,
+            goal: user.nutritionInfo.prot,
+          })}
+          {renderProgressInfo({
+            title: 'Carboidrato',
+            consumed: handleInfoMealsDay(meals).totalCarbMeals,
+            goal: user.nutritionInfo.carb,
+          })}
+          {renderProgressInfo({
+            title: 'Gordura',
+            consumed: handleInfoMealsDay(meals).totalFatMeals,
+            goal: user.nutritionInfo.fat,
+          })}
+          {renderProgressInfo({
+            title: 'Fibra',
+            consumed: handleInfoMealsDay(meals).totalFiberMeals,
+            goal: user.nutritionInfo.fiber,
+          })}
+          {renderProgressInfo({
+            title: 'Sodio',
+            consumed: handleInfoMealsDay(meals).totalSodiumMeals,
+            goal: user.nutritionInfo.sodium,
+          })}
         </Container>
       </Scroll>
     </Background>
