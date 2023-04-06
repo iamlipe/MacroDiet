@@ -7,12 +7,12 @@ interface GerderData {
 export const gender: GerderData = {
   data: [
     {
-      id: '1',
-      title: 'Homem',
+      doc: '1',
+      title: 'male',
     },
     {
-      id: '2',
-      title: 'Mulher',
+      doc: '2',
+      title: 'female',
     },
   ],
 };

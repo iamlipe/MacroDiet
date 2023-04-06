@@ -12,26 +12,26 @@ export const meals: MealsData = {
       time: { milliseconds: 0, nanoseconds: 0 },
       foods: [
         {
-          foodId: '001',
-          measureId: '1',
+          foodDoc: '001',
+          measureDoc: '1',
           quantity: 100,
         },
       ],
     },
     {
-      user: '2',
+      user: '1',
       title: 'Almoco',
       time: { milliseconds: 0, nanoseconds: 0 },
       foods: [],
     },
     {
-      user: '3',
+      user: '1',
       title: 'Cafe da tarde',
       time: { milliseconds: 0, nanoseconds: 0 },
       foods: [],
     },
     {
-      user: '4',
+      user: '1',
       title: 'Janta',
       time: { milliseconds: 0, nanoseconds: 0 },
       foods: [],

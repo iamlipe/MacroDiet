@@ -7,17 +7,17 @@ interface AcitivitiesData {
 export const activities: AcitivitiesData = {
   data: [
     {
-      id: '1',
+      doc: '1',
       title: 'leve',
       factor: 1.55,
     },
     {
-      id: '2',
+      doc: '2',
       title: 'moderado',
       factor: 1.84,
     },
     {
-      id: '3',
+      doc: '3',
       title: 'intenso',
       factor: 2.2,
     },
