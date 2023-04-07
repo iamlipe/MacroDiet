@@ -25,7 +25,7 @@ export const HomeDiet = () => {
   const { user } = useUserStore();
   const { effects, fonts } = useTheme();
   const { meals } = useMealStore();
-  const { handleFood, getFoods } = useFoods();
+  const { handleFood, getFoods, loading: loadingFoods } = useFoods();
   const {
     handleInfoMeal,
     handleInfoMealsDay,
@@ -46,7 +46,7 @@ export const HomeDiet = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!meals && loadingMeals) {
+  if (!meals || loadingMeals || loadingFoods) {
     return <Loading />;
   }
 
