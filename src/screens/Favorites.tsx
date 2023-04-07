@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Background } from '@components/Backgroud';
 import { Header } from '@components/Header';
 import DraggableFlatList, {
@@ -15,10 +15,15 @@ import { Label } from '@components/Label';
 import { useFavorite } from '@hooks/useFavorite';
 
 export const Favorites = () => {
-  const { favoritesFoods, setFavoritesFoods } = useFavorite();
+  const { favoritesFoodsList, setFavoritesFoodsList, getFavoritesFoods } =
+    useFavorite();
   const { goBack } = useNavigation();
   const { effects, fonts } = useTheme();
   const { bottom } = useSafeAreaInsets();
+
+  useEffect(() => {
+    setFavoritesFoodsList(getFavoritesFoods);
+  }, [getFavoritesFoods, setFavoritesFoodsList]);
 
   const renderHeaderList = () => {
     return (
@@ -55,17 +60,20 @@ export const Favorites = () => {
       />
 
       <DraggableFlatList
-        data={favoritesFoods}
-        keyExtractor={({ id }) => id}
+        data={favoritesFoodsList}
+        keyExtractor={({ doc }) => doc}
         ListHeaderComponent={renderHeaderList}
         renderItem={renderItem}
-        onDragEnd={({ data }) => setFavoritesFoods(data)}
+        onDragEnd={({ data }) => setFavoritesFoodsList(data)}
         contentContainerStyle={{
           paddingHorizontal: effects.spacing.md,
           paddingVertical: effects.spacing.vl,
           marginBottom: bottom,
         }}
-        containerStyle={{ marginBottom: bottom }}
+        containerStyle={{
+          flexGrow: 1,
+          marginBottom: bottom,
+        }}
         style={{ marginBottom: bottom }}
       />
     </Background>

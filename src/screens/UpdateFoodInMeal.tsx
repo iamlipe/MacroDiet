@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import * as Yup from 'yup';
 import { TouchableOpacity, useWindowDimensions } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -25,6 +25,7 @@ import {
   Scroll,
   Select,
 } from '@components/index';
+import { useUserStore } from '@stores/user';
 
 interface CardInfoProps {
   info: string;
@@ -61,10 +62,16 @@ export const UpdateFoodInMeal = () => {
   const { width } = useWindowDimensions();
   const { getMeasure } = useMeasures();
   const { foods } = useFoodStore();
-  const { handleFavorite } = useFavorite();
+  const { updateFavoritesFoods } = useFavorite();
   const { colors, fonts, effects } = useTheme();
   const { handleFoodsInMeal, updateMeal } = useMeals();
   const { measureMassDefault } = useMeasureStore();
+  const { user } = useUserStore();
+
+  const isFavorited = useMemo(
+    () => user.preferences.favoritesFoods.includes(food.doc),
+    [food.doc, user.preferences.favoritesFoods],
+  );
 
   const initialValuesAddFoodInMeal = {
     food: {
@@ -145,10 +152,13 @@ export const UpdateFoodInMeal = () => {
                   {food.name}
                 </Label>
 
-                <TouchableOpacity onPress={handleFavorite}>
+                <TouchableOpacity
+                  onPress={() => updateFavoritesFoods(food.doc)}>
                   <Icon
-                    name="heart"
-                    color={colors.gray.white}
+                    name={isFavorited ? 'heart-filled' : 'heart'}
+                    color={
+                      isFavorited ? colors.primary[500] : colors.gray.white
+                    }
                     size={fonts.size.tl}
                   />
                 </TouchableOpacity>
