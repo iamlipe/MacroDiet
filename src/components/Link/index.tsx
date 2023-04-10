@@ -10,17 +10,30 @@ import {
 
 interface ILink extends TouchableOpacityProps {
   title: string;
+  size?: number;
   position?: 'flex-start' | 'center' | 'flex-end';
   onPress: () => void;
   icon?: { name: string; size?: number; position?: 'left' | 'right' };
 }
 
-const Link: React.FC<ILink> = ({ title, position, onPress, icon, ...rest }) => {
+const Link: React.FC<ILink> = ({
+  title,
+  position,
+  size,
+  onPress,
+  icon,
+  ...rest
+}) => {
   const { colors, fonts } = useTheme();
 
   return (
-    <StyledContainerLink position={position} onPress={onPress} {...rest}>
-      <StyledTitle link>{title}</StyledTitle>
+    <StyledContainerLink
+      position={position}
+      iconLeft={icon?.position === 'left'}
+      onPress={onPress}
+      {...rest}>
+      <StyledTitle size={size}>{title}</StyledTitle>
+
       {icon && (
         <StyledContainerIcon iconLeft={icon.position === 'left'}>
           <Icon
