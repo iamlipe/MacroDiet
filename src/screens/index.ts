@@ -27,3 +27,5 @@ export { default as Register } from './Register';
 export { default as Sync } from './Sync';
 export { default as UpdateFoodInMeal } from './UpdateFoodInMeal';
 export { default as WeightCreateUser } from './WeightCreateUser';
+export { default as Routine } from './Routine';
+export { default as Settings } from './Settings';
