@@ -2,8 +2,8 @@ export interface IInfoFood {
   kcalPerGram: number;
   protPerGram: number;
   carbPerGram: number;
-  saturatedFatPerGram: number;
-  transFatPerGram: number;
+  saturatedFatPerGram?: number;
+  transFatPerGram?: number;
   fatPerGram: number;
   sodiumPerGram?: number;
   fiberPerGram?: number;

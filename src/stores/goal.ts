@@ -6,7 +6,9 @@ type State = {
   setGoals: (goals: IGoal[]) => void;
 };
 
-export const useGoalStore = create<State>(set => ({
+const useGoalStore = create<State>(set => ({
   goals: null,
   setGoals: (goals: IGoal[]) => set(() => ({ goals })),
 }));
+
+export default useGoalStore;

@@ -21,7 +21,7 @@ type State = {
   setFavoritesFoods: (values: Array<string>) => void;
 };
 
-export const useUserStore = create<State>(set => ({
+const useUserStore = create<State>(set => ({
   user: null,
   auth: values => set(() => ({ user: { ...values } })),
   login: (user: IUser) => set(() => ({ user })),
@@ -39,3 +39,5 @@ export const useUserStore = create<State>(set => ({
       },
     })),
 }));
+
+export default useUserStore;

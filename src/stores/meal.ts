@@ -6,7 +6,9 @@ type State = {
   setMeals: (meals: IMeal[]) => void;
 };
 
-export const useMealStore = create<State>(set => ({
+const useMealStore = create<State>(set => ({
   meals: null,
   setMeals: (meals: IMeal[]) => set(() => ({ meals })),
 }));
+
+export default useMealStore;
