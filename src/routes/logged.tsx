@@ -21,6 +21,8 @@ import {
   EditMeal,
   UpdateFoodInMeal,
   AddFood,
+  Routine,
+  Settings,
 } from '@screens/index';
 import { AppStack } from './app';
 import { CreateUserStack } from './createUserStack';
@@ -41,6 +43,8 @@ export type LoggedStackParamsList = {
   Notifications: undefined;
   GoalResult: undefined;
   AddFood: undefined;
+  Routine: undefined;
+  Settings: undefined;
 };
 
 const Logged = createNativeStackNavigator<LoggedStackParamsList>();
@@ -76,6 +80,8 @@ export const LoggedStack = () => {
       <Logged.Screen name="Notifications" component={Notifications} />
       <Logged.Screen name="GoalResult" component={GoalResult} />
       <Logged.Screen name="AddFood" component={AddFood} />
+      <Logged.Screen name="Routine" component={Routine} />
+      <Logged.Screen name="Settings" component={Settings} />
     </Logged.Navigator>
   );
 };
