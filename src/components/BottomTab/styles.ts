@@ -13,8 +13,8 @@ export const StyledWrapper = styled.View<IStyledWrapperProps>`
   flex-direction: row;
   justify-content: space-between;
   padding: ${({ insets, theme }) =>
-    `${theme.effects.spacing.md}px ${theme.effects.spacing.md}px ${
-      theme.effects.spacing.md + insets.bottom
+    `${theme.effects.spacing.nn}px ${theme.effects.spacing.nn}px ${
+      theme.effects.spacing.nn + insets.bottom
     }px`};
   background-color: ${({ theme }) => theme.colors.background.dark};
 `;
@@ -30,5 +30,5 @@ export const StyledTitleTab = styled.Text`
   font-family: ${({ theme }) => theme.fonts.family.medium};
   font-size: ${({ theme }) => theme.fonts.size.lg}px;
   color: ${({ theme }) => theme.fonts.color.primary};
-  margin-top: ${({ theme }) => theme.effects.spacing.md}px;
+  margin-top: ${({ theme }) => theme.effects.spacing.sm}px;
 `;
