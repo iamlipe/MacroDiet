@@ -1,10 +1,10 @@
 import { IGoal } from '@services/firebase/models/goal';
 
-interface GoalsData {
-  data: IGoal[];
+interface IGoalsData {
+  data: Array<IGoal>;
 }
 
-export const goals: GoalsData = {
+export const goals: IGoalsData = {
   data: [
     {
       doc: '1',

@@ -1,10 +1,10 @@
 import { IMeasure } from '@services/firebase/models/measure';
 
-interface MeasuresData {
+interface IMeasuresData {
   data: Array<IMeasure>;
 }
 
-export const measures: MeasuresData = {
+export const measures: IMeasuresData = {
   data: [
     {
       doc: '1',

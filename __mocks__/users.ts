@@ -1,7 +1,7 @@
 import { IUser } from '@services/firebase/models/user';
 
-interface usersData {
-  data: IUser[];
+interface IUsersData {
+  data: Array<IUser>;
 }
 
 export const defaultPreferences = {
@@ -18,7 +18,7 @@ export const defaultPreferences = {
   },
 };
 
-export const users: usersData = {
+export const users: IUsersData = {
   data: [
     {
       name: 'neymar',

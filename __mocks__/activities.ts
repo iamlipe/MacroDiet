@@ -1,10 +1,10 @@
 import { IAcitivity } from '@services/firebase/models/acitivity';
 
-interface AcitivitiesData {
-  data: IAcitivity[];
+interface IAcitivitiesData {
+  data: Array<IAcitivity>;
 }
 
-export const activities: AcitivitiesData = {
+export const activities: IAcitivitiesData = {
   data: [
     {
       doc: '1',
