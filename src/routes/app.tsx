@@ -1,10 +1,10 @@
-import { BottomTab } from '@components/BottomTab';
+import React from 'react';
 import {
   createBottomTabNavigator,
   BottomTabNavigationProp,
+  BottomTabBarProps,
 } from '@react-navigation/bottom-tabs';
-import React from 'react';
-
+import { BottomTab } from '@components/index';
 import { DietStack } from './dietStack';
 import { ProfileStack } from './profileStack';
 
@@ -17,10 +17,14 @@ export type AppStackParamsList = {
 const App = createBottomTabNavigator<AppStackParamsList>();
 
 export const AppStack = () => {
+  const renderBottomTab = (props: BottomTabBarProps) => {
+    return <BottomTab {...props} />;
+  };
+
   return (
     <>
       <App.Navigator
-        tabBar={props => <BottomTab {...props} />}
+        tabBar={props => renderBottomTab(props)}
         screenOptions={{ headerShown: false }}>
         <App.Screen name="DietStack" component={DietStack} />
         <App.Screen name="ProfileStack" component={ProfileStack} />

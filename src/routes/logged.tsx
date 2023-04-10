@@ -3,25 +3,27 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import { AddMeal } from '@screens/AddMeal';
-import { ChoseFoodToAddInMeal } from '@screens/ChoseFoodToAddInMeal';
-import { DetailsMealsDay } from '@screens/DetailsMealsDay';
-import { EditMeal } from '@screens/EditMeal';
-import { UpdateFoodInMeal } from '@screens/UpdateFoodInMeal';
-import { IFood } from '@services/firebase/models/food';
-import { IMeal } from '@services/firebase/models/meal';
-import { Favorites } from '@screens/Favorites';
-import { Goal } from '@screens/Goal';
-import { Help } from '@screens/Help';
-import { History } from '@screens/History';
-import { Info } from '@screens/Info';
-import { Notifications } from '@screens/Notifications';
-import { useUserStore } from '@stores/user';
 import { useTheme } from 'styled-components/native';
+import { IFood } from '@services/firebase/models/food';
+import { useUserStore } from '@stores/index';
+import { IMeal } from '@services/firebase/models/meal';
+import {
+  Notifications,
+  Info,
+  AddMeal,
+  Favorites,
+  Goal,
+  Help,
+  History,
+  GoalResult,
+  ChoseFoodToAddInMeal,
+  DetailsMealsDay,
+  EditMeal,
+  UpdateFoodInMeal,
+  AddFood,
+} from '@screens/index';
 import { AppStack } from './app';
 import { CreateUserStack } from './createUserStack';
-import { GoalResult } from '@screens/GoalResul';
-import { AddFood } from '@screens/AddFood';
 
 export type LoggedStackParamsList = {
   CreateUser: undefined;

@@ -1,17 +1,20 @@
-import { TopTabCreateUser } from '@components/TopTabCreateUser';
+import React from 'react';
 import {
   createMaterialTopTabNavigator,
+  MaterialTopTabBarProps,
   MaterialTopTabNavigationProp,
 } from '@react-navigation/material-top-tabs';
-import { ActivityCreateUser } from '@screens/ActivityCreateUser';
-import { BirthDateCreateUser } from '@screens/BirthDateCreateUser';
-import { ConclusionCreateUser } from '@screens/ConclusionCreateUser';
-import { GenderCreateUser } from '@screens/GenderCreateUser';
-import { GoalCreateUser } from '@screens/GoalCreateUser';
-import { HeightCreateUser } from '@screens/HeightCreateUser';
-import { IntroductionCreateUser } from '@screens/IntroductionCreateUser';
-import { WeightCreateUser } from '@screens/WeightCreateUser';
-import React from 'react';
+import { TopTabCreateUser } from '@components/index';
+import {
+  ActivityCreateUser,
+  BirthDateCreateUser,
+  ConclusionCreateUser,
+  GenderCreateUser,
+  GoalCreateUser,
+  HeightCreateUser,
+  IntroductionCreateUser,
+  WeightCreateUser,
+} from '@screens/index';
 
 export type CreateUserStackParamsList = {
   IntroductionCreateUser: undefined;
@@ -27,9 +30,13 @@ export type CreateUserStackParamsList = {
 const CreateUser = createMaterialTopTabNavigator<CreateUserStackParamsList>();
 
 export const CreateUserStack = () => {
+  const renderTopTab = (props: MaterialTopTabBarProps) => {
+    return <TopTabCreateUser {...props} />;
+  };
+
   return (
     <CreateUser.Navigator
-      tabBar={props => <TopTabCreateUser {...props} />}
+      tabBar={props => renderTopTab(props)}
       screenOptions={{ swipeEnabled: false }}>
       <CreateUser.Screen
         name="IntroductionCreateUser"
