@@ -100,7 +100,7 @@ const ChoseFoodToAddInMeal = () => {
 
       <RoundedButton
         onPress={() => navigateLogged('AddFood')}
-        icon={{ name: 'arrow-left' }}
+        icon={{ name: 'plus' }}
       />
     </Background>
   );
