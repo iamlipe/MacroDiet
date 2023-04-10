@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native';
+import Icon from '@components/Icon';
 
 interface IStyledWrapper {
   type: 'outlined' | 'bottomLine' | 'none';
@@ -32,7 +33,7 @@ export const StyledWrapper = styled.TouchableOpacity<IStyledWrapper>`
 `;
 
 export const StyledTitle = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.family.medium};
+  font-family: ${({ theme }) => theme.fonts.family.regular};
   font-size: ${({ theme }) => theme.fonts.size.s2}px;
   color: ${({ theme }) => theme.fonts.color.primary};
   line-height: 24px;
@@ -53,4 +54,10 @@ export const StyledSubtitle = styled.Text`
 
 export const StyledContainerInfo = styled.View`
   flex: 1;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const StyledIconLeft = styled(Icon)`
+  margin-right: ${({ theme }) => theme.effects.spacing.md}px;
 `;

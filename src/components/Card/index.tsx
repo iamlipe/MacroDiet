@@ -1,7 +1,7 @@
 import React from 'react';
 import { firstLetterUppercase } from '@utils/stringFormat';
 import { useTheme } from 'styled-components/native';
-import { TouchableOpacityProps } from 'react-native';
+import { TouchableOpacityProps, View } from 'react-native';
 import Icon from '@components/Icon';
 import {
   StyledContainerInfo,
@@ -9,6 +9,7 @@ import {
   StyledSubtitle,
   StyledTitle,
   StyledWrapper,
+  StyledIconLeft,
 } from './styles';
 
 interface ICard extends TouchableOpacityProps {
@@ -16,6 +17,7 @@ interface ICard extends TouchableOpacityProps {
   type?: 'outlined' | 'bottomLine' | 'none';
   description?: string;
   subtitle?: string;
+  iconLeft?: { name: string; color?: string; size?: number };
   icon?: { name: string; color?: string; size?: number };
   onPress?: () => void;
 }
@@ -25,17 +27,28 @@ const Card: React.FC<ICard> = ({
   type = 'outlined',
   subtitle,
   icon,
+  iconLeft,
   description,
   onPress,
   ...rest
 }) => {
-  const { colors, fonts } = useTheme();
+  const { colors, fonts, effects } = useTheme();
 
   return (
     <StyledWrapper type={type} disabled={!onPress} onPress={onPress} {...rest}>
       <StyledContainerInfo>
-        <StyledTitle>{firstLetterUppercase(title)}</StyledTitle>
-        {subtitle && <StyledSubtitle>{subtitle}</StyledSubtitle>}
+        {iconLeft && (
+          <StyledIconLeft
+            name={iconLeft.name}
+            color={iconLeft.color || colors.primary[200]}
+            size={iconLeft.size || fonts.size.tl}
+            style={{ marginRight: effects.spacing.md }}
+          />
+        )}
+        <View>
+          <StyledTitle>{firstLetterUppercase(title)}</StyledTitle>
+          {subtitle && <StyledSubtitle>{subtitle}</StyledSubtitle>}
+        </View>
       </StyledContainerInfo>
 
       {description && !icon && (
