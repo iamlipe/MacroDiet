@@ -1,23 +1,24 @@
-import { Toast, ToastProps } from '@components/Toast';
 import React, { createContext, ReactNode, useCallback, useState } from 'react';
+import { IToast } from '@components/Toast';
+import { Toast } from '@components/index';
 
-interface ToastContextProps {
-  show: (toast: ToastProps) => void;
+interface IToastContext {
+  show: (toast: IToast) => void;
   hide: () => void;
 }
 
-export const ToastContext = createContext<ToastContextProps | null>(null);
+export const ToastContext = createContext<IToastContext | null>(null);
 
-interface ToastProviderProps {
+interface IToastProvider {
   children: ReactNode;
 }
 
-export const ToastProvider = ({ children }: ToastProviderProps) => {
-  const [toast, setToast] = useState<ToastProps | null>(null);
+export const ToastProvider = ({ children }: IToastProvider) => {
+  const [toast, setToast] = useState<IToast | null>(null);
 
-  const show = useCallback((data: ToastProps) => {
+  const show = useCallback((data: IToast) => {
     setToast(data);
-    setTimeout(() => setToast(null), 5000);
+    setTimeout(() => setToast(null), 3000);
   }, []);
 
   const hide = useCallback(() => {
