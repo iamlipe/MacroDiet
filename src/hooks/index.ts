@@ -1,43 +1,20 @@
-import { useActitivities } from './useActitivities';
-import { useCreateUser } from './useCreateUser';
-import { useFavorite } from './useFavorite';
-import { useFoods } from './useFoods';
-import { useGender } from './useGender';
-import { useGenerateDiet } from './useGenerateDiet';
-import { useGoals } from './useGoals';
-import { useLoader } from './useLoader';
-import { useLogin } from './useLogin';
-import { useMeals } from './useMeals';
-import { useMeasures } from './useMeasures';
-import { useMenu } from './useMenu';
-import { useRegister } from './useRegister';
-import { useSearch } from './useSearch';
-import { useSync } from './useSync';
-import { useToast } from './useToast';
-import { useGoalCalculate } from './useGoalCalculate';
-import { useHandleError } from './useHandleError';
-import { useRecoveryPassword } from './useRecoveryPassword';
-import { useNotification } from './useNotification';
-
-export {
-  useActitivities,
-  useCreateUser,
-  useFavorite,
-  useFoods,
-  useGender,
-  useGenerateDiet,
-  useGoals,
-  useLoader,
-  useLogin,
-  useMeals,
-  useMeasures,
-  useMenu,
-  useRegister,
-  useSearch,
-  useSync,
-  useToast,
-  useGoalCalculate,
-  useHandleError,
-  useRecoveryPassword,
-  useNotification,
-};
+export { default as useActitivities } from './useActitivities';
+export { default as useCreateUser } from './useCreateUser';
+export { default as useFavorite } from './useFavorite';
+export { default as useFoods } from './useFoods';
+export { default as useGender } from './useGender';
+export { default as useGoals } from './useGoals';
+export { default as useGenerateDiet } from './useGenerateDiet';
+export { default as useLoader } from './useLoader';
+export { default as useLogin } from './useLogin';
+export { default as useMeals } from './useMeals';
+export { default as useMeasures } from './useMeasures';
+export { default as useMenu } from './useMenu';
+export { default as useRegister } from './useRegister';
+export { default as useSync } from './useSync';
+export { default as useSearch } from './useSearch';
+export { default as useToast } from './useToast';
+export { default as useGoalCalculate } from './useGoalCalculate';
+export { default as useHandleError } from './useHandleError';
+export { default as useRecoveryPassword } from './useRecoveryPassword';
+export { default as useNotification } from './useNotification';

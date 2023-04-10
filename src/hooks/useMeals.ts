@@ -1,51 +1,43 @@
 import { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NavPropsDiet } from '@routes/dietStack';
-import { useMealStore } from '@stores/meal';
-import { useMeasures } from './useMeasures';
-import { useFoods } from './useFoods';
-import { useHandleError } from './useHandleError';
+import { useMealStore } from '@stores/index';
 import { IMeal, Meal } from '@services/firebase/models/meal';
 import { IFood, IInfoFood } from '@services/firebase/models/food';
 import { IMealTime, IUser } from '@services/firebase/models/user';
+import useFoods from './useFoods';
+import useHandleError from './useHandleError';
+import useMeasures from './useMeasures';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
 
-interface CreateMealDTO {
+export interface ICreateMeal {
   time: { hour: number; minutes: number };
   title: string;
 }
 
-export type UpdateMealDTO = {
+export interface IUpdateMeal {
   doc: string;
   updatedMeal: Partial<IMeal>;
-};
+}
 
-interface GetMeals {
+export interface IGetMeals {
   user: Partial<IUser>;
   userDoc: string;
 }
 
-interface GetInfoMeal {
+export interface IGetInfoMeal {
   meal: IMeal;
   info: keyof IInfoFood;
 }
 
-interface GetTotalInfoMealsDay {
+export interface IGetTotalInfoMealsDay {
   meals: IMeal[];
   info: keyof IInfoFood;
 }
 
-interface HandleFoodsInMeal {
-  type: 'add' | 'remove' | 'edit';
-  meal: IMeal;
-  food: IFood;
-  quantity?: number;
-  measureDoc?: string;
-}
-
-export const useMeals = () => {
+const useMeals = () => {
   const [loading, setLoading] = useState(false);
   const { setMeals } = useMealStore();
   const { getFood } = useFoods();
@@ -54,7 +46,7 @@ export const useMeals = () => {
   const { handleFirestoreError } = useHandleError();
 
   const createMeal = useCallback(
-    async ({ time, title }: CreateMealDTO) => {
+    async ({ time, title }: ICreateMeal) => {
       try {
         setLoading(false);
 
@@ -123,7 +115,7 @@ export const useMeals = () => {
   );
 
   const getMeals = useCallback(
-    async ({ user: user, userDoc }: GetMeals) => {
+    async ({ user: user, userDoc }: IGetMeals) => {
       try {
         setLoading(true);
 
@@ -170,7 +162,7 @@ export const useMeals = () => {
   );
 
   const updateMeal = useCallback(
-    async ({ doc, updatedMeal }: UpdateMealDTO) => {
+    async ({ doc, updatedMeal }: IUpdateMeal) => {
       try {
         setLoading(true);
 
@@ -206,7 +198,13 @@ export const useMeals = () => {
     food,
     quantity,
     measureDoc,
-  }: HandleFoodsInMeal) => {
+  }: {
+    type: 'add' | 'remove' | 'edit';
+    meal: IMeal;
+    food: IFood;
+    quantity?: number;
+    measureDoc?: string;
+  }) => {
     switch (type) {
       case 'add':
         return [
@@ -233,7 +231,7 @@ export const useMeals = () => {
   };
 
   const getInfoMeal = useCallback(
-    ({ meal, info }: GetInfoMeal) => {
+    ({ meal, info }: IGetInfoMeal) => {
       const sum = meal.foods.reduce((acc, curr) => {
         const foodData = getFood(curr.foodDoc);
         const measureFoodData = getMeasure(curr.measureDoc);
@@ -252,7 +250,7 @@ export const useMeals = () => {
   );
 
   const getTotalInfoMealsDay = useCallback(
-    ({ meals, info }: GetTotalInfoMealsDay) => {
+    ({ meals, info }: IGetTotalInfoMealsDay) => {
       const sum = meals?.reduce(
         (acc, curr) => acc + getInfoMeal({ meal: curr, info }),
         0,
@@ -349,3 +347,5 @@ export const useMeals = () => {
     loading,
   };
 };
+
+export default useMeals;

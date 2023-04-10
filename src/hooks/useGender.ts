@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
-import { useGenderStore } from '@stores/gender';
-import { useToast } from './useToast';
-import firestore from '@react-native-firebase/firestore';
+import { useGenderStore } from '@stores/index';
 import { IGender } from '@services/firebase/models/gender';
+import useToast from './useToast';
+import firestore from '@react-native-firebase/firestore';
 
-export const useGender = () => {
+const useGender = () => {
   const [loading, setLoading] = useState(false);
   const { setGenders } = useGenderStore();
   const { show: showToast } = useToast();
@@ -33,7 +33,7 @@ export const useGender = () => {
     }
   }, [setGenders, showToast]);
 
-  const getGender = useCallback(() => {}, []);
-
-  return { getGenders, getGender, loading };
+  return { getGenders, loading };
 };
+
+export default useGender;

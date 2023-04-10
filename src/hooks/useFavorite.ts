@@ -1,11 +1,11 @@
-import { useUserStore } from '@stores/user';
 import { useCallback, useMemo, useState } from 'react';
-import { useFoods } from './useFoods';
-import { useHandleError } from './useHandleError';
+import { useUserStore } from '@stores/index';
+import useHandleError from './useHandleError';
+import useFoods from './useFoods';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
-export const useFavorite = () => {
+const useFavorite = () => {
   const [loading, setLoading] = useState(false);
   const [favoritesFoodsList, setFavoritesFoodsList] = useState([]);
   const { handleFirestoreError } = useHandleError();
@@ -52,3 +52,5 @@ export const useFavorite = () => {
     loading,
   };
 };
+
+export default useFavorite;

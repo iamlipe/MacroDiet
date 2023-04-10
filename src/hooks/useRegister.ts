@@ -1,30 +1,30 @@
 import { useCallback, useState } from 'react';
-import { useUserStore } from '@stores/user';
-import { useLoader } from './useLoader';
+import { useUserStore } from '@stores/index';
 import { buidSchemaAuth } from '@services/firebase/models/user';
-import { useHandleError } from './useHandleError';
-import authFirebase from '@react-native-firebase/auth';
+import useLoader from './useLoader';
+import useHandleError from './useHandleError';
+import auth from '@react-native-firebase/auth';
 
-interface RegisterDTO {
+export interface IRegister {
   fullName: string;
   email: string;
   password: string;
   confirmPassword: string;
 }
 
-export const useRegister = () => {
+const useRegister = () => {
   const [loading, setLoading] = useState(false);
-  const { auth, setCreateUser } = useUserStore();
+  const { auth: authLogin, setCreateUser } = useUserStore();
   const { show: showLoader, hide: hideLoader } = useLoader();
   const { handleAuthError } = useHandleError();
 
   const handleRegister = useCallback(
-    async ({ fullName, email, password }: RegisterDTO) => {
+    async ({ fullName, email, password }: IRegister) => {
       try {
         setLoading(true);
         showLoader();
 
-        const { user } = await authFirebase().createUserWithEmailAndPassword(
+        const { user } = await auth().createUserWithEmailAndPassword(
           email.toLowerCase().trim(),
           password,
         );
@@ -32,7 +32,7 @@ export const useRegister = () => {
         await user.updateProfile({ displayName: fullName });
 
         if (user) {
-          auth(buidSchemaAuth({ ...user, displayName: fullName }));
+          authLogin(buidSchemaAuth({ ...user, displayName: fullName }));
           setCreateUser({ doc: user.uid });
         }
       } catch (error) {
@@ -42,8 +42,10 @@ export const useRegister = () => {
         hideLoader();
       }
     },
-    [auth, handleAuthError, hideLoader, setCreateUser, showLoader],
+    [authLogin, handleAuthError, hideLoader, setCreateUser, showLoader],
   );
 
   return { handleRegister, loading };
 };
+
+export default useRegister;

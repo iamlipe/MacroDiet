@@ -1,11 +1,13 @@
-import { useActivityStore } from '@stores/acitivity';
-import { useGenderStore } from '@stores/gender';
-import { useGoalStore } from '@stores/goal';
-import { useMeasureStore } from '@stores/measure';
 import { IUser } from '@services/firebase/models/user';
+import {
+  useActivityStore,
+  useGenderStore,
+  useGoalStore,
+  useMeasureStore,
+} from '@stores/index';
 import moment from 'moment';
 
-export const useUser = () => {
+const useUser = () => {
   const { acitivities } = useActivityStore();
   const { genders } = useGenderStore();
   const { goals } = useGoalStore();
@@ -56,3 +58,5 @@ export const useUser = () => {
 
   return { handleInfoUser };
 };
+
+export default useUser;

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-interface GetUserNutritionInfoProps {
+interface IGetUserNutritionInfo {
   height: number;
   weight: number;
   age: number;
@@ -9,7 +9,7 @@ interface GetUserNutritionInfoProps {
   goalFactor: number;
 }
 
-export const useNutritionInfo = () => {
+const useNutritionInfo = () => {
   const getUserNutritionInfo = useCallback(
     ({
       activityLevelFactor,
@@ -18,12 +18,13 @@ export const useNutritionInfo = () => {
       goalFactor,
       height,
       weight,
-    }: GetUserNutritionInfoProps) => {
+    }: IGetUserNutritionInfo) => {
       const bmrConstant = gender === 'male' ? 5 : -161;
       const bmr = 10 * weight + 6.25 * height - 5 * age + bmrConstant;
       const tdee = bmr * activityLevelFactor;
       const kcalGoal = tdee * goalFactor;
-      const prot = weight * goalFactor;
+      // FIXME: factor prot
+      const prot = weight * 1.6;
       const carb = (kcalGoal * 0.5) / 4;
       const fat = (kcalGoal * 0.25) / 9;
       const fiber = (kcalGoal * 0.14) / 4;
@@ -43,3 +44,5 @@ export const useNutritionInfo = () => {
 
   return { getUserNutritionInfo };
 };
+
+export default useNutritionInfo;

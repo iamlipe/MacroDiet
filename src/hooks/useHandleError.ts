@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import { useToast } from './useToast';
+import useToast from './useToast';
 
-export const useHandleError = () => {
+const useHandleError = () => {
   const { show: showToast } = useToast();
 
   const handleAuthError = useCallback(
@@ -33,3 +33,5 @@ export const useHandleError = () => {
 
   return { handleAuthError, handleFirestoreError };
 };
+
+export default useHandleError;

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-interface HandleSearchProps<T> {
+interface IHandleSearch<T> {
   search: string;
   data: T[] | null;
   keySearch: keyof T;
@@ -8,9 +8,9 @@ interface HandleSearchProps<T> {
 
 type SearchResult<T> = T[];
 
-export const useSearch = <T>() => {
+const useSearch = <T>() => {
   const handleSearch = useCallback(
-    ({ search, data, keySearch }: HandleSearchProps<T>): SearchResult<T> => {
+    ({ search, data, keySearch }: IHandleSearch<T>): SearchResult<T> => {
       if (!data) {
         return [];
       }
@@ -27,3 +27,5 @@ export const useSearch = <T>() => {
 
   return { handleSearch };
 };
+
+export default useSearch;
