@@ -1,22 +1,12 @@
 import styled from 'styled-components/native';
+import Divider from '@components/Divider';
 
-interface StyledWrapperProps {
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
-}
-
-export const StyledWrapper = styled.View<StyledWrapperProps>`
+export const StyledWrapper = styled.View`
   width: 100%;
   border-width: ${({ theme }) => theme.effects.border.width.df}px;
-  border-color: ${({ theme }) => theme.colors.gray.white};
+  border-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
   padding: ${({ theme }) => theme.effects.spacing.md}px;
-  margin-top: ${({ marginTop }) => marginTop || 0}px;
-  margin-right: ${({ marginRight }) => marginRight || 0}px;
-  margin-bottom: ${({ marginBottom }) => marginBottom || 0}px;
-  margin-left: ${({ marginLeft }) => marginLeft || 0}px;
 `;
 
 export const StyledHeader = styled.TouchableOpacity`
@@ -55,4 +45,8 @@ export const StyledOverviewContainer = styled.View`
 
 export const StyledContent = styled.View`
   padding: ${({ theme }) => theme.effects.spacing.md}px 0;
+`;
+
+export const StyledDivider = styled(Divider)`
+  margin: ${({ theme }) => theme.effects.spacing.md}px 0;
 `;

@@ -1,21 +1,13 @@
-import { Label } from '@components/Label';
 import React from 'react';
-import { useTheme } from 'styled-components/native';
+import { StyledContainerLoading, StyledLoading, StyledLabel } from './styles';
 
-import { StyledWrapper, StyledLoading } from './styles';
-
-export const Loading = () => {
-  const { effects, fonts } = useTheme();
-
+const Loading = () => {
   return (
-    <StyledWrapper>
+    <StyledContainerLoading>
       <StyledLoading />
-      <Label
-        fontFamily={fonts.family.medium}
-        fontSize={fonts.size.s2}
-        marginTop={effects.spacing.md}>
-        Carregando...
-      </Label>
-    </StyledWrapper>
+      <StyledLabel>Carregando...</StyledLabel>
+    </StyledContainerLoading>
   );
 };
+
+export default Loading;

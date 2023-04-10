@@ -1,15 +1,15 @@
-import { EdgeInsets } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
+import { EdgeInsets } from 'react-native-safe-area-context';
 
-interface StyledWrapperProps {
+interface IStyledWrapperProps {
   insets: EdgeInsets;
 }
 
-interface StyledContainerTabProps {
+interface IStyledContainerTabProps {
   insets: EdgeInsets;
 }
 
-export const StyledWrapper = styled.View<StyledWrapperProps>`
+export const StyledWrapper = styled.View<IStyledWrapperProps>`
   flex-direction: row;
   justify-content: space-between;
   padding: ${({ insets, theme }) =>
@@ -19,7 +19,7 @@ export const StyledWrapper = styled.View<StyledWrapperProps>`
   background-color: ${({ theme }) => theme.colors.background.dark};
 `;
 
-export const StyledContainerTab = styled.TouchableOpacity<StyledContainerTabProps>`
+export const StyledContainerTab = styled.TouchableOpacity<IStyledContainerTabProps>`
   flex: 1;
   align-items: center;
   justify-content: flex-end;

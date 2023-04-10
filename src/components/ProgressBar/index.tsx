@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyledProgressBar, StyledContainerProgressBar } from './styles';
 
-interface ProgressBarProps {
+interface IProgressbar {
   percentage: number;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
 }
 
-export const ProgressBar = ({ percentage, ...rest }: ProgressBarProps) => {
+const ProgressBar: React.FC<IProgressbar> = ({ percentage }) => {
+  const progress = useMemo(
+    () => (percentage <= 1 ? percentage * 100 : 100),
+    [percentage],
+  );
+
   return (
-    <StyledContainerProgressBar {...rest}>
-      <StyledProgressBar percentage={percentage <= 1 ? percentage : 1} />
+    <StyledContainerProgressBar>
+      <StyledProgressBar percentage={progress} />
     </StyledContainerProgressBar>
   );
 };
+
+export default ProgressBar;

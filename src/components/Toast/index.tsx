@@ -1,28 +1,34 @@
-import { Icon } from '@components/Icon';
 import React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'styled-components/native';
+import Icon from '@components/Icon';
+import {
+  StyledContainerInfo,
+  StyledContainerToast,
+  StyledDescription,
+  StyledTitle,
+} from './styles';
 
-import { Container, Description, Info, Label } from './styles';
-
-export interface ToastProps {
+export interface IToast {
   type: 'success' | 'error' | 'info' | 'warning';
   message: string;
 }
 
-export const Toast = ({ type, message }: ToastProps) => {
+const Toast: React.FC<IToast> = ({ type, message }) => {
   const { fonts, colors } = useTheme();
   const { width } = useWindowDimensions();
   const { bottom } = useSafeAreaInsets();
 
   return (
-    <Container width={width} bottom={bottom}>
+    <StyledContainerToast width={width} bottom={bottom}>
       <Icon name={type} size={fonts.size.tl} color={colors.status[type]} />
-      <Info>
-        <Label>{type}</Label>
-        <Description>{message}</Description>
-      </Info>
-    </Container>
+      <StyledContainerInfo>
+        <StyledTitle>{type}</StyledTitle>
+        <StyledDescription>{message}</StyledDescription>
+      </StyledContainerInfo>
+    </StyledContainerToast>
   );
 };
+
+export default Toast;

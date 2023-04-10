@@ -1,14 +1,11 @@
 import React from 'react';
+import { StyledDividerLine } from './styles';
+import { ViewProps } from 'react-native';
 
-import { DividerLine } from './styles';
+interface IDivider extends ViewProps {}
 
-interface DividerProps {
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
-}
-
-export const Divider: React.FC<DividerProps> = ({ ...rest }) => {
-  return <DividerLine {...rest} />;
+const Divider: React.FC<IDivider> = ({ ...rest }) => {
+  return <StyledDividerLine {...rest} />;
 };
+
+export default Divider;

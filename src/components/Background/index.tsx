@@ -3,10 +3,12 @@ import { SafeAreaViewProps } from 'react-native-safe-area-context';
 
 import { StyledBackground } from './styles';
 
-interface BackgroundProps extends SafeAreaViewProps {
+interface IBackground extends SafeAreaViewProps {
   children?: ReactNode;
 }
 
-export const Background = ({ children, ...rest }: BackgroundProps) => {
+const Background = ({ children, ...rest }: IBackground) => {
   return <StyledBackground {...rest}>{children}</StyledBackground>;
 };
+
+export default Background;

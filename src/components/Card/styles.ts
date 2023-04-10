@@ -1,11 +1,7 @@
 import styled, { css } from 'styled-components/native';
 
-interface StyledWrapperProps {
+interface IStyledWrapper {
   type: 'outlined' | 'bottomLine' | 'none';
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
 }
 
 const typeCard = {
@@ -25,16 +21,12 @@ const typeCard = {
   `,
 };
 
-export const StyledWrapper = styled.TouchableOpacity<StyledWrapperProps>`
+export const StyledWrapper = styled.TouchableOpacity<IStyledWrapper>`
   height: 60px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-color: ${({ theme }) => theme.colors.gray.white};
-  margin-top: ${({ marginTop }) => marginTop || 0}px;
-  margin-right: ${({ marginRight }) => marginRight || 0}px;
-  margin-bottom: ${({ marginBottom }) => marginBottom || 0}px;
-  margin-left: ${({ marginLeft }) => marginLeft || 0}px;
+  border-color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.background.dark};
   ${({ type }) => typeCard[type]}
 `;

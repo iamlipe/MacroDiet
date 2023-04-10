@@ -1,59 +1,30 @@
-import { Icon } from '@components/Icon';
-import { firstLetterUppercase } from '@utils/stringFormat';
 import React from 'react';
+import { firstLetterUppercase } from '@utils/stringFormat';
 import { useTheme } from 'styled-components/native';
-
+import { TouchableOpacityProps } from 'react-native';
+import Icon from '@components/Icon';
 import {
   StyledContainerIcon,
   StyledTitle,
   StyledWrapperButton,
-  StyledWrapperLink,
 } from './styles';
 
-interface ButtonProps {
+interface IButton extends TouchableOpacityProps {
   title: string;
-  type?: 'contained' | 'outlined' | 'link';
+  type?: 'contained' | 'outlined';
   icon?: { name: string; size?: number; position?: 'left' | 'right' };
-  linkPosition?: 'flex-start' | 'center' | 'flex-end';
-  disabled?: boolean;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
   onPress: () => void;
 }
 
-export const Button: React.FC<ButtonProps> = ({
+const Button: React.FC<IButton> = ({
   title,
   type = 'contained',
   icon,
-  linkPosition = 'flex-start',
-  disabled = false,
   onPress,
+  disabled,
   ...rest
 }) => {
   const { colors, fonts } = useTheme();
-
-  if (type === 'link') {
-    return (
-      <StyledWrapperLink
-        linkPosition={linkPosition}
-        disabled={disabled}
-        onPress={onPress}
-        {...rest}>
-        <StyledTitle link>{title}</StyledTitle>
-        {icon && (
-          <StyledContainerIcon iconLeft={icon.position === 'left'}>
-            <Icon
-              name={icon.name}
-              color={colors.gray.white}
-              size={icon.size || fonts.size.s2}
-            />
-          </StyledContainerIcon>
-        )}
-      </StyledWrapperLink>
-    );
-  }
 
   return (
     <StyledWrapperButton
@@ -68,7 +39,7 @@ export const Button: React.FC<ButtonProps> = ({
         <StyledContainerIcon iconLeft={icon.position === 'left'}>
           <Icon
             name={icon.name}
-            color={colors.gray.white}
+            color={colors.white}
             size={icon.size || fonts.size.s2}
           />
         </StyledContainerIcon>
@@ -76,3 +47,5 @@ export const Button: React.FC<ButtonProps> = ({
     </StyledWrapperButton>
   );
 };
+
+export default Button;

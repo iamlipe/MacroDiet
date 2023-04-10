@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { TouchableOpacity } from 'react-native';
 import {
   StyledWrapperCheckbox,
   StyledCheckboxBox,
@@ -8,23 +8,19 @@ import {
   StyledCheckboxLabel,
 } from './styles';
 
-type CheckboxProps = {
+interface ICheckbox extends TouchableOpacity {
   name: string;
   value: string;
   onChange: (text: string) => void;
   label?: string;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
-};
+}
 
-export const Checkbox: React.FC<CheckboxProps> = ({
+export const Checkbox: React.FC<ICheckbox> = ({
   label,
   value: data,
   onChange,
   ...rest
-}: CheckboxProps) => {
+}) => {
   const value: boolean = data === 'true';
 
   return (
@@ -41,3 +37,5 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     </StyledWrapperCheckbox>
   );
 };
+
+export default Checkbox;
