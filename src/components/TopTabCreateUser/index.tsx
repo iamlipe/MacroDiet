@@ -3,17 +3,18 @@ import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import { useNavigation } from '@react-navigation/native';
 import { NavPropsCreateUser } from '@routes/createUserStack';
 import { useTheme } from 'styled-components/native';
-import { ProgressBar } from '../ProgressBar';
-import { Icon } from '@components/Icon';
 import { SafeAreaView } from 'react-native';
+import ProgressBar from '@components/ProgressBar';
+import Icon from '@components/Icon';
 import {
   StyledContainer,
   StyledBaseButton,
   StyledWrapperProgressbar,
+  StyledLogo,
 } from './styles';
 
-export const TopTabCreateUser = ({ state }: MaterialTopTabBarProps) => {
-  const { colors, fonts, effects } = useTheme();
+const TopTabCreateUser: React.FC<MaterialTopTabBarProps> = ({ state }) => {
+  const { colors, fonts } = useTheme();
   const { goBack } = useNavigation<NavPropsCreateUser>();
 
   return (
@@ -21,18 +22,18 @@ export const TopTabCreateUser = ({ state }: MaterialTopTabBarProps) => {
       <StyledContainer>
         <StyledBaseButton onPress={goBack}>
           {!!state.index && (
-            <Icon
-              name="arrow-left"
-              size={fonts.size.s2}
-              color={colors.gray[400]}
-            />
+            <Icon name="arrow-left" size={fonts.size.s2} color={colors.white} />
           )}
         </StyledBaseButton>
 
         <StyledWrapperProgressbar>
-          <Icon name="logo" color={colors.primary[500]} size={32} />
+          <StyledLogo
+            name="logo"
+            color={colors.primary[500]}
+            size={fonts.size.tl}
+          />
 
-          <ProgressBar marginTop={effects.spacing.md} percentage={0.2} />
+          <ProgressBar percentage={(state.index + 1) / state.routes.length} />
         </StyledWrapperProgressbar>
 
         <StyledBaseButton disabled activeOpacity={0} />
@@ -40,3 +41,5 @@ export const TopTabCreateUser = ({ state }: MaterialTopTabBarProps) => {
     </SafeAreaView>
   );
 };
+
+export default TopTabCreateUser;

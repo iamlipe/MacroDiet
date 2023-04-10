@@ -1,10 +1,10 @@
 import { IGender } from '@services/firebase/models/gender';
 
-interface GerderData {
-  data: IGender[];
+interface IGerderData {
+  data: Array<IGender>;
 }
 
-export const gender: GerderData = {
+export const gender: IGerderData = {
   data: [
     {
       doc: '1',

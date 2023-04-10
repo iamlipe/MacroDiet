@@ -1,49 +1,22 @@
-import { Accordion } from './Accordion';
-import { Background } from './Backgroud';
-import { BottomTab } from './BottomTab';
-import { Button } from './Button';
-import { Card } from './Card';
-import { Checkbox } from './Checkbox';
-import { Container } from './Container';
-import { DatePicker } from './DatePicker';
-import { Divider } from './Divider';
-import { Header } from './Header';
-import { Icon } from './Icon';
-import { Input } from './Input';
-import { Label } from './Label';
-import { Loader } from './Loader';
-import { Loading } from './Loading';
-import { Option } from './Option';
-import { ProgressBar } from './ProgressBar';
-import { Scroll } from './Scroll';
-import { SearchBar } from './SearchBar';
-import { Select } from './Select';
-import { Toast } from './Toast';
-import { TopTabCreateUser } from './TopTabCreateUser';
-import { BottomSheet } from './BottomSheet';
-
-export {
-  Accordion,
-  Background,
-  BottomTab,
-  Button,
-  Card,
-  Checkbox,
-  Container,
-  DatePicker,
-  Divider,
-  Header,
-  Icon,
-  Input,
-  Label,
-  Loader,
-  Loading,
-  Option,
-  ProgressBar,
-  Scroll,
-  SearchBar,
-  Select,
-  Toast,
-  TopTabCreateUser,
-  BottomSheet,
-};
+export { default as Accordion } from './Accordion';
+export { default as Background } from './Background';
+export { default as BottomTab } from './BottomTab';
+export { default as Button } from './Button';
+export { default as Card } from './Card';
+export { default as Checkbox } from './Checkbox';
+export { default as DatePicker } from './DatePicker';
+export { default as Divider } from './Divider';
+export { default as Header } from './Header';
+export { default as Icon } from './Icon';
+export { default as Input } from './Input';
+export { default as Loader } from './Loader';
+export { default as Loading } from './Loading';
+export { default as Option } from './Option';
+export { default as ProgressBar } from './ProgressBar';
+export { default as SearchBar } from './SearchBar';
+export { default as Select } from './Select';
+export { default as Toast } from './Toast';
+export { default as TopTabCreateUser } from './TopTabCreateUser';
+export { default as BottomSheet } from './BottomSheet';
+export { default as Link } from './Link';
+export { default as RoundedButton } from './RoundedButton';

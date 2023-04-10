@@ -1,27 +1,22 @@
-import { Icon } from '@components/Icon';
 import React from 'react';
 import { useTheme } from 'styled-components/native';
+import { StyledContainerSearchBar, StyledTextInputSearchBar } from './styles';
+import { TextInputProps, ViewStyle } from 'react-native';
+import Icon from '@components/Icon';
 
-import { Container, TextInput } from './styles';
-
-interface SearchBarProps {
-  onChangeText: (text: string) => void;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
+interface ISearchbar extends TextInputProps {
+  wrapperStyle?: ViewStyle;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({
-  onChangeText,
-  ...rest
-}) => {
+const SearchBar: React.FC<ISearchbar> = ({ wrapperStyle = {}, ...rest }) => {
   const { colors, fonts } = useTheme();
 
   return (
-    <Container {...rest}>
-      <Icon name="search" color={colors.gray.white} size={fonts.size.s1} />
-      <TextInput placeholder="Buscar..." onChangeText={onChangeText} />
-    </Container>
+    <StyledContainerSearchBar style={wrapperStyle}>
+      <Icon name="search" color={colors.white} size={fonts.size.s1} />
+      <StyledTextInputSearchBar placeholder="Buscar..." {...rest} />
+    </StyledContainerSearchBar>
   );
 };
+
+export default SearchBar;

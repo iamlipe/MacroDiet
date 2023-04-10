@@ -1,34 +1,19 @@
-import { useCallback, useMemo, useState } from 'react';
-import { useLoader } from './useLoader';
-import { useHandleError } from './useHandleError';
-import authFirebase from '@react-native-firebase/auth';
-import * as Yup from 'yup';
+import { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NavPropsAuth } from '@routes/auth';
+import useLoader from './useLoader';
+import useHandleError from './useHandleError';
+import auth from '@react-native-firebase/auth';
 
 interface RecoveryPasswordDTO {
   email: string;
 }
 
-export const useRecoveryPassword = () => {
+const useRecoveryPassword = () => {
   const [loading, setLoading] = useState(false);
   const { show: showLoader, hide: hideLoader } = useLoader();
   const { handleAuthError } = useHandleError();
   const { navigate: navigateAuth } = useNavigation<NavPropsAuth>();
-
-  const initialValuesRecoveryPassword = useMemo(() => {
-    return {
-      email: '',
-    };
-  }, []);
-
-  const recoveryPasswordSchema = useMemo(
-    () =>
-      Yup.object().shape({
-        email: Yup.string().email('email invalido').required(),
-      }),
-    [],
-  );
 
   const handleRecoveryPassword = useCallback(
     async ({ email }: RecoveryPasswordDTO) => {
@@ -36,7 +21,7 @@ export const useRecoveryPassword = () => {
         setLoading(true);
         showLoader();
 
-        await authFirebase().sendPasswordResetEmail(email);
+        await auth().sendPasswordResetEmail(email);
       } catch (error) {
         handleAuthError(error);
       } finally {
@@ -48,10 +33,7 @@ export const useRecoveryPassword = () => {
     [handleAuthError, hideLoader, navigateAuth, showLoader],
   );
 
-  return {
-    handleRecoveryPassword,
-    loading,
-    initialValuesRecoveryPassword,
-    recoveryPasswordSchema,
-  };
+  return { handleRecoveryPassword, loading };
 };
+
+export default useRecoveryPassword;

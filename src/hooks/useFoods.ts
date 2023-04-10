@@ -1,14 +1,13 @@
-import { IFoodMeal } from '@services/firebase/models/meal';
-import { useFoodStore } from '@stores/food';
 import { useCallback, useState } from 'react';
-import { useMeasures } from './useMeasures';
-import { useHandleError } from './useHandleError';
-import firestore from '@react-native-firebase/firestore';
+import { IFoodMeal } from '@services/firebase/models/meal';
 import { Food, IFood } from '@services/firebase/models/food';
-import { useMeasureStore } from '@stores/measure';
+import { useMeasureStore, useFoodStore } from '@stores/index';
 import { parseNumber } from '@utils/numberFormat';
+import useMeasures from './useMeasures';
+import useHandleError from './useHandleError';
+import firestore from '@react-native-firebase/firestore';
 
-interface CreateFoodDTO {
+type CreateFoodDTO = {
   name: string;
   brand?: string;
   portionName?: string;
@@ -20,21 +19,14 @@ interface CreateFoodDTO {
   totalFat: string;
   saturatedFat: string;
   transFat: string;
-}
+};
 
-interface ComputeKcalPerGramProps {
-  carb: number;
-  prot: number;
-  totalFat: number;
-  portion: number;
-}
-
-interface ComputeNutrientPerGramProps {
+interface IComputeNutrientPerGram {
   nutrient: string;
   portion: string;
 }
 
-export const useFoods = () => {
+const useFoods = () => {
   const [loading, setLoading] = useState(false);
   const { setFoods, foods: foodsInStore } = useFoodStore();
   const { getMeasure, createMeasure } = useMeasures();
@@ -46,14 +38,19 @@ export const useFoods = () => {
     prot,
     totalFat,
     portion,
-  }: ComputeKcalPerGramProps): number => {
+  }: {
+    carb: number;
+    prot: number;
+    totalFat: number;
+    portion: number;
+  }): number => {
     return (carb * 4 + prot * 4 + totalFat * 9) / portion;
   };
 
   const computeNutrientPerGram = ({
     nutrient,
     portion,
-  }: ComputeNutrientPerGramProps): number => {
+  }: IComputeNutrientPerGram): number => {
     return parseNumber(nutrient) / parseNumber(portion);
   };
 
@@ -179,3 +176,5 @@ export const useFoods = () => {
 
   return { getFoods, getFood, handleFood, createFood, loading };
 };
+
+export default useFoods;

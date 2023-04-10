@@ -2,21 +2,23 @@ import React from 'react';
 import { Modal, ActivityIndicator } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
-import { Container, Label } from './styles';
+import { StyledContainerLoader, StyledLabel } from './styles';
 
-interface LoaderProps {
+interface ILoader {
   visible: boolean;
 }
 
-export const Loader = ({ visible }: LoaderProps) => {
+const Loader: React.FC<ILoader> = ({ visible }) => {
   const { fonts } = useTheme();
 
   return (
     <Modal visible={visible} transparent>
-      <Container>
+      <StyledContainerLoader>
         <ActivityIndicator size="large" color={fonts.color.primary} />
-        <Label>Carregando...</Label>
-      </Container>
+        <StyledLabel>Carregando...</StyledLabel>
+      </StyledContainerLoader>
     </Modal>
   );
 };
+
+export default Loader;

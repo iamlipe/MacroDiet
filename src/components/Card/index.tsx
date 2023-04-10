@@ -1,8 +1,8 @@
-import { Icon } from '@components/Icon';
-import { firstLetterUppercase } from '@utils/stringFormat';
 import React from 'react';
+import { firstLetterUppercase } from '@utils/stringFormat';
 import { useTheme } from 'styled-components/native';
-
+import { TouchableOpacityProps } from 'react-native';
+import Icon from '@components/Icon';
 import {
   StyledContainerInfo,
   StyledDescription,
@@ -11,20 +11,16 @@ import {
   StyledWrapper,
 } from './styles';
 
-interface CardHorizontalProps {
+interface ICard extends TouchableOpacityProps {
   title: string;
   type?: 'outlined' | 'bottomLine' | 'none';
   description?: string;
   subtitle?: string;
   icon?: { name: string; color?: string; size?: number };
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
   onPress?: () => void;
 }
 
-export const Card: React.FC<CardHorizontalProps> = ({
+const Card: React.FC<ICard> = ({
   title,
   type = 'outlined',
   subtitle,
@@ -49,10 +45,12 @@ export const Card: React.FC<CardHorizontalProps> = ({
       {icon && (
         <Icon
           name={icon.name}
-          color={icon.color || colors.gray.white}
+          color={icon.color || colors.white}
           size={icon.size || fonts.size.s2}
         />
       )}
     </StyledWrapper>
   );
 };
+
+export default Card;

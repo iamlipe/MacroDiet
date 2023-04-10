@@ -1,13 +1,13 @@
-import { useActivityStore } from '@stores/acitivity';
+import { useActivityStore } from '@stores/index';
 import { useCallback, useState } from 'react';
-import { useToast } from './useToast';
 import { IAcitivity } from '@services/firebase/models/acitivity';
+import useHandleError from './useHandleError';
 import firestore from '@react-native-firebase/firestore';
 
-export const useActitivities = () => {
+const useActitivities = () => {
   const [loading, setLoading] = useState(false);
   const { setAcitivities } = useActivityStore();
-  const { show: showToast } = useToast();
+  const { handleFirestoreError } = useHandleError();
 
   const getActivities = useCallback(async () => {
     try {
@@ -27,11 +27,13 @@ export const useActitivities = () => {
 
       setAcitivities(activities);
     } catch (error) {
-      showToast({ type: 'error', message: '' });
+      handleFirestoreError(error);
     } finally {
       setLoading(false);
     }
-  }, [setAcitivities, showToast]);
+  }, [handleFirestoreError, setAcitivities]);
 
   return { getActivities, loading };
 };
+
+export default useActitivities;

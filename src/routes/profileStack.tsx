@@ -3,8 +3,8 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import { MenuProfile } from '@screens/MenuProfile';
 import { useTheme } from 'styled-components';
+import { MenuProfile } from '@screens/index';
 
 export type ProfileStackParamsList = {
   MenuProfile: undefined;

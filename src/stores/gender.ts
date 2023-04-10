@@ -6,7 +6,9 @@ type State = {
   setGenders: (genders: IGender[]) => void;
 };
 
-export const useGenderStore = create<State>(set => ({
+const useGenderStore = create<State>(set => ({
   genders: null,
   setGenders: (genders: IGender[]) => set(() => ({ genders })),
 }));
+
+export default useGenderStore;

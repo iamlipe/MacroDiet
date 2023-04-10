@@ -1,11 +1,10 @@
-import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import { useUserStore } from '@stores/user';
-import React from 'react';
-
+import { NavigationContainer } from '@react-navigation/native';
+import { useUserStore } from '@stores/index';
 import { AuthStack } from './auth';
 import { LoggedStack } from './logged';
 

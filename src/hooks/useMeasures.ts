@@ -1,17 +1,17 @@
-import { useMeasureStore } from '@stores/measure';
 import { useCallback, useState } from 'react';
-import { useHandleError } from './useHandleError';
+import { useMeasureStore } from '@stores/index';
 import { IMeasure, Measure } from '@services/firebase/models/measure';
+import useHandleError from './useHandleError';
 import firestore from '@react-native-firebase/firestore';
 
-interface CreateMeasureDTO {
+export interface ICreateMeasure {
   acronym?: string;
   title: string;
   type: 'mass' | 'length';
   quantity: number;
 }
 
-export const useMeasures = () => {
+const useMeasures = () => {
   const [loading, setLoading] = useState(false);
   const {
     allMeasures,
@@ -119,7 +119,7 @@ export const useMeasures = () => {
   };
 
   const createMeasure = useCallback(
-    async ({ quantity, title, type, acronym }: CreateMeasureDTO) => {
+    async ({ quantity, title, type, acronym }: ICreateMeasure) => {
       try {
         setLoading(false);
 
@@ -153,3 +153,5 @@ export const useMeasures = () => {
     loading,
   };
 };
+
+export default useMeasures;

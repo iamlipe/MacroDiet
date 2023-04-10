@@ -1,16 +1,18 @@
+import React from 'react';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import { Login } from '@screens/Login';
-import { LoginWithEmail } from '@screens/LoginWithEmail';
-import { Onboarding } from '@screens/Onboarding';
-import { Register } from '@screens/Register';
-import { Sync } from '@screens/Sync';
-import { useSyncStore } from '@stores/sync';
-import { RecoveryPassword } from '@screens/RecoveryPassword';
-import React from 'react';
 import { useTheme } from 'styled-components/native';
+import { useSyncStore } from '@stores/index';
+import {
+  RecoveryPassword,
+  Login,
+  LoginWithEmail,
+  Onboarding,
+  Register,
+  Sync,
+} from '@screens/index';
 
 export type AuthStackParamsList = {
   Onboarding: undefined;

@@ -1,11 +1,12 @@
 import styled from 'styled-components/native';
+import Icon from '@components/Icon';
 
 export const StyledContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   padding: ${({ theme }) =>
-    `${theme.effects.spacing.hg}px ${theme.effects.spacing.md}px`};
+    `${theme.effects.spacing.vl}px ${theme.effects.spacing.lg}px`};
   background-color: ${({ theme }) => theme.colors.background.dark};
 `;
 
@@ -19,4 +20,8 @@ export const StyledWrapperProgressbar = styled.View`
   padding: 0 ${({ theme }) => theme.effects.spacing.vl}px;
   align-items: center;
   justify-content: space-between;
+`;
+
+export const StyledLogo = styled(Icon)`
+  margin-bottom: ${({ theme }) => theme.effects.spacing.md}px;
 `;

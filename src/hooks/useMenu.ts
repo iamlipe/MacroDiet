@@ -1,14 +1,14 @@
-import { LoggedStackParamsList } from '@routes/logged';
 import { useMemo } from 'react';
+import { LoggedStackParamsList } from '@routes/logged';
 
-interface MenuOptionsProps {
+interface IMenuOption {
   key: string;
   name: string;
   navigateTo: keyof LoggedStackParamsList;
 }
 
-export const useMenu = () => {
-  const menuOptions: MenuOptionsProps[] = useMemo(
+const useMenu = () => {
+  const menuOptions: Array<IMenuOption> = useMemo(
     () => [
       { key: '1', name: 'Informações principais', navigateTo: 'Info' },
       { key: '2', name: 'Objetivo', navigateTo: 'Goal' },
@@ -22,3 +22,5 @@ export const useMenu = () => {
 
   return { menuOptions };
 };
+
+export default useMenu;

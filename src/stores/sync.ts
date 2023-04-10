@@ -5,7 +5,9 @@ type State = {
   setIsSync: (isSync: boolean) => void;
 };
 
-export const useSyncStore = create<State>(set => ({
+const useSyncStore = create<State>(set => ({
   isSync: null,
   setIsSync: (isSync: boolean) => set(() => ({ isSync })),
 }));
+
+export default useSyncStore;

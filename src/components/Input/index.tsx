@@ -1,84 +1,85 @@
-import { Icon } from '@components/Icon';
+import React, { forwardRef, useState } from 'react';
 import { firstLetterUppercase } from '@utils/stringFormat';
-import React, { useState } from 'react';
+import { useTheme } from 'styled-components/native';
+import Icon from '@components/Icon';
 import {
-  NativeSyntheticEvent,
-  TextInputFocusEventData,
+  StyleProp,
+  TextInput,
+  TextInputProps,
   TextStyle,
   TouchableOpacity,
+  View,
+  ViewStyle,
 } from 'react-native';
-import { useTheme } from 'styled-components/native';
 import {
   StyledContainerInput,
   StyledLabel,
   StyledTextInput,
   StyledError,
   StyledColumn,
-  StyledWrapper,
 } from './styles';
 
-interface InputProps {
+interface IInput extends TextInputProps {
   name: string;
   value: string;
   error?: string;
-  onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
   label?: string;
-  onChangeText?: (text: string) => void;
   secureTextEntry?: boolean;
-  inputStyle?: TextStyle;
+  wrapperStyle?: ViewStyle;
+  inputStyle?: StyleProp<TextStyle>;
   placeholder?: string;
-  flex?: number;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
 }
 
-export const Input: React.FC<InputProps> = ({
-  name,
-  value,
-  onBlur,
-  onChangeText,
-  error,
-  inputStyle,
-  label,
-  secureTextEntry,
-  placeholder,
-  flex,
-  ...rest
-}) => {
-  const [securityText, setSecurityText] = useState(secureTextEntry);
-  const { colors, fonts } = useTheme();
+const Input = forwardRef<TextInput, IInput>(
+  (
+    {
+      value,
+      error,
+      label,
+      secureTextEntry,
+      wrapperStyle = {},
+      inputStyle = {},
+      ...rest
+    },
+    ref,
+  ) => {
+    const [securityText, setSecurityText] = useState(secureTextEntry);
+    const { colors, fonts } = useTheme();
 
-  return (
-    <StyledWrapper flex={flex}>
-      {label && <StyledLabel>{firstLetterUppercase(label)}</StyledLabel>}
-
-      <StyledContainerInput {...rest}>
-        <StyledColumn>
-          <StyledTextInput
-            name={name}
-            value={value}
-            placeholder={placeholder}
-            secureTextEntry={!!securityText}
-            onBlur={onBlur}
-            onChangeText={onChangeText}
-            style={inputStyle}
-          />
-
-          {error && <StyledError>{error}</StyledError>}
-        </StyledColumn>
-
-        {secureTextEntry && (
-          <TouchableOpacity onPress={() => setSecurityText(!securityText)}>
-            <Icon
-              name={securityText ? 'eye' : 'eye-slash'}
-              size={fonts.size.s2}
-              color={colors.gray.white}
-            />
-          </TouchableOpacity>
+    return (
+      <View style={wrapperStyle}>
+        {label && (
+          <StyledLabel numberOfLines={1}>
+            {firstLetterUppercase(label)}
+          </StyledLabel>
         )}
-      </StyledContainerInput>
-    </StyledWrapper>
-  );
-};
+
+        <StyledContainerInput>
+          <StyledColumn>
+            <StyledTextInput
+              ref={ref}
+              value={value}
+              secureTextEntry={!!securityText}
+              {...rest}
+              style={inputStyle}
+            />
+
+            {error && <StyledError>{error}</StyledError>}
+          </StyledColumn>
+
+          {secureTextEntry && (
+            <TouchableOpacity onPress={() => setSecurityText(!securityText)}>
+              <Icon
+                name={securityText ? 'eye' : 'eye-slash'}
+                size={fonts.size.s2}
+                color={colors.white}
+              />
+            </TouchableOpacity>
+          )}
+        </StyledContainerInput>
+      </View>
+    );
+  },
+);
+
+export default Input;

@@ -1,10 +1,10 @@
 import { IMeal } from '@services/firebase/models/meal';
 
-interface MealsData {
-  data: IMeal[];
+interface IMealsData {
+  data: Array<IMeal>;
 }
 
-export const meals: MealsData = {
+export const meals: IMealsData = {
   data: [
     {
       user: '1',

@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useUserStore } from '@stores/user';
-import { useAsyncStorage } from './useAsyncStorage';
+import { groupBy } from '@utils/help';
+import { useUserStore } from '@stores/index';
+import useAsyncStorage from './useAsyncStorage';
 import notifee, {
   AndroidImportance,
   DisplayedNotification,
@@ -8,16 +9,15 @@ import notifee, {
   TriggerType,
 } from '@notifee/react-native';
 import moment from 'moment';
-import { groupBy } from '@utils/help';
 
-interface ScheduleNotificationsProps {
+interface IScheduleNotifications {
   notificationDate: Date;
   title: string;
   body: string;
   channelId: string;
 }
 
-export const useNotification = () => {
+const useNotification = () => {
   const [displayedNotifications, setDisplayedNotifications] = useState<
     DisplayedNotification[]
   >([]);
@@ -81,7 +81,7 @@ export const useNotification = () => {
     title,
     body,
     channelId,
-  }: ScheduleNotificationsProps) => {
+  }: IScheduleNotifications) => {
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
       timestamp: notificationDate.getTime(),
@@ -157,3 +157,5 @@ export const useNotification = () => {
     getDisplayedNotifications,
   };
 };
+
+export default useNotification;

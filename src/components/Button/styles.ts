@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components/native';
 
-interface StyledWrapperButtonProps {
+interface IStyledWrapperButtonProps {
   type: 'contained' | 'outlined' | 'disabled';
   layout: 'iconLeft' | 'iconRight';
   marginTop?: number;
@@ -9,7 +9,7 @@ interface StyledWrapperButtonProps {
   marginLeft?: number;
 }
 
-interface StyledWrapperLinkProps {
+interface IStyledWrapperLinkProps {
   linkPosition: 'flex-start' | 'center' | 'flex-end';
   marginTop?: number;
   marginRight?: number;
@@ -17,11 +17,11 @@ interface StyledWrapperLinkProps {
   marginLeft?: number;
 }
 
-interface StyledTitleProps {
+interface IStyledTitleProps {
   link?: boolean;
 }
 
-interface StyledContainerIconProps {
+interface IStyledContainerIconProps {
   iconLeft?: boolean;
 }
 
@@ -32,7 +32,7 @@ const typeButton = {
 
   outlined: css`
     border-width: ${({ theme }) => theme.effects.border.width.df}px;
-    border-color: ${({ theme }) => theme.colors.gray.white};
+    border-color: ${({ theme }) => theme.colors.white};
   `,
 
   disabled: css`
@@ -52,7 +52,7 @@ const layoutButton = {
   `,
 };
 
-export const StyledWrapperButton = styled.TouchableOpacity<StyledWrapperButtonProps>`
+export const StyledWrapperButton = styled.TouchableOpacity<IStyledWrapperButtonProps>`
   align-items: center;
   border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
   padding: ${({ theme }) => theme.effects.spacing.md}px;
@@ -67,7 +67,7 @@ export const StyledWrapperButton = styled.TouchableOpacity<StyledWrapperButtonPr
 
 export const StyledWrapperLink = styled.TouchableOpacity.attrs({
   containerStyle: { alignSelf: 'baseline' },
-})<StyledWrapperLinkProps>`
+})<IStyledWrapperLinkProps>`
   flex-direction: row;
   justify-content: space-between;
   margin-top: ${({ marginTop }) => marginTop || 0}px;
@@ -77,7 +77,7 @@ export const StyledWrapperLink = styled.TouchableOpacity.attrs({
   align-self: ${({ linkPosition }) => linkPosition};
 `;
 
-export const StyledTitle = styled.Text<StyledTitleProps>`
+export const StyledTitle = styled.Text<IStyledTitleProps>`
   font-family: ${({ theme }) => theme.fonts.family.medium};
   font-size: ${({ link, theme }) =>
     link ? theme.fonts.size.md : theme.fonts.size.s2}px;
@@ -87,7 +87,7 @@ export const StyledTitle = styled.Text<StyledTitleProps>`
   line-height: 24px;
 `;
 
-export const StyledContainerIcon = styled.View<StyledContainerIconProps>`
+export const StyledContainerIcon = styled.View<IStyledContainerIconProps>`
   width: 24px;
   height: 24px;
   justify-content: center;

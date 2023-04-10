@@ -1,59 +1,48 @@
-import { firstLetterUppercase } from '@utils/stringFormat';
 import React from 'react';
+import { firstLetterUppercase } from '@utils/stringFormat';
+import { View } from 'react-native';
+import {
+  StyledContainerOption,
+  StyledLabel,
+  StyledError,
+  StyledTitle,
+} from './styles';
 
-import { Wrapper, ContainerOption, TitleOption, Label, Error } from './styles';
-
-interface Option {
-  key: string;
-  name: string;
-}
-
-interface OptionProps {
+interface IOption {
   name: string;
   value: string;
   label?: string;
-  options: Option[];
+  options: { key: string; name: string }[];
   error?: string;
   onChange: (text: string) => void;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
 }
 
-export const buildOptions = (raw: { id: string; title: string }) => {
-  return {
-    key: raw.id,
-    name: raw.title,
-  };
-};
-
-export const Option: React.FC<OptionProps> = ({
-  name,
+const Option: React.FC<IOption> = ({
   label,
   value,
   options,
   error,
   onChange,
-  ...rest
 }) => {
   return (
-    <Wrapper name={name} {...rest}>
-      {label && <Label>{firstLetterUppercase(label)}</Label>}
+    <View>
+      {label && <StyledLabel>{firstLetterUppercase(label)}</StyledLabel>}
 
       {options.map((option, index) => (
-        <ContainerOption
+        <StyledContainerOption
           key={option.key}
           selected={option.key === value}
           onPress={() => onChange(option.key)}
           lastChild={index + 1 >= options.length}>
-          <TitleOption selected={option.key === value}>
+          <StyledTitle selected={option.key === value}>
             {firstLetterUppercase(option.name)}
-          </TitleOption>
-        </ContainerOption>
+          </StyledTitle>
+        </StyledContainerOption>
       ))}
 
-      {error && <Error>{error}</Error>}
-    </Wrapper>
+      {error && <StyledError>{error}</StyledError>}
+    </View>
   );
 };
+
+export default Option;

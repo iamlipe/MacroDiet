@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Alert } from 'react-native';
 
-export const useGenerateDiet = () => {
+const useGenerateDiet = () => {
   const [loading, setLoading] = useState(false);
   const CHAT_GPD_API_KEY = '';
 
@@ -39,3 +39,5 @@ export const useGenerateDiet = () => {
 
   return { handleFetchTags, loading };
 };
+
+export default useGenerateDiet;

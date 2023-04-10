@@ -1,54 +1,39 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { Card } from '@components/Card';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { firstLetterUppercase } from '@utils/stringFormat';
-import { TextStyle, ViewStyle } from 'react-native';
-
+import { TextStyle, View, ViewStyle } from 'react-native';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet from '@components/BottomSheet';
 import {
-  StyledWrapper,
   StyledLabel,
   StyledContainer,
   StyledSelected,
-  StyledBottomSheet,
-  StyledBottomSheetScroll,
-  StyledBackdrop,
   StyledError,
+  StyledContentBottomSheet,
+  StyledWrapperCardSelect,
+  StyledLabelCardSelect,
 } from './styles';
 
-export interface Option {
-  key: string;
-  name: string;
-}
-
-interface SelectProps {
+interface ISelect {
   name: string;
   label?: string;
   value: string;
-  options: Option[];
+  options: { key: string; name: string }[];
   placeholder?: string;
   error?: string;
   onChange: (text: string) => void;
-  contentStyle?: ViewStyle;
+  wrapperStyle?: ViewStyle;
   inputStyle?: TextStyle;
-  flex?: number;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
 }
 
-export const Select: React.FC<SelectProps> = ({
-  name,
+const Select: React.FC<ISelect> = ({
   label,
   value,
   options,
   onChange,
   placeholder = 'Selecione',
-  contentStyle = {},
+  wrapperStyle = {},
   inputStyle = {},
   error,
-  flex = 1,
-  ...rest
 }) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
@@ -57,47 +42,49 @@ export const Select: React.FC<SelectProps> = ({
     [options, value],
   );
 
-  const renderBackDrop = () => {
-    return <StyledBackdrop onPress={() => bottomSheetRef.current?.close()} />;
-  };
-
   useEffect(() => {
     onChange(options[0].key);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <StyledWrapper flex={flex} name={name} {...rest}>
-      {label && <StyledLabel>{firstLetterUppercase(label)}</StyledLabel>}
+    <>
+      <View style={wrapperStyle}>
+        {label && <StyledLabel>{firstLetterUppercase(label)}</StyledLabel>}
 
-      <StyledContainer
-        onPress={() => bottomSheetRef.current?.present()}
-        style={contentStyle}>
-        <StyledSelected style={inputStyle}>
-          {selected ? firstLetterUppercase(selected) : placeholder}
-        </StyledSelected>
+        <StyledContainer
+          disabled={options.length <= 1}
+          onPress={() => bottomSheetRef.current?.present()}>
+          <StyledSelected style={inputStyle}>
+            {selected ? firstLetterUppercase(selected) : placeholder}
+          </StyledSelected>
 
-        {error && <StyledError>{error}</StyledError>}
-      </StyledContainer>
+          {error && <StyledError>{error}</StyledError>}
+        </StyledContainer>
+      </View>
 
-      <StyledBottomSheet
+      <BottomSheet
         ref={bottomSheetRef}
-        snapPoints={['35%']}
-        backdropComponent={renderBackDrop}>
-        <StyledBottomSheetScroll>
-          {options.map(option => (
-            <Card
+        snapPoints={options.length > 4 ? ['35%', '70%'] : ['35%']}
+        close={() => bottomSheetRef.current.close()}
+        withScroll>
+        <StyledContentBottomSheet>
+          {options.map((option, index) => (
+            <StyledWrapperCardSelect
               key={option.key}
-              type="none"
-              title={option.name}
               onPress={() => {
                 bottomSheetRef.current?.close();
                 onChange(option.key);
-              }}
-            />
+              }}>
+              <StyledLabelCardSelect isPair={index % 2 !== 0}>
+                {option.name}
+              </StyledLabelCardSelect>
+            </StyledWrapperCardSelect>
           ))}
-        </StyledBottomSheetScroll>
-      </StyledBottomSheet>
-    </StyledWrapper>
+        </StyledContentBottomSheet>
+      </BottomSheet>
+    </>
   );
 };
+
+export default Select;

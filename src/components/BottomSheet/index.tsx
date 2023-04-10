@@ -1,19 +1,21 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, { ReactNode, forwardRef } from 'react';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   StyledBackdrop,
   StyledBottomSheet,
-  StyledBottomSheetScroll,
+  StyledScrollViewBottomSheet,
+  StyledContentViewBottomSheet,
 } from './styles';
 
-interface BottomSheetProps {
+interface IBottomSheet {
   snapPoints: Array<string | number>;
   children: ReactNode;
   close: () => void;
+  withScroll?: boolean;
 }
 
-export const BottomSheet = forwardRef<BottomSheetModal, BottomSheetProps>(
-  ({ children, snapPoints, close }, ref) => {
+const BottomSheet = forwardRef<BottomSheetModal, IBottomSheet>(
+  ({ children, snapPoints, withScroll = false, close }, ref) => {
     const renderBackDrop = () => {
       return <StyledBackdrop onPress={close} />;
     };
@@ -23,8 +25,20 @@ export const BottomSheet = forwardRef<BottomSheetModal, BottomSheetProps>(
         ref={ref}
         snapPoints={snapPoints}
         backdropComponent={renderBackDrop}>
-        <StyledBottomSheetScroll>{children}</StyledBottomSheetScroll>
+        <>
+          {withScroll ? (
+            <StyledScrollViewBottomSheet>
+              {children}
+            </StyledScrollViewBottomSheet>
+          ) : (
+            <StyledContentViewBottomSheet>
+              {children}
+            </StyledContentViewBottomSheet>
+          )}
+        </>
       </StyledBottomSheet>
     );
   },
 );
+
+export default BottomSheet;

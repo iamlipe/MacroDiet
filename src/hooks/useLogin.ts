@@ -1,21 +1,21 @@
-import authFirebase from '@react-native-firebase/auth';
-import { useUserStore } from '@stores/user';
+import { useUserStore } from '@stores/index';
 import { useCallback, useState } from 'react';
-import { useLoader } from './useLoader';
-import { useToast } from './useToast';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { IUser, buidSchemaAuth } from '@services/firebase/models/user';
-import { useNutritionInfo } from './useNutritionInfo';
-import { useUser } from './useUser';
+import useLoader from './useLoader';
+import useToast from './useToast';
+import useNutritionInfo from './useNutritionInfo';
+import useUser from './useUser';
+import useHandleError from './useHandleError';
+import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { useHandleError } from './useHandleError';
 
-interface LoginWithEmailDTO {
+export type LoginWithEmailDTO = {
   email: string;
   password: string;
-}
+};
 
-export const useLogin = () => {
+const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const {
     login,
@@ -36,10 +36,9 @@ export const useLogin = () => {
 
       const { idToken } = await GoogleSignin.signIn();
 
-      const googleCredential =
-        authFirebase.GoogleAuthProvider.credential(idToken);
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-      const { user: googleAuth } = await authFirebase().signInWithCredential(
+      const { user: googleAuth } = await auth().signInWithCredential(
         googleCredential,
       );
 
@@ -101,7 +100,7 @@ export const useLogin = () => {
         showLoader();
 
         const { user: userFirebaseAuth } =
-          await authFirebase().signInWithEmailAndPassword(
+          await auth().signInWithEmailAndPassword(
             email.toLowerCase().trim(),
             password.toLowerCase().trim(),
           );
@@ -173,3 +172,5 @@ export const useLogin = () => {
     loading,
   };
 };
+
+export default useLogin;

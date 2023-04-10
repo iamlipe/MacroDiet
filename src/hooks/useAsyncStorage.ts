@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { rootKeys, StorageKeys } from '@config/constants/storageKeys';
 
-export const useAsyncStorage = () => {
+const useAsyncStorage = () => {
   const save = async (key: StorageKeys, data: string) => {
     await AsyncStorage.setItem(rootKeys[key], data);
   };
@@ -16,3 +16,5 @@ export const useAsyncStorage = () => {
 
   return { save, read, remove };
 };
+
+export default useAsyncStorage;

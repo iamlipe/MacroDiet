@@ -1,22 +1,17 @@
 import React, { useMemo, useRef } from 'react';
-import { firstLetterUppercase } from '@utils/stringFormat';
 import moment from 'moment';
+import { firstLetterUppercase } from '@utils/stringFormat';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet from '@components/BottomSheet';
 import {
-  StyledWrapper,
   StyledTitle,
   StyledError,
   StyledLabel,
-  StyledBottomSheet,
   StyledDatePicker,
-  StyledContainer,
-  StyledBackdrop,
+  StyledContainerDatePicker,
 } from './styles';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { useTheme } from 'styled-components/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Container } from '@components/Container';
 
-interface DatePickerProps {
+interface IDatePicker {
   name: string;
   label?: string;
   placeholder?: string;
@@ -24,24 +19,17 @@ interface DatePickerProps {
   value: string;
   mode?: 'date' | 'time';
   error?: string;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
 }
 
-export const DatePicker = ({
-  name,
+const DatePicker: React.FC<IDatePicker> = ({
   label,
   mode = 'date',
-  placeholder = 'Selecione uma data',
+  placeholder = 'Selecione',
   onChange,
   value,
   error,
   ...rest
-}: DatePickerProps) => {
-  const { effects } = useTheme();
-  const { bottom } = useSafeAreaInsets();
+}) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   const date = useMemo(
@@ -60,21 +48,16 @@ export const DatePicker = ({
   const currentDate = useMemo(
     () =>
       mode === 'date'
-        ? moment(date).format('MMM DD YYYY')
+        ? moment(date).format('DD/MM/YYYY')
         : moment(date).format('HH:mm'),
     [date, mode],
   );
 
-  const renderBackDrop = () => {
-    return <StyledBackdrop onPress={() => bottomSheetRef.current?.close()} />;
-  };
-
   return (
-    <StyledWrapper>
+    <>
       {label && <StyledLabel>{firstLetterUppercase(label)}</StyledLabel>}
 
-      <StyledContainer
-        name={name}
+      <StyledContainerDatePicker
         onPress={() => bottomSheetRef.current?.present()}
         {...rest}>
         <StyledTitle selected={selected}>
@@ -82,28 +65,23 @@ export const DatePicker = ({
         </StyledTitle>
 
         {error && <StyledError>{error}</StyledError>}
-      </StyledContainer>
+      </StyledContainerDatePicker>
 
-      <StyledBottomSheet
+      <BottomSheet
         ref={bottomSheetRef}
         snapPoints={['40%']}
-        backdropComponent={renderBackDrop}>
-        <Container
-          flex={1}
-          backgroundColor={'black'}
-          paddingBottom={bottom + effects.spacing.sm}
-          paddingTop={effects.spacing.sm}
-          paddingHorizontal={effects.spacing.md}>
-          <StyledDatePicker
-            value={date}
-            mode={mode}
-            maximumDate={mode === 'date' ? new Date() : undefined}
-            onChange={res => {
-              onChange(moment(res.nativeEvent.timestamp).format());
-            }}
-          />
-        </Container>
-      </StyledBottomSheet>
-    </StyledWrapper>
+        close={() => bottomSheetRef.current.close()}>
+        <StyledDatePicker
+          value={date}
+          mode={mode}
+          maximumDate={mode === 'date' ? new Date() : undefined}
+          onChange={res => {
+            onChange(moment(res.nativeEvent.timestamp).format());
+          }}
+        />
+      </BottomSheet>
+    </>
   );
 };
+
+export default DatePicker;

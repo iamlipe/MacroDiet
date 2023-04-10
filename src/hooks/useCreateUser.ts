@@ -1,25 +1,26 @@
+import { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
   CreateUserStackParamsList,
   NavPropsCreateUser,
 } from '@routes/createUserStack';
 import { IInfo, User } from '@services/firebase/models/user';
-import { ICreatedUser, useUserStore } from '@stores/user';
-import { useCallback, useState } from 'react';
-import { useLoader } from './useLoader';
-import { useToast } from './useToast';
+import { ICreatedUser } from '@stores/user';
+import { useUserStore } from '@stores/index';
 import { defaultPreferences } from '@__mocks__/users';
+import useToast from './useToast';
+import useLoader from './useLoader';
+import useHandleError from './useHandleError';
+import useNutritionInfo from './useNutritionInfo';
+import useUser from './useUser';
 import firestore from '@react-native-firebase/firestore';
-import { useHandleError } from './useHandleError';
-import { useNutritionInfo } from './useNutritionInfo';
-import { useUser } from './useUser';
 
-interface HandleFormProps {
+interface IHandleForm {
   values: Partial<IInfo>;
   navigateTo: keyof CreateUserStackParamsList;
 }
 
-export const useCreateUser = () => {
+const useCreateUser = () => {
   const [loading, setLoading] = useState(false);
   const { show: showLoading, hide: hideLoading } = useLoader();
   const { setCreateUser, login, userCreate, user } = useUserStore();
@@ -65,7 +66,7 @@ export const useCreateUser = () => {
   }, []);
 
   const handleForm = useCallback(
-    ({ values, navigateTo }: HandleFormProps) => {
+    ({ values, navigateTo }: IHandleForm) => {
       try {
         setCreateUser(values);
         navigateCreateUser(navigateTo);
@@ -148,3 +149,5 @@ export const useCreateUser = () => {
     loading,
   };
 };
+
+export default useCreateUser;

@@ -1,23 +1,7 @@
 import styled from 'styled-components/native';
 
-interface StyledWrapperProps {
-  flex?: number;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
-}
-
-interface InputProps {
-  name: string;
-}
-
-export const StyledWrapper = styled.View<StyledWrapperProps>`
-  flex: ${({ flex }) => flex || 0};
-  margin-top: ${({ marginTop }) => marginTop || 0}px;
-  margin-right: ${({ marginRight }) => marginRight || 0}px;
-  margin-bottom: ${({ marginBottom }) => marginBottom || 0}px;
-  margin-left: ${({ marginLeft }) => marginLeft || 0}px;
+export const StyledWrapperInput = styled.View`
+  flex: 1;
 `;
 
 export const StyledContainerInput = styled.View`
@@ -26,7 +10,7 @@ export const StyledContainerInput = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-color: ${({ theme }) => theme.colors.gray.white};
+  border-color: ${({ theme }) => theme.colors.white};
   border-width: ${({ theme }) => theme.effects.border.width.df}px;
   border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
   padding: ${({ theme }) => theme.effects.spacing.md}px;
@@ -39,12 +23,13 @@ export const StyledLabel = styled.Text`
   margin-bottom: ${({ theme }) => theme.effects.spacing.md}px;
 `;
 
-export const StyledTextInput = styled.TextInput<InputProps>`
+export const StyledTextInput = styled.TextInput`
   flex: 1;
+  padding: 0;
+  margin: 0;
   font-family: ${({ theme }) => theme.fonts.family.regular};
   font-size: ${({ theme }) => theme.fonts.size.s2}px;
   color: ${({ theme }) => theme.fonts.color.primary};
-  /* background-color: #fd0; */
 `;
 
 export const StyledError = styled.Text`

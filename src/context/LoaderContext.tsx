@@ -1,18 +1,18 @@
-import { Loader } from '@components/Loader';
 import React, { createContext, ReactNode, useCallback, useState } from 'react';
+import { Loader } from '@components/index';
 
-interface LoaderContextProps {
+interface ILoaderContext {
   show: () => void;
   hide: () => void;
 }
 
-export const LoaderContext = createContext<LoaderContextProps | null>(null);
+export const LoaderContext = createContext<ILoaderContext | null>(null);
 
-interface LoaderProviderProps {
+interface ILoaderProvider {
   children: ReactNode;
 }
 
-export const LoaderProvider = ({ children }: LoaderProviderProps) => {
+export const LoaderProvider = ({ children }: ILoaderProvider) => {
   const [visible, setVisible] = useState(false);
 
   const show = useCallback(() => {

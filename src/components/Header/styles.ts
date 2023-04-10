@@ -1,10 +1,10 @@
 import styled from 'styled-components/native';
 
-interface BaseButtonProps {
+interface IStyledBaseButton {
   show: boolean;
 }
 
-export const Wrapper = styled.View`
+export const StyledContainerHeader = styled.View`
   width: 100%;
   flex-direction: row;
   align-items: center;
@@ -14,7 +14,7 @@ export const Wrapper = styled.View`
     `${theme.effects.spacing.lg}px ${theme.effects.spacing.md}px`};
 `;
 
-export const Title = styled.Text`
+export const StyledTitle = styled.Text`
   flex: 1;
   height: 28px;
   font-family: ${({ theme }) => theme.fonts.family.bold};
@@ -23,7 +23,7 @@ export const Title = styled.Text`
   text-align: center;
 `;
 
-export const BaseButton = styled.TouchableOpacity<BaseButtonProps>`
+export const StyledBaseButton = styled.TouchableOpacity<IStyledBaseButton>`
   height: 28px;
   width: 28px;
   align-items: center;

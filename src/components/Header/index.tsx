@@ -1,47 +1,44 @@
 import React from 'react';
 import { firstLetterUppercase } from '@utils/stringFormat';
 import { useTheme } from 'styled-components/native';
-import { Wrapper, BaseButton, Title } from './styles';
-import { Icon } from '@components/Icon';
+import { StyledContainerHeader, StyledTitle, StyledBaseButton } from './styles';
+import Icon from '@components/Icon';
 
-interface HeaderProps {
+interface IHeader {
   title?: string;
   hasLogo?: boolean;
   left?: { iconName?: string; press: () => void };
   right?: { iconName?: string; press: () => void };
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  title,
-  left,
-  right,
-  hasLogo = false,
-}) => {
+const Header: React.FC<IHeader> = ({ title, left, right, hasLogo = false }) => {
   const { colors, fonts } = useTheme();
 
   return (
-    <Wrapper>
-      <BaseButton show={!!left} onPress={left?.press}>
+    <StyledContainerHeader>
+      <StyledBaseButton show={!!left} onPress={left?.press}>
         <Icon
           name={left?.iconName || 'arrow-left'}
-          color={colors.gray.white}
+          color={colors.white}
           size={fonts.size.s2}
         />
-      </BaseButton>
+      </StyledBaseButton>
 
       {hasLogo ? (
         <Icon name="logo" color={colors.primary[500]} size={32} />
       ) : (
-        <Title>{firstLetterUppercase(title)}</Title>
+        <StyledTitle>{firstLetterUppercase(title)}</StyledTitle>
       )}
 
-      <BaseButton show={!!right} onPress={right?.press}>
+      <StyledBaseButton show={!!right} onPress={right?.press}>
         <Icon
           name={right?.iconName || 'arrow-right'}
-          color={colors.gray.white}
+          color={colors.white}
           size={fonts.size.s2}
         />
-      </BaseButton>
-    </Wrapper>
+      </StyledBaseButton>
+    </StyledContainerHeader>
   );
 };
+
+export default Header;

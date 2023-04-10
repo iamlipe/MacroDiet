@@ -1,17 +1,7 @@
 import styled from 'styled-components/native';
 
-interface StyledWrapperCheckboxProps {
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
-}
-
-export const StyledWrapperCheckbox = styled.TouchableOpacity<StyledWrapperCheckboxProps>`
-  margin-top: ${({ marginTop }) => marginTop || 0}px;
-  margin-right: ${({ marginRight }) => marginRight || 0}px;
-  margin-bottom: ${({ marginBottom }) => marginBottom || 0}px;
-  margin-left: ${({ marginLeft }) => marginLeft || 0}px;
+export const StyledWrapperCheckbox = styled.TouchableOpacity`
+  flex: 1;
 `;
 
 export const StyledCheckboxContainer = styled.View`
@@ -26,7 +16,7 @@ export const StyledCheckboxBox = styled.View`
   align-items: center;
   border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
   border-width: ${({ theme }) => theme.effects.border.width.tl}px;
-  border-color: ${({ theme }) => theme.colors.gray.white};
+  border-color: ${({ theme }) => theme.colors.white};
   margin-right: ${({ theme }) => theme.effects.spacing.vs}px;
 `;
 

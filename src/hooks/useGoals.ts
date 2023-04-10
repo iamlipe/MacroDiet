@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
-import { useGoalStore } from '@stores/goal';
-import { useToast } from './useToast';
+import { useGoalStore } from '@stores/index';
 import { IGoal } from '@services/firebase/models/goal';
+import useToast from './useToast';
 import firestore from '@react-native-firebase/firestore';
 
-export const useGoals = () => {
+const useGoals = () => {
   const [loading, setLoading] = useState(false);
   const { setGoals } = useGoalStore();
   const { show: showToast } = useToast();
@@ -35,3 +35,5 @@ export const useGoals = () => {
 
   return { getGoals, loading };
 };
+
+export default useGoals;

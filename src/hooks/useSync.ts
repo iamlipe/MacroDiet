@@ -1,12 +1,12 @@
-import { useSyncStore } from '@stores/sync';
 import { useCallback } from 'react';
-import { useActitivities } from './useActitivities';
-import { useGender } from './useGender';
-import { useGoals } from './useGoals';
-import { useMeasures } from './useMeasures';
-import { useToast } from './useToast';
+import { useSyncStore } from '@stores/index';
+import useActitivities from './useActitivities';
+import useGender from './useGender';
+import useGoals from './useGoals';
+import useMeasures from './useMeasures';
+import useToast from './useToast';
 
-export const useSync = () => {
+const useSync = () => {
   const { setIsSync } = useSyncStore();
   const { getMeasures, getMesuresLength, getMesuresMass } = useMeasures();
   const { getGoals } = useGoals();
@@ -42,3 +42,5 @@ export const useSync = () => {
 
   return { sync };
 };
+
+export default useSync;

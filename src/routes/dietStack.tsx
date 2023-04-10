@@ -1,10 +1,10 @@
+import React from 'react';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import { HomeDiet } from '@screens/HomeDiet';
-import React from 'react';
 import { useTheme } from 'styled-components/native';
+import { HomeDiet } from '@screens/index';
 
 export type DietStackParamsList = {
   HomeDiet: undefined;

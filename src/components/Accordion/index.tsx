@@ -1,9 +1,7 @@
-import { DividerLine } from '@components/Divider/styles';
-import { Icon } from '@components/Icon';
-import { firstLetterUppercase } from '@utils/stringFormat';
 import React, { ReactNode, useState } from 'react';
+import { firstLetterUppercase } from '@utils/stringFormat';
 import { useTheme } from 'styled-components/native';
-
+import Icon from '@components/Icon';
 import {
   StyledContent,
   StyledDescription,
@@ -13,20 +11,17 @@ import {
   StyledTitle,
   StyledTitleContainer,
   StyledWrapper,
+  StyledDivider,
 } from './styles';
 
-interface AccordionProps {
+interface IAccordion {
   title: string;
   description?: string;
   overview?: string;
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
   children: ReactNode;
 }
 
-export const Accordion: React.FC<AccordionProps> = ({
+const Accordion: React.FC<IAccordion> = ({
   title,
   description,
   overview,
@@ -34,7 +29,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   ...rest
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const { colors, fonts, effects } = useTheme();
+  const { colors, fonts } = useTheme();
 
   return (
     <StyledWrapper {...rest}>
@@ -48,14 +43,16 @@ export const Accordion: React.FC<AccordionProps> = ({
           {overview && <StyledOverview>{overview}</StyledOverview>}
           <Icon
             name={expanded ? 'down' : 'up'}
-            color={colors.gray.white}
+            color={colors.white}
             size={fonts.size.md}
           />
         </StyledOverviewContainer>
       </StyledHeader>
 
-      {expanded && <DividerLine marginTop={effects.spacing.md} />}
+      {expanded && <StyledDivider />}
       {expanded && <StyledContent>{children}</StyledContent>}
     </StyledWrapper>
   );
 };
+
+export default Accordion;

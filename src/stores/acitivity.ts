@@ -6,7 +6,9 @@ type State = {
   setAcitivities: (foods: IAcitivity[]) => void;
 };
 
-export const useActivityStore = create<State>(set => ({
+const useActivityStore = create<State>(set => ({
   acitivities: null,
   setAcitivities: (acitivities: IAcitivity[]) => set(() => ({ acitivities })),
 }));
+
+export default useActivityStore;

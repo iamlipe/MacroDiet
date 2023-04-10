@@ -1,30 +1,19 @@
 import styled from 'styled-components/native';
 
-interface StyledContainerProgressBarProps {
-  marginTop?: number;
-  marginRight?: number;
-  marginBottom?: number;
-  marginLeft?: number;
-}
-
-interface StyledProgressBarProps {
+interface IStyledProgressBar {
   percentage: number;
 }
 
-export const StyledContainerProgressBar = styled.View<StyledContainerProgressBarProps>`
+export const StyledContainerProgressBar = styled.View`
   height: 12px;
   width: 100%;
   background-color: ${({ theme }) => theme.colors.primary[300]};
-  border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
-  margin-top: ${({ marginTop }) => marginTop || 0}px;
-  margin-right: ${({ marginRight }) => marginRight || 0}px;
-  margin-bottom: ${({ marginBottom }) => marginBottom || 0}px;
-  margin-left: ${({ marginLeft }) => marginLeft || 0}px;
+  border-radius: ${({ theme }) => theme.effects.border.radius.pill}px;
 `;
 
-export const StyledProgressBar = styled.View<StyledProgressBarProps>`
+export const StyledProgressBar = styled.View<IStyledProgressBar>`
   height: 12px;
-  width: ${({ percentage }) => percentage * 100}%;
-  background-color: ${({ theme }) => theme.colors.primary[500]};
-  border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
+  width: ${({ percentage }) => percentage}%;
+  background-color: ${({ theme }) => theme.colors.primary[600]};
+  border-radius: ${({ theme }) => theme.effects.border.radius.pill}px;
 `;

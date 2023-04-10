@@ -14,7 +14,7 @@ type State = {
   setMeasureLenghtDefault: (measureMassDefault: IMeasure) => void;
 };
 
-export const useMeasureStore = create<State>(set => ({
+const useMeasureStore = create<State>(set => ({
   allMeasures: null,
   setAllMeasures: (allMeasures: Array<IMeasure>) =>
     set(() => ({ allMeasures })),
@@ -31,3 +31,5 @@ export const useMeasureStore = create<State>(set => ({
   setMeasureLenghtDefault: (measureLengthDefault: IMeasure) =>
     set(() => ({ measureLengthDefault })),
 }));
+
+export default useMeasureStore;

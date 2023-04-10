@@ -3,6 +3,7 @@ import { BottomSheetScrollView, BottomSheetModal } from '@gorhom/bottom-sheet';
 
 export const StyledBottomSheet = styled(BottomSheetModal).attrs(
   ({ theme }) => ({
+    backgroundStyle: { backgroundColor: theme.colors.background.dark },
     handleStyle: {
       height: 40,
       backgroundColor: theme.colors.background.dark,
@@ -10,15 +11,23 @@ export const StyledBottomSheet = styled(BottomSheetModal).attrs(
     },
     handleIndicatorStyle: {
       width: 40,
-      backgroundColor: theme.colors.gray.white,
+      backgroundColor: theme.colors.white,
     },
   }),
 )`
-  background-color: ${({ theme }) => theme.colors.gray.black};
+  background-color: ${({ theme }) => theme.colors.background.dark};
 `;
 
-export const StyledBottomSheetScroll = styled(BottomSheetScrollView)`
+export const StyledScrollViewBottomSheet = styled(BottomSheetScrollView)`
+  flex: 1;
   background-color: ${({ theme }) => theme.colors.background.dark};
+  padding: ${({ theme }) => theme.effects.spacing.md}px;
+`;
+
+export const StyledContentViewBottomSheet = styled.View`
+  flex: 1;
+  background-color: ${({ theme }) => theme.colors.background.dark};
+  padding: ${({ theme }) => theme.effects.spacing.md}px;
 `;
 
 export const StyledBackdrop = styled.Pressable`

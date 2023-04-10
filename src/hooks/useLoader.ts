@@ -1,7 +1,7 @@
 import { LoaderContext } from '@context/LoaderContext';
 import { useContext } from 'react';
 
-export const useLoader = () => {
+const useLoader = () => {
   const context = useContext(LoaderContext);
 
   if (!context) {
@@ -10,3 +10,5 @@ export const useLoader = () => {
 
   return context;
 };
+
+export default useLoader;
