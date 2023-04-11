@@ -1,20 +1,30 @@
 import React from 'react';
+import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { View } from 'react-native';
-import { Background, Header, DatePicker, Button } from '@components/index';
+import { Background, Header, Button } from '@components/index';
 import { useNavigation } from '@react-navigation/native';
 import { NavPropsLogged } from '@routes/logged';
 import { useUserStore } from '@stores/index';
-import {
-  StyledDescription,
-  StyledInput,
-  StyledScroll,
-  StyledWrapperButtonSubmit,
-} from './styles';
+import { StyledInput, StyledScroll, StyledWrapperButtonSubmit } from './styles';
+import { useUser } from '@hooks/index';
 
-const Info = () => {
+const EditUserInfo = () => {
   const { goBack } = useNavigation<NavPropsLogged>();
   const { user } = useUserStore();
+  const { updateUserInfo } = useUser();
+
+  const initialValuesUser = {
+    name: `${user.name} ${user.lastName}`,
+    email: user.email,
+  };
+
+  const userSchema = Yup.object().shape({
+    name: Yup.string().min(3, 'Digite um nome valido').required('Obrigatório'),
+    email: Yup.string()
+      .email('Digite um e-mail valido')
+      .required('Obrigatório'),
+  });
 
   return (
     <Background>
@@ -24,28 +34,20 @@ const Info = () => {
       />
 
       <Formik
-        initialValues={{
-          name: user.name,
-          email: user.email,
-          phone: user.phone,
-          birthDate: user.info.birthDate
-            ? new Date(user.info.birthDate.milliseconds).toDateString()
-            : '',
-        }}
-        onSubmit={values => console.log(values)}>
+        initialValues={initialValuesUser}
+        validationSchema={userSchema}
+        onSubmit={values => {
+          updateUserInfo(values);
+          goBack();
+        }}>
         {({ handleChange, values, handleSubmit, errors, touched }) => (
           <StyledScroll>
-            <StyledDescription>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
-            </StyledDescription>
-
             <View>
               <StyledInput
                 name="name"
                 label="nome"
                 value={values.name}
-                placeholder="Ex: Jose silva"
+                placeholder="Ex: José silva"
                 onChangeText={handleChange('name')}
                 error={touched.name && errors.name ? errors.name : ''}
               />
@@ -56,24 +58,6 @@ const Info = () => {
                 placeholder="Ex: jose@email.com"
                 onChangeText={handleChange('email')}
                 error={touched.email && errors.email ? errors.email : ''}
-              />
-              <StyledInput
-                name={'phone'}
-                label="telefone"
-                value={values.phone}
-                placeholder="Ex: (11) 11111-1111"
-                onChangeText={handleChange('phone')}
-                error={touched.phone && errors.phone ? errors.phone : ''}
-              />
-
-              <DatePicker
-                name={'birthdate'}
-                label="data de aniversario"
-                value={values.birthDate}
-                onChange={handleChange('birthDate')}
-                error={
-                  touched.birthDate && errors.birthDate ? errors.birthDate : ''
-                }
               />
             </View>
 
@@ -87,4 +71,4 @@ const Info = () => {
   );
 };
 
-export default Info;
+export default EditUserInfo;
