@@ -105,8 +105,6 @@ const useFoods = () => {
         setLoading(true);
         let measureDoc = '';
 
-        console.log(parseNumber(portion));
-
         if (portionName) {
           measureDoc = await createMeasure({
             title: portionName,
