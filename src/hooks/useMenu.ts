@@ -15,7 +15,7 @@ const useMenu = () => {
         key: '1',
         name: 'Meus dados',
         iconName: 'user',
-        navigateTo: 'Info',
+        navigateTo: 'UserInfo',
       },
       { key: '2', name: 'Objetivo', iconName: 'target', navigateTo: 'Goal' },
       {

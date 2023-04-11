@@ -81,7 +81,7 @@ export class User implements IUser {
 export const buidSchemaAuth = (raw: FirebaseAuthTypes.User): IAuth => {
   return {
     name: raw.displayName.split(' ').splice(0, 1)[0],
-    lastName: raw.displayName.split(' ').join(' '),
+    lastName: raw.displayName.split(' ').splice(1).join(' '),
     email: raw.email,
     phone: raw.phoneNumber,
     photo: raw.photoURL,

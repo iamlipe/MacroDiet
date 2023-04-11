@@ -19,6 +19,7 @@ type State = {
   userCreate: Partial<ICreatedUser> | null;
   setCreateUser: (values: Partial<ICreatedUser>) => void;
   setFavoritesFoods: (values: Array<string>) => void;
+  setUser: (updatedUser: Partial<IUser>) => void;
 };
 
 const useUserStore = create<State>(set => ({
@@ -38,6 +39,8 @@ const useUserStore = create<State>(set => ({
         preferences: { ...state.user.preferences, favoritesFoods },
       },
     })),
+  setUser: updatedUser =>
+    set(state => ({ user: { ...state.user, ...updatedUser } })),
 }));
 
 export default useUserStore;

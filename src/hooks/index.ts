@@ -18,3 +18,4 @@ export { default as useGoalCalculate } from './useGoalCalculate';
 export { default as useHandleError } from './useHandleError';
 export { default as useRecoveryPassword } from './useRecoveryPassword';
 export { default as useNotification } from './useNotification';
+export { default as useUser } from './useUser';
