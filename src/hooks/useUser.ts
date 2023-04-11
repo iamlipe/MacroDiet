@@ -1,17 +1,51 @@
 import { IUser } from '@services/firebase/models/user';
+import { useCallback, useState } from 'react';
 import {
   useActivityStore,
   useGenderStore,
   useGoalStore,
   useMeasureStore,
+  useUserStore,
 } from '@stores/index';
 import moment from 'moment';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import useHandleError from './useHandleError';
 
 const useUser = () => {
+  const [loading, setLoading] = useState(false);
   const { acitivities } = useActivityStore();
   const { genders } = useGenderStore();
   const { goals } = useGoalStore();
   const { measuresMass, measuresLength } = useMeasureStore();
+  const { setUser } = useUserStore();
+  const { handleFirestoreError } = useHandleError();
+
+  const updateUserInfo = useCallback(
+    async (userInfo: { name: string; email: string }) => {
+      try {
+        const updatedUser = {
+          name: userInfo.name.split(' ').splice(0, 1)[0],
+          lastName: userInfo.name.split(' ').splice(1).join(' '),
+          email: userInfo.email,
+        };
+
+        setLoading(true);
+
+        await firestore()
+          .collection('Users')
+          .doc(auth().currentUser.uid)
+          .update(updatedUser);
+
+        setUser(updatedUser);
+      } catch (error) {
+        handleFirestoreError(error);
+        setLoading(false);
+      } finally {
+      }
+    },
+    [handleFirestoreError, setUser],
+  );
 
   const getUserActivityLevel = (activityDoc: string) => {
     return acitivities.find(item => item.doc === activityDoc);
@@ -45,18 +79,18 @@ const useUser = () => {
     return (weigth.quantity * (measureMultiple || 0)) / 1000;
   };
 
-  const handleInfoUser = (user: IUser) => {
+  const handleInfoUser = (data: IUser) => {
     return {
-      activityLevel: getUserActivityLevel(user.info.activityDoc),
-      age: getUserAge(new Date(user.info.birthDate.milliseconds)),
-      gender: getUserGender(user.info.genderDoc),
-      goal: getUserGoal(user.info.goalDoc),
-      height: getUserHeight(user.info.height),
-      weight: getUserWeight(user.info.weigth),
+      activityLevel: getUserActivityLevel(data.info.activityDoc),
+      age: getUserAge(new Date(data.info.birthDate.milliseconds)),
+      gender: getUserGender(data.info.genderDoc),
+      goal: getUserGoal(data.info.goalDoc),
+      height: getUserHeight(data.info.height),
+      weight: getUserWeight(data.info.weigth),
     };
   };
 
-  return { handleInfoUser };
+  return { handleInfoUser, updateUserInfo, loading };
 };
 
 export default useUser;
