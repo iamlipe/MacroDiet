@@ -10,7 +10,7 @@ export interface IInfo {
   timeInWeeks: number;
 }
 
-export interface INutritionInfo {
+export interface INutritionalInfo {
   kcal: number;
   prot: number;
   carb: number;
@@ -42,7 +42,7 @@ export interface IUser {
   photo?: string | null;
   phone?: string | null;
   info: IInfo;
-  nutritionInfo?: INutritionInfo;
+  nutritionalInfo?: INutritionalInfo;
   preferences: IPreferences;
 }
 
@@ -61,7 +61,7 @@ export class User implements IUser {
   photo?: string | null | undefined;
   phone?: string | null | undefined;
   info: IInfo;
-  nutritionInfo?: INutritionInfo;
+  nutritionalInfo?: INutritionalInfo;
   preferences: {
     mealsTime: IMealTime[];
     favoritesFoods: string[];

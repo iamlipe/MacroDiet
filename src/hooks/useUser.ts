@@ -118,7 +118,7 @@ const useUser = () => {
 
       const infoUser = handleInfoUser(newUser);
 
-      const nutritionInfo = calculateNutritionalInfo({
+      const nutritionalInfo = calculateNutritionalInfo({
         activityLevelFactor: infoUser.activityLevel.factor,
         age: infoUser.age,
         gender: infoUser.gender.title,
@@ -128,7 +128,7 @@ const useUser = () => {
         timeInWeeks: infoUser.timeInWeeks,
       });
 
-      login({ ...newUser, nutritionInfo });
+      login({ ...newUser, nutritionalInfo });
     } catch (error) {
       handleFirestoreError(error);
     } finally {
@@ -167,7 +167,7 @@ const useUser = () => {
 
         const infoUser = handleInfoUser(updatedUser);
 
-        const nutritionInfo = calculateNutritionalInfo({
+        const nutritionalInfo = calculateNutritionalInfo({
           activityLevelFactor: infoUser.activityLevel.factor,
           age: infoUser.age,
           gender: infoUser.gender.title,
@@ -177,7 +177,7 @@ const useUser = () => {
           weightGoal: infoUser.weightGoal,
         });
 
-        setUser({ ...updatedUser, nutritionInfo });
+        setUser({ ...updatedUser, nutritionalInfo });
       } catch (error) {
         handleFirestoreError(error);
         setLoading(false);

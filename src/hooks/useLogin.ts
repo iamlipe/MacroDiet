@@ -51,7 +51,7 @@ const useLogin = () => {
       if (user) {
         const infoUser = handleInfoUser(user);
 
-        const nutritionInfo = calculateNutritionalInfo({
+        const nutritionalInfo = calculateNutritionalInfo({
           activityLevelFactor: infoUser.activityLevel.factor,
           age: infoUser.age,
           gender: infoUser.gender.title,
@@ -61,7 +61,7 @@ const useLogin = () => {
           weightGoal: infoUser.weightGoal,
         });
 
-        login({ ...user, nutritionInfo });
+        login({ ...user, nutritionalInfo });
       } else {
         authLogin(buidSchemaAuth(googleAuth));
         setCreateUser({ doc: googleAuth.uid });
@@ -114,7 +114,7 @@ const useLogin = () => {
         if (user) {
           const infoUser = handleInfoUser(user);
 
-          const nutritionInfo = calculateNutritionalInfo({
+          const nutritionalInfo = calculateNutritionalInfo({
             activityLevelFactor: infoUser.activityLevel.factor,
             age: infoUser.age,
             gender: infoUser.gender.title,
@@ -124,7 +124,7 @@ const useLogin = () => {
             weightGoal: infoUser.weightGoal,
           });
 
-          login({ ...user, nutritionInfo });
+          login({ ...user, nutritionalInfo });
         } else {
           authLogin(buidSchemaAuth(userFirebaseAuth));
           setCreateUser({ doc: userFirebaseAuth.uid });

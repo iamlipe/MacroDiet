@@ -29,17 +29,17 @@ const ResultGoal = () => {
         </StyledLabel>
 
         <StyledLabel>
-          {`kcal: ${user.nutritionInfo.kcal.toFixed(0)}kcal`}
+          {`kcal: ${user.nutritionalInfo.kcal.toFixed(0)}kcal`}
           {'\n\n'}
-          {`proteina: ${user.nutritionInfo.prot.toFixed(0)}g`}
+          {`proteina: ${user.nutritionalInfo.prot.toFixed(0)}g`}
           {'\n\n'}
-          {`carboidrato ${user.nutritionInfo.carb.toFixed(0)}g`}
+          {`carboidrato ${user.nutritionalInfo.carb.toFixed(0)}g`}
           {'\n\n'}
-          {`gordura: ${user.nutritionInfo.fat.toFixed(0)}g`}
+          {`gordura: ${user.nutritionalInfo.fat.toFixed(0)}g`}
           {'\n\n'}
-          {`sodio: ${(user.nutritionInfo.sodium * 1000).toFixed(0)}mg`}
+          {`sodio: ${(user.nutritionalInfo.sodium * 1000).toFixed(0)}mg`}
           {'\n\n'}
-          {`fibra: ${user.nutritionInfo.fiber}g`}
+          {`fibra: ${user.nutritionalInfo.fiber}g`}
         </StyledLabel>
 
         <StyledLabel>

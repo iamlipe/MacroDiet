@@ -1,7 +1,7 @@
 import {
   IAuth,
   IInfo,
-  INutritionInfo,
+  INutritionalInfo,
   IUser,
 } from '@services/firebase/models/user';
 import { create } from 'zustand';
@@ -15,7 +15,7 @@ type State = {
   auth: (auth: IAuth) => void;
   login: (user: IUser) => void;
   logout: () => void;
-  setNutritionInfo: (nutritionInfo: INutritionInfo) => void;
+  setNutritionInfo: (nutritionalInfo: INutritionalInfo) => void;
   userCreate: Partial<ICreatedUser> | null;
   setCreateUser: (values: Partial<ICreatedUser>) => void;
   setFavoritesFoods: (values: Array<string>) => void;
@@ -27,8 +27,8 @@ const useUserStore = create<State>(set => ({
   auth: values => set(() => ({ user: { ...values } })),
   login: (user: IUser) => set(() => ({ user })),
   logout: () => set(() => ({ user: null })),
-  setNutritionInfo: nutritionInfo =>
-    set(state => ({ user: { ...state.user, nutritionInfo } })),
+  setNutritionInfo: nutritionalInfo =>
+    set(state => ({ user: { ...state.user, nutritionalInfo } })),
   userCreate: null,
   setCreateUser: values =>
     set(state => ({ userCreate: { ...state.userCreate, ...values } })),
