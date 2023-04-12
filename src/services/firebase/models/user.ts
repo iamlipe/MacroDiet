@@ -2,15 +2,16 @@ import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 export interface IInfo {
   height: { quantity: number; measureDoc: string };
-  weigth: { quantity: number; measureDoc: string };
+  weight: { quantity: number; measureDoc: string };
+  goalWeight: { quantity: number; measureDoc: string };
   birthDate: { nanoseconds: number; milliseconds: number };
   activityDoc: string;
-  goalDoc: string;
   genderDoc: string;
+  timeInWeeks: number;
 }
 
 export interface INutritionInfo {
-  kcalGoal: number;
+  kcal: number;
   prot: number;
   carb: number;
   fat: number;
