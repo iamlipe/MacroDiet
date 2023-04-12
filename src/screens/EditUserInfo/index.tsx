@@ -12,7 +12,7 @@ import { useUser } from '@hooks/index';
 const EditUserInfo = () => {
   const { goBack } = useNavigation<NavPropsLogged>();
   const { user } = useUserStore();
-  const { updateUserInfo } = useUser();
+  const { updateUser } = useUser();
 
   const initialValuesUser = {
     name: `${user.name} ${user.lastName}`,
@@ -37,7 +37,7 @@ const EditUserInfo = () => {
         initialValues={initialValuesUser}
         validationSchema={userSchema}
         onSubmit={values => {
-          updateUserInfo(values);
+          updateUser(values);
           goBack();
         }}>
         {({ handleChange, values, handleSubmit, errors, touched }) => (
