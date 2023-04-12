@@ -28,8 +28,7 @@ const IntroductionCreateUser = () => {
         <StyledWrapperButtonSubmit>
           <Button
             title="Começar"
-            icon={{ name: 'long-arrow-right' }}
-            onPress={() => navigateCreateUser('GoalCreateUser')}
+            onPress={() => navigateCreateUser('GenderCreateUser')}
           />
         </StyledWrapperButtonSubmit>
       </StyledScroll>

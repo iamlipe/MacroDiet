@@ -1,12 +1,13 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { useCreateUser } from '@hooks/index';
+import { useUser } from '@hooks/index';
 import { Formik } from 'formik';
 import { Background, Button, DatePicker } from '@components/index';
 import { StyledScroll, StyledWrapperButtonSubmit } from './styles';
+import { formatDate } from '@utils/format';
 
 const BirthDateCreateUser = () => {
-  const { handleForm, handleValuesForm } = useCreateUser();
+  const { handleFormCreateUser } = useUser();
 
   const initialValuesBirthDate = {
     birthDate: '',
@@ -27,9 +28,9 @@ const BirthDateCreateUser = () => {
         initialValues={initialValuesBirthDate}
         validationSchema={birthDateSchema}
         onSubmit={values => {
-          handleForm({
-            values: handleValuesForm(values),
-            navigateTo: 'GenderCreateUser',
+          handleFormCreateUser({
+            values: { birthDate: formatDate(values.birthDate) },
+            navigateTo: 'ActivityCreateUser',
           });
         }}>
         {({ handleChange, values, handleSubmit, errors, touched }) => (
@@ -46,11 +47,7 @@ const BirthDateCreateUser = () => {
             />
 
             <StyledWrapperButtonSubmit>
-              <Button
-                title="Proximo"
-                icon={{ name: 'long-arrow-right' }}
-                onPress={handleSubmit}
-              />
+              <Button title="Proximo" onPress={handleSubmit} />
             </StyledWrapperButtonSubmit>
           </StyledScroll>
         )}

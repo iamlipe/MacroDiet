@@ -13,6 +13,7 @@ export const StyledFormRow = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
+  margin-bottom: ${({ theme }) => theme.effects.spacing.md}px;
 `;
 
 export const StyledInput = styled(Input).attrs(({ theme }) => ({
@@ -38,4 +39,11 @@ export const StyledSelect = styled(Select).attrs(({ theme }) => ({
 export const StyledWrapperButtonSubmit = styled.View`
   flex: 1;
   justify-content: flex-end;
+`;
+
+export const StyledError = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.family.medium};
+  font-size: ${({ theme }) => theme.fonts.size.md}px;
+  color: ${({ theme }) => theme.fonts.color.secundary};
+  margin-bottom: ${({ theme }) => theme.effects.spacing.md}px;
 `;

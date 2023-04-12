@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCreateUser } from '@hooks/index';
+import { useUser } from '@hooks/index';
 import { Background, Button } from '@components/index';
 import {
   StyledScroll,
@@ -9,27 +9,25 @@ import {
 } from './styles';
 
 const ConclusionCreateUser = () => {
-  const { createUser } = useCreateUser();
+  const { createUser } = useUser();
 
   return (
     <Background>
       <StyledScroll>
         <StyledTitle>
-          O caminho para uma dieta saudável e equilibrada começa aqui!
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry.
         </StyledTitle>
 
         <StyledSubtitle>
-          Preencha este formulário para montarmos seu diário de macros
-          personalizado, responda com cuidado para atendermos suas necessidades
-          alimentares com precisão.
+          It is a long established fact that a reader will be distracted by the
+          readable content of a page when looking at its layout. The point of
+          using Lorem Ipsum is that it has a more-or-less normal distribution of
+          letters
         </StyledSubtitle>
 
         <StyledWrapperButtonSubmit>
-          <Button
-            title="Começar"
-            icon={{ name: 'long-arrow-right' }}
-            onPress={createUser}
-          />
+          <Button title="Começar" onPress={createUser} />
         </StyledWrapperButtonSubmit>
       </StyledScroll>
     </Background>
