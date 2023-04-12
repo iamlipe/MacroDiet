@@ -1,48 +1,24 @@
 import React, { useMemo } from 'react';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
-import { Background, Header, Button } from '@components/index';
-import { useGoalCalculate } from '@hooks/index';
+import { NavPropsLogged } from '@routes/logged';
+import { Background, Button, Header } from '@components/index';
 import { useNavigation } from '@react-navigation/native';
-import { useActivityStore } from '@stores/index';
-import { buildOptionForm } from '@utils/help';
+import { useUserStore } from '@stores/index';
+import { useUser } from '@hooks/index';
 import {
   StyledDescription,
-  StyledInput,
   StyledScroll,
-  StyledSelect,
+  StyledInfo,
+  StyledLabel,
   StyledWrapperButtonSubmit,
-  StyledForm,
+  StyledContainerGoalInfo,
 } from './styles';
 
 const Goal = () => {
-  const { goBack } = useNavigation();
-  const { acitivities } = useActivityStore();
-  const { handleGoalCalculate } = useGoalCalculate();
+  const { goBack, navigate: navigateLogged } = useNavigation<NavPropsLogged>();
+  const { user } = useUserStore();
+  const { handleInfoUser } = useUser();
 
-  const inititalValuesGoalCalculate = useMemo(() => {
-    return {
-      height: '',
-      wieght: '',
-      actitvityLevel: '',
-      goalWeight: '',
-      goalBodyFat: '',
-      time: '',
-    };
-  }, []);
-
-  const goalCalculateSchema = useMemo(
-    () =>
-      Yup.object().shape({
-        height: Yup.string().required(),
-        wieght: Yup.string().required(),
-        actitvityLevel: Yup.string().required(),
-        goalWeight: Yup.string().required(),
-        goalBodyFat: Yup.string().required(),
-        time: Yup.string().required(),
-      }),
-    [],
-  );
+  const userData = useMemo(() => handleInfoUser(user), [handleInfoUser, user]);
 
   return (
     <Background>
@@ -51,90 +27,39 @@ const Goal = () => {
         title="Objetivo"
       />
 
-      <Formik
-        initialValues={inititalValuesGoalCalculate}
-        validationSchema={goalCalculateSchema}
-        onSubmit={handleGoalCalculate}>
-        {({ handleChange, values, handleSubmit, errors, touched }) => (
-          <StyledScroll>
-            <StyledDescription>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
-            </StyledDescription>
+      <StyledScroll>
+        <StyledDescription>
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry.
+        </StyledDescription>
 
-            <StyledForm>
-              <StyledInput
-                label="altura"
-                name="height"
-                value={values.height}
-                onChangeText={handleChange('height')}
-                error={touched.height && errors.height ? errors.height : ''}
-              />
+        <StyledContainerGoalInfo>
+          <StyledLabel>Altura:</StyledLabel>
+          <StyledInfo>{`${userData.height} cm`}</StyledInfo>
 
-              <StyledInput
-                name="peso atual"
-                label="wieght"
-                value={values.wieght}
-                onChangeText={handleChange('wieght')}
-                error={touched.wieght && errors.wieght ? errors.wieght : ''}
-              />
+          <StyledLabel>Peso:</StyledLabel>
+          <StyledInfo>{`${userData.weight} kg`}</StyledInfo>
 
-              <StyledSelect
-                label="nivel de atividade fisica"
-                name="actitvityLevel"
-                value={values.actitvityLevel}
-                options={acitivities.map(buildOptionForm)}
-                onChange={handleChange('actitvityLevel')}
-                error={
-                  touched.actitvityLevel && errors.actitvityLevel
-                    ? errors.actitvityLevel
-                    : ''
-                }
-              />
+          <StyledLabel>Idade:</StyledLabel>
+          <StyledInfo>{`${userData.age} anos`}</StyledInfo>
 
-              <StyledInput
-                label="meta de peso"
-                name="goalWeight"
-                value={values.goalWeight}
-                onChangeText={handleChange('goalWeight')}
-                error={
-                  touched.goalWeight && errors.goalWeight
-                    ? errors.goalWeight
-                    : ''
-                }
-              />
+          <StyledLabel>Genero:</StyledLabel>
+          <StyledInfo>{userData.gender.title}</StyledInfo>
 
-              <StyledInput
-                label="meta de gordura corporal"
-                name="goalBodyFat"
-                value={values.goalBodyFat}
-                onChangeText={handleChange('goalBodyFat')}
-                error={
-                  touched.goalBodyFat && errors.goalBodyFat
-                    ? errors.goalBodyFat
-                    : ''
-                }
-              />
+          <StyledLabel>Nivel de atividade fisica:</StyledLabel>
+          <StyledInfo>{userData.activityLevel.title}</StyledInfo>
 
-              <StyledSelect
-                label="Tempo"
-                name="time"
-                value={values.time}
-                options={[
-                  { key: '1', name: '30 dias' },
-                  { key: '2', name: '15 dias' },
-                ]}
-                onChange={handleChange('time')}
-                error={touched.time && errors.time ? errors.time : ''}
-              />
-            </StyledForm>
+          <StyledLabel>Meta:</StyledLabel>
+          <StyledInfo>{`${userData.weightGoal} kg`}</StyledInfo>
 
-            <StyledWrapperButtonSubmit>
-              <Button title="salvar" onPress={handleSubmit} />
-            </StyledWrapperButtonSubmit>
-          </StyledScroll>
-        )}
-      </Formik>
+          <StyledLabel>Tempo:</StyledLabel>
+          <StyledInfo>{`${userData.timeInWeeks} semanas`}</StyledInfo>
+        </StyledContainerGoalInfo>
+
+        <StyledWrapperButtonSubmit>
+          <Button title="Editar" onPress={() => navigateLogged('EditGoal')} />
+        </StyledWrapperButtonSubmit>
+      </StyledScroll>
     </Background>
   );
 };
