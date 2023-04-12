@@ -4,11 +4,11 @@ import { Formik } from 'formik';
 import { Background, Button, Option } from '@components/index';
 import { buildOptionForm } from '@utils/help';
 import { useActivityStore } from '@stores/index';
-import { useCreateUser } from '@hooks/index';
+import { useUser } from '@hooks/index';
 import { StyledScroll, StyledWrapperButtonSubmit } from './styles';
 
 const ActivityCreateUser = () => {
-  const { handleForm } = useCreateUser();
+  const { handleFormCreateUser } = useUser();
   const { acitivities } = useActivityStore();
 
   const initialValuesActivity = {
@@ -27,7 +27,7 @@ const ActivityCreateUser = () => {
         initialValues={initialValuesActivity}
         validationSchema={activitySchema}
         onSubmit={values =>
-          handleForm({ values, navigateTo: 'BirthDateCreateUser' })
+          handleFormCreateUser({ values, navigateTo: 'HeightCreateUser' })
         }>
         {({ handleChange, values, handleSubmit, errors, touched }) => (
           <StyledScroll>
@@ -49,11 +49,7 @@ const ActivityCreateUser = () => {
             />
 
             <StyledWrapperButtonSubmit>
-              <Button
-                title="Proximo"
-                icon={{ name: 'long-arrow-right' }}
-                onPress={handleSubmit}
-              />
+              <Button title="Proximo" onPress={handleSubmit} />
             </StyledWrapperButtonSubmit>
           </StyledScroll>
         )}

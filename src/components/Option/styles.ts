@@ -9,6 +9,10 @@ interface IStyledTitle {
   selected: boolean;
 }
 
+interface IStyledDescription {
+  selected: boolean;
+}
+
 export const StyledContainerOption = styled.TouchableOpacity<IStyledContainerOption>`
   flex-direction: row;
   justify-content: space-between;
@@ -42,4 +46,11 @@ export const StyledError = styled.Text`
   font-size: ${({ theme }) => theme.fonts.size.md}px;
   color: ${({ theme }) => theme.fonts.color.secundary};
   margin-top: ${({ theme }) => theme.effects.spacing.vs}px;
+`;
+
+export const StyledDescription = styled.Text<IStyledDescription>`
+  font-family: ${({ theme }) => theme.fonts.family.medium};
+  font-size: ${({ theme }) => theme.fonts.size.md}px;
+  color: ${({ theme, selected }) =>
+    selected ? theme.colors.primary[200] : theme.colors.gray[200]};
 `;

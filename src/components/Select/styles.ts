@@ -27,7 +27,7 @@ export const StyledSelected = styled.Text`
 `;
 
 export const StyledContentBottomSheet = styled.View`
-  padding: ${({ theme }) => `0 ${theme.effects.spacing.md}px`};
+  padding: ${({ theme }) => `0 ${theme.effects.spacing.sm}px`};
 `;
 
 export const StyledError = styled.Text`
@@ -38,7 +38,10 @@ export const StyledError = styled.Text`
 `;
 
 export const StyledWrapperCardSelect = styled.TouchableOpacity`
-  padding: ${({ theme }) => theme.effects.spacing.sm}px 0;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: ${({ theme }) => theme.effects.spacing.vl}px;
 `;
 
 export const StyledLabelCardSelect = styled.Text<IStyledLabelCardSelect>`

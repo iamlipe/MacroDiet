@@ -10,21 +10,21 @@ import {
   BirthDateCreateUser,
   ConclusionCreateUser,
   GenderCreateUser,
-  GoalCreateUser,
   HeightCreateUser,
   IntroductionCreateUser,
   WeightCreateUser,
+  TimeGoalCreateUser,
 } from '@screens/index';
 
 export type CreateUserStackParamsList = {
   IntroductionCreateUser: undefined;
-  GoalCreateUser: undefined;
   ActivityCreateUser: undefined;
   GenderCreateUser: undefined;
   BirthDateCreateUser: undefined;
   HeightCreateUser: undefined;
   ConclusionCreateUser: undefined;
   WeightCreateUser: undefined;
+  TimeGoalCreateUser: undefined;
 };
 
 const CreateUser = createMaterialTopTabNavigator<CreateUserStackParamsList>();
@@ -42,7 +42,6 @@ export const CreateUserStack = () => {
         name="IntroductionCreateUser"
         component={IntroductionCreateUser}
       />
-      <CreateUser.Screen name="GoalCreateUser" component={GoalCreateUser} />
       <CreateUser.Screen
         name="ActivityCreateUser"
         component={ActivityCreateUser}
@@ -54,6 +53,10 @@ export const CreateUserStack = () => {
       <CreateUser.Screen name="GenderCreateUser" component={GenderCreateUser} />
       <CreateUser.Screen name="HeightCreateUser" component={HeightCreateUser} />
       <CreateUser.Screen name="WeightCreateUser" component={WeightCreateUser} />
+      <CreateUser.Screen
+        name="TimeGoalCreateUser"
+        component={TimeGoalCreateUser}
+      />
       <CreateUser.Screen
         name="ConclusionCreateUser"
         component={ConclusionCreateUser}

@@ -1,10 +1,11 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { useCreateUser } from '@hooks/index';
+import { useUser } from '@hooks/index';
 import { useMeasureStore } from '@stores/index';
 import { Formik } from 'formik';
 import { Background, Button } from '@components/index';
 import { buildOptionForm } from '@utils/help';
+import { formatMeasureForm } from '@utils/format';
 import {
   StyledFormRow,
   StyledScroll,
@@ -15,7 +16,7 @@ import {
 
 const HeightCreateUser = () => {
   const { measureLengthDefault } = useMeasureStore();
-  const { handleForm, handleValuesForm } = useCreateUser();
+  const { handleFormCreateUser } = useUser();
 
   const initialValuesHeight = {
     height: {
@@ -39,8 +40,8 @@ const HeightCreateUser = () => {
         initialValues={initialValuesHeight}
         validationSchema={heightSchema}
         onSubmit={values =>
-          handleForm({
-            values: handleValuesForm(values),
+          handleFormCreateUser({
+            values: { height: formatMeasureForm(values.height) },
             navigateTo: 'WeightCreateUser',
           })
         }>
@@ -74,11 +75,7 @@ const HeightCreateUser = () => {
             </StyledFormRow>
 
             <StyledWrapperButtonSubmit>
-              <Button
-                title="Proximo"
-                icon={{ name: 'long-arrow-right' }}
-                onPress={handleSubmit}
-              />
+              <Button title="Proximo" onPress={handleSubmit} />
             </StyledWrapperButtonSubmit>
           </StyledScroll>
         )}

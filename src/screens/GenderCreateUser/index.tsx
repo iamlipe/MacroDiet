@@ -2,14 +2,14 @@ import React from 'react';
 import * as Yup from 'yup';
 import { buildOptionForm } from '@utils/help';
 import { useGenderStore } from '@stores/index';
-import { useCreateUser } from '@hooks/index';
+import { useUser } from '@hooks/index';
 import { Formik } from 'formik';
 import { Background, Button, Option } from '@components/index';
 import { StyledScroll, StyledWrapperButtonSubmit } from './styles';
 
 const GenderCreateUser = () => {
   const { genders } = useGenderStore();
-  const { handleForm } = useCreateUser();
+  const { handleFormCreateUser } = useUser();
 
   const initialValuesGender = {
     genderDoc: 'Por favor, selecione o seu sexo biológico',
@@ -25,7 +25,7 @@ const GenderCreateUser = () => {
         initialValues={initialValuesGender}
         validationSchema={genderSchema}
         onSubmit={values =>
-          handleForm({ values, navigateTo: 'HeightCreateUser' })
+          handleFormCreateUser({ values, navigateTo: 'BirthDateCreateUser' })
         }>
         {({ handleChange, values, handleSubmit, errors, touched }) => (
           <StyledScroll>
@@ -41,11 +41,7 @@ const GenderCreateUser = () => {
             />
 
             <StyledWrapperButtonSubmit>
-              <Button
-                title="Proximo"
-                icon={{ name: 'long-arrow-right' }}
-                onPress={handleSubmit}
-              />
+              <Button title="Proximo" onPress={handleSubmit} />
             </StyledWrapperButtonSubmit>
           </StyledScroll>
         )}

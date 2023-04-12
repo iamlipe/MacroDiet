@@ -2,9 +2,9 @@ import { useUserStore } from '@stores/index';
 import { useCallback, useState } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { IUser, buidSchemaAuth } from '@services/firebase/models/user';
+import { calculateNutritionalInfo } from '@utils/nutritionalInfo';
 import useLoader from './useLoader';
 import useToast from './useToast';
-import useNutritionInfo from './useNutritionInfo';
 import useUser from './useUser';
 import useHandleError from './useHandleError';
 import auth from '@react-native-firebase/auth';
@@ -23,7 +23,6 @@ const useLogin = () => {
     auth: authLogin,
     setCreateUser,
   } = useUserStore();
-  const { getUserNutritionInfo } = useNutritionInfo();
   const { handleInfoUser } = useUser();
   const { show: showToast } = useToast();
   const { show: showLoader, hide: hideLoader } = useLoader();
@@ -52,16 +51,17 @@ const useLogin = () => {
       if (user) {
         const infoUser = handleInfoUser(user);
 
-        const nutritionInfo = getUserNutritionInfo({
+        const nutritionalInfo = calculateNutritionalInfo({
           activityLevelFactor: infoUser.activityLevel.factor,
           age: infoUser.age,
           gender: infoUser.gender.title,
-          goalFactor: infoUser.goal.factor,
           height: infoUser.height,
           weight: infoUser.weight,
+          timeInWeeks: infoUser.timeInWeeks,
+          weightGoal: infoUser.weightGoal,
         });
 
-        login({ ...user, nutritionInfo });
+        login({ ...user, nutritionalInfo });
       } else {
         authLogin(buidSchemaAuth(googleAuth));
         setCreateUser({ doc: googleAuth.uid });
@@ -76,7 +76,6 @@ const useLogin = () => {
     showLoader,
     login,
     handleInfoUser,
-    getUserNutritionInfo,
     authLogin,
     setCreateUser,
     handleAuthError,
@@ -115,16 +114,17 @@ const useLogin = () => {
         if (user) {
           const infoUser = handleInfoUser(user);
 
-          const nutritionInfo = getUserNutritionInfo({
+          const nutritionalInfo = calculateNutritionalInfo({
             activityLevelFactor: infoUser.activityLevel.factor,
             age: infoUser.age,
             gender: infoUser.gender.title,
-            goalFactor: infoUser.goal.factor,
             height: infoUser.height,
             weight: infoUser.weight,
+            timeInWeeks: infoUser.timeInWeeks,
+            weightGoal: infoUser.weightGoal,
           });
 
-          login({ ...user, nutritionInfo });
+          login({ ...user, nutritionalInfo });
         } else {
           authLogin(buidSchemaAuth(userFirebaseAuth));
           setCreateUser({ doc: userFirebaseAuth.uid });
@@ -138,7 +138,6 @@ const useLogin = () => {
     },
     [
       authLogin,
-      getUserNutritionInfo,
       handleAuthError,
       handleInfoUser,
       hideLoader,

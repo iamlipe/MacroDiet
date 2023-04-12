@@ -28,11 +28,12 @@ export const users: IUsersData = {
       phone: null,
       info: {
         height: { quantity: 170, measureDoc: '1' },
-        weigth: { quantity: 170, measureDoc: '1' },
+        weigth: { quantity: 74, measureDoc: '1' },
         birthDate: { milliseconds: 0, nanoseconds: 0 },
         activityDoc: '2',
         goalDoc: '1',
         genderDoc: '1',
+        goalWeight: 76,
       },
       preferences: defaultPreferences,
     },

@@ -24,5 +24,5 @@ export const StyledLabel = styled.Text`
   font-family: ${({ theme }) => theme.fonts.family.regular};
   font-size: ${({ theme }) => theme.fonts.size.lg}px;
   color: ${({ theme }) => theme.colors.white};
-  margin-bottom: ${({ theme }) => theme.effects.spacing.lg};
+  margin-bottom: ${({ theme }) => theme.effects.spacing.lg}px;
 `;

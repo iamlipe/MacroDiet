@@ -88,7 +88,7 @@ const DetailsMealsDay = () => {
             animate
             progress={
               handleInfoMealsDay(meals).totalKcalMeals /
-              user.nutritionInfo.kcalGoal
+              user.nutritionalInfo.kcal
             }
             progressColor={colors.primary[600]}
             backgroundColor={colors.primary[300]}
@@ -101,28 +101,28 @@ const DetailsMealsDay = () => {
           {renderProgressInfo({
             title: 'Proteina',
             consumed: handleInfoMealsDay(meals).totalProtMeals,
-            goal: user.nutritionInfo.prot,
+            goal: user.nutritionalInfo.prot,
           })}
           {renderProgressInfo({
             title: 'Carboidrato',
             consumed: handleInfoMealsDay(meals).totalCarbMeals,
-            goal: user.nutritionInfo.carb,
+            goal: user.nutritionalInfo.carb,
           })}
           {renderProgressInfo({
             title: 'Gordura',
             consumed: handleInfoMealsDay(meals).totalFatMeals,
-            goal: user.nutritionInfo.fat,
+            goal: user.nutritionalInfo.fat,
           })}
           {renderProgressInfo({
             title: 'Fibra',
             consumed: handleInfoMealsDay(meals).totalFiberMeals,
-            goal: user.nutritionInfo.fiber,
+            goal: user.nutritionalInfo.fiber,
             withoutProgressBar: true,
           })}
           {renderProgressInfo({
             title: 'Sodio',
             consumed: handleInfoMealsDay(meals).totalSodiumMeals,
-            goal: user.nutritionInfo.sodium,
+            goal: user.nutritionalInfo.sodium,
             withoutProgressBar: true,
           })}
         </View>

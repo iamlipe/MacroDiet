@@ -15,8 +15,6 @@ const UserInfo = () => {
   const { goBack, navigate: navigateLogged } = useNavigation<NavPropsLogged>();
   const { user } = useUserStore();
 
-  console.log(user.lastName);
-
   return (
     <Background>
       <Header

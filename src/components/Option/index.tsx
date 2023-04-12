@@ -6,13 +6,14 @@ import {
   StyledLabel,
   StyledError,
   StyledTitle,
+  StyledDescription,
 } from './styles';
 
 interface IOption {
   name: string;
   value: string;
   label?: string;
-  options: { key: string; name: string }[];
+  options: { key: string; name: string; description?: string }[];
   error?: string;
   onChange: (text: string) => void;
 }
@@ -37,6 +38,13 @@ const Option: React.FC<IOption> = ({
           <StyledTitle selected={option.key === value}>
             {firstLetterUppercase(option.name)}
           </StyledTitle>
+
+          {option.description ? (
+            <StyledDescription
+              selected={
+                option.key === value
+              }>{`(${option.description})`}</StyledDescription>
+          ) : null}
         </StyledContainerOption>
       ))}
 

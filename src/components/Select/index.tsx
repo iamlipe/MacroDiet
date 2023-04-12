@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { firstLetterUppercase } from '@utils/stringFormat';
-import { TextStyle, View, ViewStyle } from 'react-native';
+import { TextStyle, View, ViewStyle, Text } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet';
 import {
@@ -17,7 +17,7 @@ interface ISelect {
   name: string;
   label?: string;
   value: string;
-  options: { key: string; name: string }[];
+  options: { key: string; name: string; description?: string }[];
   placeholder?: string;
   error?: string;
   onChange: (text: string) => void;
@@ -38,12 +38,14 @@ const Select: React.FC<ISelect> = ({
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   const selected = useMemo(
-    () => options.filter(option => option.key === value)[0]?.name,
+    () => options.filter(option => option.key === value)[0],
     [options, value],
   );
 
   useEffect(() => {
-    onChange(options[0].key);
+    if (options.length <= 1) {
+      onChange(options[0].key);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -55,17 +57,29 @@ const Select: React.FC<ISelect> = ({
         <StyledContainer
           disabled={options.length <= 1}
           onPress={() => bottomSheetRef.current?.present()}>
-          <StyledSelected style={inputStyle}>
-            {selected ? firstLetterUppercase(selected) : placeholder}
-          </StyledSelected>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <StyledSelected style={[inputStyle]}>
+              {selected ? firstLetterUppercase(selected.name) : placeholder}
+            </StyledSelected>
 
-          {error && <StyledError>{error}</StyledError>}
+            {selected?.description ? (
+              <Text
+                style={{ color: '#ccc' }}>{`(${selected.description})`}</Text>
+            ) : null}
+          </View>
         </StyledContainer>
+
+        {error && <StyledError>{error}</StyledError>}
       </View>
 
       <BottomSheet
         ref={bottomSheetRef}
-        snapPoints={options.length > 4 ? ['35%', '70%'] : ['35%']}
+        snapPoints={['35%']}
         close={() => bottomSheetRef.current.close()}
         withScroll>
         <StyledContentBottomSheet>
@@ -79,6 +93,11 @@ const Select: React.FC<ISelect> = ({
               <StyledLabelCardSelect isPair={index % 2 !== 0}>
                 {option.name}
               </StyledLabelCardSelect>
+
+              {option.description ? (
+                <Text
+                  style={{ color: '#ccc' }}>{`(${option.description})`}</Text>
+              ) : null}
             </StyledWrapperCardSelect>
           ))}
         </StyledContentBottomSheet>

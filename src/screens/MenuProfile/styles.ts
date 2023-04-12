@@ -56,10 +56,10 @@ export const StyledLabelExplainDietUp = styled.Text`
 
 export const StyledContainerScore = styled.View`
   position: absolute;
-  top: 4;
+  top: 4px;
   left: 0;
-  height: 80;
-  width: 80;
+  height: 80px;
+  width: 80px;
   align-items: center;
   justify-content: center;
 `;

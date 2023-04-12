@@ -7,6 +7,8 @@ import { useTheme } from 'styled-components/native';
 import { IFood } from '@services/firebase/models/food';
 import { useUserStore } from '@stores/index';
 import { IMeal } from '@services/firebase/models/meal';
+import { AppStack } from './app';
+import { CreateUserStack } from './createUserStack';
 import {
   Notifications,
   UserInfo,
@@ -15,7 +17,7 @@ import {
   Goal,
   Help,
   History,
-  GoalResult,
+  ResultGoal,
   ChoseFoodToAddInMeal,
   DetailsMealsDay,
   EditMeal,
@@ -24,9 +26,8 @@ import {
   Routine,
   Settings,
   EditUserInfo,
+  EditGoal,
 } from '@screens/index';
-import { AppStack } from './app';
-import { CreateUserStack } from './createUserStack';
 
 export type LoggedStackParamsList = {
   CreateUser: undefined;
@@ -42,11 +43,12 @@ export type LoggedStackParamsList = {
   History: undefined;
   UserInfo: undefined;
   Notifications: undefined;
-  GoalResult: undefined;
+  ResultGoal: undefined;
   AddFood: undefined;
   Routine: undefined;
   Settings: undefined;
   EditUserInfo: undefined;
+  EditGoal: undefined;
 };
 
 const Logged = createNativeStackNavigator<LoggedStackParamsList>();
@@ -80,11 +82,12 @@ export const LoggedStack = () => {
       <Logged.Screen name="History" component={History} />
       <Logged.Screen name="UserInfo" component={UserInfo} />
       <Logged.Screen name="Notifications" component={Notifications} />
-      <Logged.Screen name="GoalResult" component={GoalResult} />
+      <Logged.Screen name="ResultGoal" component={ResultGoal} />
       <Logged.Screen name="AddFood" component={AddFood} />
       <Logged.Screen name="Routine" component={Routine} />
       <Logged.Screen name="Settings" component={Settings} />
       <Logged.Screen name="EditUserInfo" component={EditUserInfo} />
+      <Logged.Screen name="EditGoal" component={EditGoal} />
     </Logged.Navigator>
   );
 };

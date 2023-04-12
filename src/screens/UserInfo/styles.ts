@@ -10,7 +10,7 @@ export const StyledScroll = styled.ScrollView.attrs(({ theme }) => ({
 
 export const StyledDescription = styled.Text`
   font-family: ${({ theme }) => theme.fonts.family.regular};
-  font-size: ${({ theme }) => theme.fonts.size.lg}px;
+  font-size: ${({ theme }) => theme.fonts.size.s2}px;
   color: ${({ theme }) => theme.colors.gray[200]};
   line-height: 28px;
   margin-bottom: ${({ theme }) => theme.effects.spacing.hg}px;

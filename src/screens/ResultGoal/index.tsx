@@ -9,15 +9,15 @@ import {
   StyledLabel,
 } from './styles';
 
-const GoalResult = () => {
-  const { goBack, navigate } = useNavigation<NavPropsProfile>();
+import useUserStore from '@stores/user';
+
+const ResultGoal = () => {
+  const { navigate } = useNavigation<NavPropsProfile>();
+  const { user } = useUserStore();
 
   return (
     <Background>
-      <Header
-        left={{ iconName: 'arrow-left', press: goBack }}
-        title="Resultado"
-      />
+      <Header title="Resultado" />
 
       <StyledScroll>
         <StyledTitle>Title</StyledTitle>
@@ -29,17 +29,17 @@ const GoalResult = () => {
         </StyledLabel>
 
         <StyledLabel>
-          {'kcal 2000kcal'}
+          {`kcal: ${user.nutritionalInfo.kcal.toFixed(0)}kcal`}
           {'\n\n'}
-          {'prot 300g'}
+          {`proteina: ${user.nutritionalInfo.prot.toFixed(0)}g`}
           {'\n\n'}
-          {'carb 400g'}
+          {`carboidrato ${user.nutritionalInfo.carb.toFixed(0)}g`}
           {'\n\n'}
-          {'fat 70g'}
+          {`gordura: ${user.nutritionalInfo.fat.toFixed(0)}g`}
           {'\n\n'}
-          {'sodium 5g'}
+          {`sodio: ${(user.nutritionalInfo.sodium * 1000).toFixed(0)}mg`}
           {'\n\n'}
-          {'fiber 10g'}
+          {`fibra: ${user.nutritionalInfo.fiber}g`}
         </StyledLabel>
 
         <StyledLabel>
@@ -58,4 +58,4 @@ const GoalResult = () => {
   );
 };
 
-export default GoalResult;
+export default ResultGoal;

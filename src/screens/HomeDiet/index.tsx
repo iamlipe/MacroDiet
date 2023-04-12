@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from 'react';
-import { getFormatInHours } from '@utils/dateFormat';
 import { NavPropsLogged } from '@routes/logged';
 import { useFoods, useMeals } from '@hooks/index';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
@@ -28,6 +27,7 @@ import {
   StyledWrapperButtonAddMeal,
 } from './styles';
 import auth from '@react-native-firebase/auth';
+import moment from 'moment';
 
 const HomeDiet = () => {
   const { user } = useUserStore();
@@ -85,19 +85,19 @@ const HomeDiet = () => {
             <StyledDividerMonitoring />
 
             <StyledLabelGoalKcal>
-              {`${user.nutritionInfo.kcalGoal.toFixed(0)}kcal`}
+              {`${user.nutritionalInfo.kcal.toFixed(0)}kcal`}
             </StyledLabelGoalKcal>
 
             <ProgressBar
               percentage={
                 handleInfoMealsDay(meals).totalKcalMeals /
-                user.nutritionInfo.kcalGoal
+                user.nutritionalInfo.kcal
               }
             />
 
             <StyledLabelRemainKcal>
               {`restam: ${(
-                user.nutritionInfo.kcalGoal -
+                user.nutritionalInfo.kcal -
                 handleInfoMealsDay(meals).totalKcalMeals
               ).toFixed(0)}kcal`}
             </StyledLabelRemainKcal>
@@ -116,7 +116,9 @@ const HomeDiet = () => {
           <StyledAccordion
             key={meal.title}
             title={meal.title}
-            description={getFormatInHours(new Date(meal.time.milliseconds))}
+            description={moment(new Date(meal.time.milliseconds)).format(
+              'HH:mm',
+            )}
             overview={`${handleInfoMeal(meal).totalKcal}kcal`}
             lastChild={index + 1 >= meals.length}>
             {meal.foods.map(foodMeal => {

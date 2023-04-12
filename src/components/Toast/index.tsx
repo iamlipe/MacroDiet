@@ -22,7 +22,7 @@ const Toast: React.FC<IToast> = ({ type, message }) => {
 
   return (
     <StyledContainerToast width={width} bottom={bottom}>
-      <Icon name={type} size={fonts.size.tl} color={colors.status[type]} />
+      <Icon name="circle-x" size={fonts.size.tl} color={colors.status[type]} />
       <StyledContainerInfo>
         <StyledTitle>{type}</StyledTitle>
         <StyledDescription>{message}</StyledDescription>
