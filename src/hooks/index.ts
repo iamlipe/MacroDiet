@@ -1,9 +1,7 @@
 export { default as useActitivities } from './useActitivities';
-export { default as useCreateUser } from './useCreateUser';
 export { default as useFavorite } from './useFavorite';
 export { default as useFoods } from './useFoods';
 export { default as useGender } from './useGender';
-export { default as useGoals } from './useGoals';
 export { default as useGenerateDiet } from './useGenerateDiet';
 export { default as useLoader } from './useLoader';
 export { default as useLogin } from './useLogin';
@@ -14,7 +12,6 @@ export { default as useRegister } from './useRegister';
 export { default as useSync } from './useSync';
 export { default as useSearch } from './useSearch';
 export { default as useToast } from './useToast';
-export { default as useGoalCalculate } from './useGoalCalculate';
 export { default as useHandleError } from './useHandleError';
 export { default as useRecoveryPassword } from './useRecoveryPassword';
 export { default as useNotification } from './useNotification';
