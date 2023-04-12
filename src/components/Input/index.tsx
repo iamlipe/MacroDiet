@@ -63,8 +63,6 @@ const Input = forwardRef<TextInput, IInput>(
               {...rest}
               style={inputStyle}
             />
-
-            {error && <StyledError>{error}</StyledError>}
           </StyledColumn>
 
           {secureTextEntry && (
@@ -77,6 +75,8 @@ const Input = forwardRef<TextInput, IInput>(
             </TouchableOpacity>
           )}
         </StyledContainerInput>
+
+        {error && <StyledError>{error}</StyledError>}
       </View>
     );
   },
