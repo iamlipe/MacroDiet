@@ -1,5 +1,10 @@
 import styled from 'styled-components/native';
 import { BottomSheetScrollView, BottomSheetModal } from '@gorhom/bottom-sheet';
+import { EdgeInsets } from 'react-native-safe-area-context';
+
+interface IStyledScrollViewBottomSheet {
+  insets: EdgeInsets;
+}
 
 export const StyledBottomSheet = styled(BottomSheetModal).attrs(
   ({ theme }) => ({
@@ -18,10 +23,13 @@ export const StyledBottomSheet = styled(BottomSheetModal).attrs(
   background-color: ${({ theme }) => theme.colors.background.dark};
 `;
 
-export const StyledScrollViewBottomSheet = styled(BottomSheetScrollView)`
+export const StyledScrollViewBottomSheet = styled(
+  BottomSheetScrollView,
+)<IStyledScrollViewBottomSheet>`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.background.dark};
   padding: ${({ theme }) => theme.effects.spacing.md}px;
+  margin-bottom: ${({ insets }) => insets.bottom}px;
 `;
 
 export const StyledContentViewBottomSheet = styled.View`
