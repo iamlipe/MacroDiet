@@ -13,7 +13,7 @@ export const StyledContainerToast = styled.View<IStyledContainerToast>`
   align-items: center;
   align-self: center;
   justify-content: space-between;
-  background-color: ${({ theme }) => theme.colors.gray[500]};
+  background-color: ${({ theme }) => theme.colors.gray[900]};
   border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
   border-left-width: ${({ theme }) => theme.effects.border.width.tl}px;
   border-color: ${({ theme }) => theme.colors.status.success};
