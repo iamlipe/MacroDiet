@@ -87,8 +87,7 @@ const DetailsMealsDay = () => {
           <StyledProgressCircle
             animate
             progress={
-              handleInfoMealsDay(meals).totalKcalMeals /
-              user.nutritionInfo.kcalGoal
+              handleInfoMealsDay(meals).totalKcalMeals / user.nutritionInfo.kcal
             }
             progressColor={colors.primary[600]}
             backgroundColor={colors.primary[300]}
