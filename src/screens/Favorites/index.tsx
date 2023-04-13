@@ -1,27 +1,32 @@
 import React, { useEffect } from 'react';
 import { IFood } from '@services/firebase/models/food';
 import { useNavigation } from '@react-navigation/native';
-import { useFavorite } from '@hooks/index';
+import { useUser } from '@hooks/index';
 import { TouchableOpacity } from 'react-native';
+import { useFoodStore, useUserStore } from '@stores/index';
+import { Background, Button, Header } from '@components/index';
 import {
   RenderItemParams,
   ScaleDecorator,
 } from 'react-native-draggable-flatlist';
-import { Background, Header } from '@components/index';
 import {
   StyledCardFood,
   StyledDraggableFlatList,
   StyledDescription,
+  StyledWrapperButtonSubmit,
 } from './styles';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Favorites = () => {
-  const { favoritesFoodsList, setFavoritesFoodsList, getFavoritesFoods } =
-    useFavorite();
+  const { favoriteFoods, setFavoriteFoods } = useFoodStore();
   const { goBack } = useNavigation();
+  const { updateUser } = useUser();
+  const { user } = useUserStore();
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    setFavoritesFoodsList(getFavoritesFoods);
-  }, [getFavoritesFoods, setFavoritesFoodsList]);
+    setFavoriteFoods(favoriteFoods);
+  }, [favoriteFoods, setFavoriteFoods]);
 
   const renderHeaderList = () => {
     return (
@@ -53,12 +58,31 @@ const Favorites = () => {
       />
 
       <StyledDraggableFlatList
-        data={favoritesFoodsList}
+        data={favoriteFoods}
         keyExtractor={({ doc }) => doc}
         ListHeaderComponent={renderHeaderList}
         renderItem={renderItem}
-        onDragEnd={({ data }) => setFavoritesFoodsList(data)}
+        onDragEnd={({ data }) => {
+          const foodData = data as unknown as IFood[];
+          setFavoriteFoods(foodData);
+        }}
       />
+
+      <StyledWrapperButtonSubmit insets={insets}>
+        <Button
+          title={'Salvar'}
+          onPress={async () => {
+            await updateUser({
+              preferences: {
+                ...user.preferences,
+                favoritesFoods: favoriteFoods.map(food => food.doc),
+              },
+            });
+
+            goBack();
+          }}
+        />
+      </StyledWrapperButtonSubmit>
     </Background>
   );
 };
