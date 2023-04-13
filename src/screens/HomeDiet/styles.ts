@@ -69,7 +69,7 @@ export const StyledFooterContentAccordion = styled.View`
 `;
 
 export const StyledLinkAddFodd = styled(Link)`
-  margin-left: ${({ theme }) => theme.effects.spacing.sm}px;
+  margin-right: ${({ theme }) => theme.effects.spacing.sm}px;
 `;
 
 export const StyledWrapperButtonAddMeal = styled.View`

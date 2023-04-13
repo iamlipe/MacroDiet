@@ -32,7 +32,12 @@ import moment from 'moment';
 const HomeDiet = () => {
   const { user } = useUserStore();
   const { meals } = useMealStore();
-  const { handleFood, getFoods, loading: loadingFoods } = useFoods();
+  const {
+    handleFood,
+    getFoods,
+    getFavoritesFood,
+    loading: loadingFoods,
+  } = useFoods();
   const {
     handleInfoMeal,
     handleInfoMealsDay,
@@ -49,6 +54,7 @@ const HomeDiet = () => {
   );
 
   useEffect(() => {
+    getFavoritesFood();
     getFoods();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
