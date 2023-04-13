@@ -19,6 +19,7 @@ export const StyledLabel = styled.Text`
 `;
 
 export const StyledSelected = styled.Text`
+  flex: 1;
   font-family: ${({ theme }) => theme.fonts.family.regular};
   font-size: ${({ theme }) => theme.fonts.size.s2}px;
   color: ${({ theme }) => theme.fonts.color.primary};
