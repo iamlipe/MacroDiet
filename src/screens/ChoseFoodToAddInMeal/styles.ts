@@ -41,5 +41,6 @@ export const StyledTitleSection = styled.Text`
   font-family: ${({ theme }) => theme.fonts.family.medium};
   font-size: ${({ theme }) => theme.fonts.size.s1}px;
   color: ${({ theme }) => theme.colors.white};
-  margin-bottom: ${({ theme }) => theme.effects.spacing.lg}px;
+  background-color: ${({ theme }) => theme.colors.background.dark};
+  padding: ${({ theme }) => theme.effects.spacing.md}px 0;
 `;

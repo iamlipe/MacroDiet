@@ -1,17 +1,17 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   RouteProp,
   useFocusEffect,
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import { useFoods, useMeasures, useSearch } from '@hooks/index';
+import { useFoods, useMeasures, useSearch, useToast } from '@hooks/index';
 import { NavPropsLogged } from '@routes/logged';
 import { IFood } from '@services/firebase/models/food';
 import { IMeal } from '@services/firebase/models/meal';
 import { useFoodStore } from '@stores/index';
-import { FlashList } from '@shopify/flash-list';
 import { RoundedButton, Header, Background } from '@components/index';
+import { RefreshControl, SectionList } from 'react-native';
 import {
   StyledCardFood,
   StyledCircle,
@@ -21,6 +21,8 @@ import {
   StyledSearchBar,
   StyledTitleSection,
 } from './styles';
+import { firstLetterUppercase } from '@utils/stringFormat';
+import { useTheme } from 'styled-components/native';
 
 type StackParamsList = {
   MealData: {
@@ -29,30 +31,69 @@ type StackParamsList = {
 };
 
 const ChoseFoodToAddInMeal = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
   const [search, setSearch] = useState('');
   const { params: paramsMeal } =
     useRoute<RouteProp<StackParamsList, 'MealData'>>();
   const { goBack, navigate: navigateLogged } = useNavigation<NavPropsLogged>();
-  const { foods } = useFoodStore();
+  const { foods, favoriteFoods } = useFoodStore();
   const { handleSearch } = useSearch<IFood>();
-  const { getFoods } = useFoods();
+  const { getFoods, getFavoritesFood } = useFoods();
   const { getMeasures } = useMeasures();
+  const { colors } = useTheme();
+  const { show: showToast } = useToast();
 
-  useFocusEffect(
-    useCallback(() => {
-      getFoods();
-      getMeasures();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []),
-  );
+  const fetchAllData = useCallback(async () => {
+    await getFoods();
+    await getFavoritesFood();
+    await getMeasures();
+  }, [getFavoritesFood, getFoods, getMeasures]);
 
-  const renderEmpty = () => {
+  const dataFoods = [
+    {
+      title: 'comidas favoritas',
+      data: handleSearch({
+        search,
+        data: favoriteFoods,
+        keySearch: 'name',
+      }),
+    },
+    {
+      title: 'comidas',
+      data: handleSearch({
+        search,
+        data: foods,
+        keySearch: 'name',
+      }),
+    },
+  ];
+
+  const onRefresh = useCallback(async () => {
+    try {
+      setRefreshing(true);
+      await fetchAllData();
+    } catch (error) {
+      showToast({ type: 'warning', message: 'something went wrong' });
+    } finally {
+      setRefreshing(false);
+    }
+  }, [fetchAllData, showToast]);
+
+  const renderEmpty = useMemo(() => {
     return (
       <StyledContainerEmptyListFood>
         <StyledCircle />
 
         <StyledLabelEmptyListFood>Search not found</StyledLabelEmptyListFood>
       </StyledContainerEmptyListFood>
+    );
+  }, []);
+
+  const renderSectionHeader = ({ section: { title } }) => {
+    return (
+      <StyledTitleSection>{`${firstLetterUppercase(
+        title,
+      )}`}</StyledTitleSection>
     );
   };
 
@@ -73,6 +114,13 @@ const ChoseFoodToAddInMeal = () => {
     );
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchAllData();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+
   return (
     <Background>
       <Header
@@ -83,18 +131,19 @@ const ChoseFoodToAddInMeal = () => {
       <StyledContent>
         <StyledSearchBar onChangeText={setSearch} />
 
-        <StyledTitleSection>Comidas</StyledTitleSection>
-
-        <FlashList
-          data={handleSearch({
-            search,
-            data: foods,
-            keySearch: 'name',
-          })}
-          estimatedItemSize={40}
+        <SectionList
+          sections={dataFoods}
           keyExtractor={({ doc }) => doc}
-          ListEmptyComponent={renderEmpty()}
+          ListEmptyComponent={renderEmpty}
+          renderSectionHeader={renderSectionHeader}
           renderItem={renderCardFood}
+          refreshControl={
+            <RefreshControl
+              tintColor={colors.white}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
         />
       </StyledContent>
 
