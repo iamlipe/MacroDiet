@@ -1,5 +1,4 @@
 export { default as useActitivities } from './useActitivities';
-export { default as useFavorite } from './useFavorite';
 export { default as useFoods } from './useFoods';
 export { default as useGender } from './useGender';
 export { default as useGenerateDiet } from './useGenerateDiet';
