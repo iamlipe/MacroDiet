@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import * as Yup from 'yup';
 import { TouchableOpacity, useWindowDimensions } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -8,11 +8,11 @@ import { IFood } from '@services/firebase/models/food';
 import { IMeal } from '@services/firebase/models/meal';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useUserStore, useFoodStore, useMeasureStore } from '@stores/index';
-import { useMeals, useFavorite, useMeasures } from '@hooks/index';
-import { useTheme } from 'styled-components/native';
+import { useMeals, useMeasures, useFoods } from '@hooks/index';
 import { buildOptionForm } from '@utils/help';
 import { Formik } from 'formik';
-import { Background, Button, Header, Icon } from '@components/index';
+import { Background, Button, Header } from '@components/index';
+import Lottie from 'lottie-react-native';
 import {
   StyledFormRow,
   StyledInput,
@@ -28,6 +28,7 @@ import {
   StyledCardFood,
   StyledRowFoodInfo,
   StyledTitleFood,
+  StyledLottieHeart,
 } from './styles';
 
 interface IUpdateFoodInMealForm {
@@ -64,16 +65,26 @@ const UpdateFoodInMeal = () => {
   const { width } = useWindowDimensions();
   const { getMeasure } = useMeasures();
   const { foods } = useFoodStore();
-  const { updateFavoritesFoods } = useFavorite();
-  const { colors, fonts } = useTheme();
+  const { updateFavoritesFoods } = useFoods();
   const { handleFoodsInMeal, updateMeal } = useMeals();
   const { measureMassDefault } = useMeasureStore();
   const { user } = useUserStore();
+  const animationRef = useRef<Lottie>(null);
   const insets = useSafeAreaInsets();
 
   const isFavorited = useMemo(
     () => user.preferences.favoritesFoods.includes(food.doc),
     [food.doc, user.preferences.favoritesFoods],
+  );
+
+  const optionMeasuresFood = useMemo(
+    () =>
+      food.measures
+        ? food.measures
+            .map(measureDoc => getMeasure(measureDoc))
+            .map(buildOptionForm)
+        : [buildOptionForm(measureMassDefault)],
+    [food.measures, getMeasure, measureMassDefault],
   );
 
   const initialValuesAddFoodInMeal: IUpdateFoodInMealForm = {
@@ -114,6 +125,14 @@ const UpdateFoodInMeal = () => {
     [food, handleFoodsInMeal, meal, navigateLogged, type, updateMeal],
   );
 
+  useEffect(() => {
+    if (isFavorited) {
+      animationRef.current?.play(20, 20);
+    } else {
+      animationRef.current?.play(0, 0);
+    }
+  }, [isFavorited]);
+
   const renderCardInfo = (info: string, quantity: number) => {
     return (
       <StyledBoxNutrionalInfo key={info} width={width}>
@@ -144,11 +163,19 @@ const UpdateFoodInMeal = () => {
                 <StyledTitleFood>{food.name}</StyledTitleFood>
 
                 <TouchableOpacity
-                  onPress={() => updateFavoritesFoods(food.doc)}>
-                  <Icon
-                    name={isFavorited ? 'heart-filled' : 'heart'}
-                    color={isFavorited ? colors.primary[500] : colors.white}
-                    size={fonts.size.tl}
+                  onPress={async () => {
+                    if (!isFavorited) {
+                      animationRef.current?.play(0, 20);
+                    } else {
+                      animationRef.current?.play(0, 0);
+                    }
+
+                    await updateFavoritesFoods(food.doc);
+                  }}>
+                  <StyledLottieHeart
+                    ref={animationRef}
+                    source={require('@assets/lotties/heart.json')}
+                    loop={false}
                   />
                 </TouchableOpacity>
               </StyledRowFoodInfo>
@@ -169,13 +196,7 @@ const UpdateFoodInMeal = () => {
                 <StyledSelect
                   name="food.measureDoc"
                   value={values.food.measureDoc}
-                  options={
-                    food.measures
-                      ? food.measures
-                          .map(measureDoc => getMeasure(measureDoc))
-                          .map(buildOptionForm)
-                      : [buildOptionForm(measureMassDefault)]
-                  }
+                  options={optionMeasuresFood}
                   onChange={handleChange('food.measureDoc')}
                   error={
                     touched.food?.measureDoc && errors.food?.measureDoc

@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { Select, Input, Card } from '@components/index';
 import { EdgeInsets } from 'react-native-safe-area-context';
+import Lottie from 'lottie-react-native';
 
 interface IStyledScroll {
   insets: EdgeInsets;
@@ -111,11 +112,18 @@ export const StyledCardFood = styled(Card)`
 export const StyledRowFoodInfo = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: ${({ theme }) => theme.effects.spacing.vl}px;
+  align-items: center;
+  margin-bottom: ${({ theme }) => theme.effects.spacing.sm}px;
 `;
 
 export const StyledTitleFood = styled.Text`
   font-family: ${({ theme }) => theme.fonts.family.medium};
   font-size: ${({ theme }) => theme.fonts.size.tl}px;
   color: ${({ theme }) => theme.colors.white};
+`;
+
+export const StyledLottieHeart = styled(Lottie)`
+  width: 80px;
+  height: 80px;
+  margin-right: ${({ theme }) => -theme.effects.spacing.lg}px;
 `;
