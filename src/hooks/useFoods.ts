@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
 import { IFoodMeal } from '@services/firebase/models/meal';
 import { Food, IFood } from '@services/firebase/models/food';
-import { useMeasureStore, useFoodStore } from '@stores/index';
+import { useMeasureStore, useFoodStore, useUserStore } from '@stores/index';
 import { parseNumber } from '@utils/numberFormat';
 import useMeasures from './useMeasures';
 import useHandleError from './useHandleError';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 type CreateFoodDTO = {
   name: string;
@@ -28,10 +29,15 @@ interface IComputeNutrientPerGram {
 
 const useFoods = () => {
   const [loading, setLoading] = useState(false);
-  const { setFoods, foods: foodsInStore } = useFoodStore();
+  const {
+    setFoods,
+    foods: foodsInStore,
+    setFavoriteFoods: setFavoriteFoodsInFoodStore,
+  } = useFoodStore();
   const { getMeasure, createMeasure } = useMeasures();
   const { handleFirestoreError } = useHandleError();
   const { measureMassDefault } = useMeasureStore();
+  const { user, setFavoritesFoods: setFavoritesFoodsInUser } = useUserStore();
 
   const computeKcalPerGram = ({
     carb,
@@ -54,23 +60,61 @@ const useFoods = () => {
     return parseNumber(nutrient) / parseNumber(portion);
   };
 
+  const getFavoritesFood = async () => {
+    try {
+      setLoading(true);
+
+      const data = await firestore().collection('Foods').get();
+
+      let favoriteFoods = [];
+
+      user.preferences.favoritesFoods.forEach(foodDoc => {
+        const food = data.docs.find(item => item.id === foodDoc).data();
+
+        if (food) {
+          favoriteFoods.push({
+            doc: foodDoc,
+            info: food.info,
+            name: food.name,
+            brand: food.brand,
+            measures: food.measures,
+          });
+        }
+      });
+
+      setFavoriteFoodsInFoodStore(favoriteFoods);
+    } catch (error) {
+      handleFirestoreError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const getFoods = useCallback(async () => {
     try {
       setLoading(true);
 
-      const data = await firestore().collection('Foods').limit(20).get();
+      const data = await firestore()
+        .collection('Foods')
+        .orderBy('name')
+        .limit(20)
+        .get();
 
-      const foods: IFood[] = data.docs.map(doc => {
-        const food = doc.data();
+      const foods: IFood[] = data.docs
+        .filter(
+          doc => !user.preferences.favoritesFoods.some(item => item === doc.id),
+        )
+        .map(doc => {
+          const food = doc.data();
 
-        return {
-          doc: doc.id,
-          info: food.info,
-          name: food.name,
-          brand: food.brand,
-          measures: food.measures,
-        };
-      });
+          return {
+            doc: doc.id,
+            info: food.info,
+            name: food.name,
+            brand: food.brand,
+            measures: food.measures,
+          };
+        });
 
       setFoods(foods);
     } catch (error) {
@@ -78,13 +122,45 @@ const useFoods = () => {
     } finally {
       setLoading(false);
     }
-  }, [handleFirestoreError, setFoods]);
+  }, [handleFirestoreError, setFoods, user.preferences.favoritesFoods]);
 
   const getFood = useCallback(
     (doc: string) => {
       return foodsInStore?.find(food => food.doc === doc);
     },
     [foodsInStore],
+  );
+
+  const updateFavoritesFoods = useCallback(
+    async (foodDoc: string) => {
+      try {
+        setLoading(true);
+
+        const isFavorited = user.preferences.favoritesFoods.includes(foodDoc);
+
+        const favorites = isFavorited
+          ? user.preferences.favoritesFoods.filter(food => food !== foodDoc)
+          : [...user.preferences.favoritesFoods, foodDoc];
+
+        await firestore()
+          .collection('Users')
+          .doc(auth().currentUser.uid)
+          .update({
+            'preferences.favoritesFoods': favorites,
+          });
+
+        setFavoritesFoodsInUser(favorites);
+      } catch (error) {
+        handleFirestoreError(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [
+      handleFirestoreError,
+      setFavoritesFoodsInUser,
+      user.preferences.favoritesFoods,
+    ],
   );
 
   const createFood = useCallback(
@@ -172,7 +248,15 @@ const useFoods = () => {
     [getFood, getMeasure],
   );
 
-  return { getFoods, getFood, handleFood, createFood, loading };
+  return {
+    getFoods,
+    getFavoritesFood,
+    getFood,
+    handleFood,
+    createFood,
+    updateFavoritesFoods,
+    loading,
+  };
 };
 
 export default useFoods;
