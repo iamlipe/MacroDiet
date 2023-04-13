@@ -93,5 +93,5 @@ export const StyledContainerIcon = styled.View<IStyledContainerIconProps>`
   justify-content: center;
   align-items: center;
   margin-right: ${({ iconLeft, theme }) =>
-    iconLeft ? theme.effects.spacing.md : 0}px;
+    iconLeft ? theme.effects.spacing.vs : 0}px;
 `;
