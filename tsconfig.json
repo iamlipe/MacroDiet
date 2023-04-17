@@ -1,6 +1,7 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "strict": true,
     "plugins": [
       {
         "name": "typescript-styled-plugin",
@@ -17,24 +18,16 @@
     ],
 
     /* Completeness */
-    "skipLibCheck": true,                            /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
-      "@context/*": ["./src/context/*"],
-      "@screens/*": ["./src/screens/*"],
+      "@core/*": ["./src/core/*"],
       "@config/*": ["./src/config/*"],
-      "@stores/*": ["./src/stores/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@components/*": ["./src/components/*"],
-      "@routes/*": ["./src/routes/*"],
-      "@assets/*": ["./assets/*"],
-      "@i18n/*": ["./src/i18n/*"],
-      "@services/*": ["./src/services/*"],
-      "@validations/*": ["./src/validations/*"],
       "@utils/*": ["./src/utils/*"],
+      "@assets/*": ["./assets/*"],
       "@__mocks__/*": ["./__mocks__/*"],
       "@__tests__/*": ["./__tests__/*"],
+      "@env": ["node_modules/react-native-dotenv"]
     },
   },
 }

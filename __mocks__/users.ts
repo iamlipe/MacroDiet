@@ -1,4 +1,4 @@
-import { IUser } from '@services/firebase/models/user';
+import { IUser } from 'deprecated/services/firebase/models/user';
 
 interface IUsersData {
   data: Array<IUser>;
@@ -6,10 +6,26 @@ interface IUsersData {
 
 export const defaultPreferences = {
   mealsTime: [
-    { title: 'Cafe da manha', time: { hour: 8, minutes: 30 } },
-    { title: 'Almoço', time: { hour: 12, minutes: 30 } },
-    { title: 'Cafe da tarde', time: { hour: 17, minutes: 30 } },
-    { title: 'Janta', time: { hour: 21, minutes: 0 } },
+    {
+      title: 'Cafe da manha',
+      time: { hour: 8, minutes: 30 },
+      daysWeek: [1, 2, 3, 4, 5],
+    },
+    {
+      title: 'Almoço',
+      time: { hour: 12, minutes: 30 },
+      daysWeek: [1, 2, 3, 4, 5],
+    },
+    {
+      title: 'Cafe da tarde',
+      time: { hour: 17, minutes: 30 },
+      daysWeek: [1, 2, 3, 4, 5],
+    },
+    {
+      title: 'Janta',
+      time: { hour: 21, minutes: 0 },
+      daysWeek: [1, 2, 3, 4, 5],
+    },
   ],
   favoritesFoods: [],
   notifications: {
@@ -28,12 +44,12 @@ export const users: IUsersData = {
       phone: null,
       info: {
         height: { quantity: 170, measureDoc: '1' },
-        weigth: { quantity: 74, measureDoc: '1' },
+        weight: { quantity: 74, measureDoc: '1' },
         birthDate: { milliseconds: 0, nanoseconds: 0 },
         activityDoc: '2',
-        goalDoc: '1',
         genderDoc: '1',
-        goalWeight: 76,
+        goalWeight: { quantity: 76, measureDoc: '1' },
+        timeInWeeks: 4,
       },
       preferences: defaultPreferences,
     },

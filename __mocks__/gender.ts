@@ -1,4 +1,4 @@
-import { IGender } from '@services/firebase/models/gender';
+import { IGender } from 'deprecated/services/firebase/models/gender';
 
 interface IGerderData {
   data: Array<IGender>;

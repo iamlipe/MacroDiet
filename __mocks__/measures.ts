@@ -1,4 +1,4 @@
-import { IMeasure } from '@services/firebase/models/measure';
+import { IMeasure } from 'deprecated/services/firebase/models/measure';
 
 interface IMeasuresData {
   data: Array<IMeasure>;

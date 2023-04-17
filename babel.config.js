@@ -10,24 +10,23 @@ module.exports = function (api) {
           root: ['./src'],
           extensions: ['.ts', '.tsx', '.jsx', '.js', '.json'],
           alias: {
-            '@context': './src/context',
-            '@screens': './src/screens',
-            '@config': './src/config',
-            '@stores': './src/stores',
-            '@styles': './src/styles',
-            '@hooks': './src/hooks',
-            '@components': './src/components',
-            '@routes': './src/routes',
-            '@assets': './assets',
-            '@i18n': './src/i18n',
-            '@services': './src/services',
-            '@utils': './src/utils',
-            '@validations': './src/validations',
-            '@__mocks__': './__mocks__',
-            '@__tests__': './__tests__',
+            "@core": "./src/core",
+            "@config": "./src/config",
+            "@utils": "./src/utils",
+            "@assets": './assets',
+            "@__mocks__/": "./__mocks__/",
+            "@__tests__/": "./__tests__/",
           },
         },
       ],
+      ["module:react-native-dotenv", {
+        "moduleName": "@env",
+        "path": ".env",
+        "blacklist": null,
+        "whitelist": null,
+        "safe": false,
+        "allowUndefined": true
+      }]
     ],
   };
 };

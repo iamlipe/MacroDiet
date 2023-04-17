@@ -1,4 +1,4 @@
-import { IAcitivity } from '@services/firebase/models/acitivity';
+import { IAcitivity } from 'deprecated/services/firebase/models/acitivity';
 
 interface IAcitivitiesData {
   data: Array<IAcitivity>;

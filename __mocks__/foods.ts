@@ -1,4 +1,4 @@
-import { IFood } from '@services/firebase/models/food';
+import { IFood } from 'deprecated/services/firebase/models/food';
 
 interface IFoodsData {
   data: Array<IFood>;

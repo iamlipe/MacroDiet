@@ -1,4 +1,4 @@
-import { IMeal } from '@services/firebase/models/meal';
+import { IMeal } from 'deprecated/services/firebase/models/meal';
 
 interface IMealsData {
   data: Array<IMeal>;

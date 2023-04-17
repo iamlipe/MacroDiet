@@ -1,4 +1,4 @@
-import { IGoal } from '@services/firebase/models/goal';
+import { IGoal } from 'deprecated/services/firebase/models/goal';
 
 interface IGoalsData {
   data: Array<IGoal>;

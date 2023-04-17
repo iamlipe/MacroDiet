@@ -1,18 +1,16 @@
 import React, { useCallback } from 'react';
-import { LoaderProvider } from '@context/LoaderContext';
-import { ToastProvider } from '@context/ToastContext';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { Routes } from '@routes/index';
-import { theme } from '@styles/index';
+import { Routes } from '@core/presentation/routes';
 import { useFonts } from 'expo-font';
 import { preventAutoHideAsync, hideAsync } from 'expo-splash-screen';
-import { I18nextProvider } from 'react-i18next';
 import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ToastProvider } from '@core/presentation/contexts/ToastContext';
+import { LoaderProvider } from '@core/presentation/contexts/LoaderContext';
 import { ThemeProvider } from 'styled-components/native';
-import { i18next } from '@i18n/index';
-import '@config/googleSign';
+import { theme } from '@config/styles';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import '@config/googleSignin';
 
 preventAutoHideAsync();
 
@@ -38,20 +36,18 @@ function App() {
     <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <SafeAreaProvider>
         <ThemeProvider theme={theme}>
-          <I18nextProvider i18n={i18next}>
+          <BottomSheetModalProvider>
             <LoaderProvider>
               <ToastProvider>
-                <BottomSheetModalProvider>
-                  <StatusBar
-                    barStyle="light-content"
-                    animated={false}
-                    backgroundColor={theme.colors.background.dark}
-                  />
-                  <Routes />
-                </BottomSheetModalProvider>
+                <StatusBar
+                  barStyle="light-content"
+                  animated={false}
+                  backgroundColor={theme.colors.black}
+                />
+                <Routes />
               </ToastProvider>
             </LoaderProvider>
-          </I18nextProvider>
+          </BottomSheetModalProvider>
         </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
