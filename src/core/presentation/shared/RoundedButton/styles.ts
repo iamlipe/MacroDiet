@@ -6,13 +6,13 @@ interface IStyledRoundedButton {
 }
 
 export const StyledRoundedButton = styled.TouchableOpacity<IStyledRoundedButton>`
-  height: 72px;
-  width: 72px;
+  height: 60px;
+  width: 60px;
   position: absolute;
   bottom: ${({ theme, insets }) => insets.bottom + theme.effects.spacing.hg}px;
   right: ${({ theme }) => theme.effects.spacing.lg}px;
   justify-content: center;
   align-items: center;
-  border-radius: ${({ theme }) => theme.effects.border.radius.circular}px;
   background-color: ${({ theme }) => theme.colors.primary[600]};
+  border-radius: 4px;
 `;

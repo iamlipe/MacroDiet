@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import Select from '@core/presentation/shared/Select';
-import Input from '@core/presentation/shared/Input';
+import Select from '@/core/presentation/shared/Select';
+import Input from '@/core/presentation/shared/Input';
 
 export const StyledScroll = styled.ScrollView.attrs(({ theme }) => ({
   showsVerticalScrollIndicator: false,
@@ -39,4 +39,11 @@ export const StyledSelect = styled(Select).attrs(({ theme }) => ({
 export const StyledWrapperButtonSubmit = styled.View`
   flex: 1;
   justify-content: flex-end;
+`;
+
+export const StyledLabel = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.family.medium};
+  font-size: ${({ theme }) => theme.fonts.size.s2}px;
+  color: ${({ theme }) => theme.fonts.color.primary};
+  margin-bottom: ${({ theme }) => theme.effects.spacing.md}px;
 `;

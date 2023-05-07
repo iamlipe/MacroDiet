@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ActivityProps } from '@core/domain/models/Activity';
+import { ActivityProps } from '@/core/domain/models/Activity';
 
 type State = {
   acitivityList: ActivityProps[] | null;

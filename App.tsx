@@ -1,16 +1,18 @@
 import React, { useCallback } from 'react';
-import { Routes } from '@core/presentation/routes';
+import { Routes } from '@/core/presentation/routes';
 import { useFonts } from 'expo-font';
 import { preventAutoHideAsync, hideAsync } from 'expo-splash-screen';
 import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { ToastProvider } from '@core/presentation/contexts/ToastContext';
-import { LoaderProvider } from '@core/presentation/contexts/LoaderContext';
+import { ToastProvider } from '@/core/presentation/contexts/ToastContext';
+import { LoaderProvider } from '@/core/presentation/contexts/LoaderContext';
 import { ThemeProvider } from 'styled-components/native';
-import { theme } from '@config/styles';
+import { theme } from '@/config/styles';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import '@config/googleSignin';
+import { I18nextProvider } from 'react-i18next';
+import { i18next } from '@/config/i18n';
+import '@/config/googleSignin';
 
 preventAutoHideAsync();
 
@@ -36,18 +38,20 @@ function App() {
     <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <SafeAreaProvider>
         <ThemeProvider theme={theme}>
-          <BottomSheetModalProvider>
-            <LoaderProvider>
-              <ToastProvider>
-                <StatusBar
-                  barStyle="light-content"
-                  animated={false}
-                  backgroundColor={theme.colors.black}
-                />
-                <Routes />
-              </ToastProvider>
-            </LoaderProvider>
-          </BottomSheetModalProvider>
+          <I18nextProvider i18n={i18next}>
+            <BottomSheetModalProvider>
+              <LoaderProvider>
+                <ToastProvider>
+                  <StatusBar
+                    barStyle="light-content"
+                    animated={false}
+                    backgroundColor={theme.colors.black}
+                  />
+                  <Routes />
+                </ToastProvider>
+              </LoaderProvider>
+            </BottomSheetModalProvider>
+          </I18nextProvider>
         </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

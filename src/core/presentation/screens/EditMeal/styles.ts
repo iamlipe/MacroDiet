@@ -1,9 +1,9 @@
 import styled from 'styled-components/native';
 import { EdgeInsets } from 'react-native-safe-area-context';
-import Input from '@core/presentation/shared/Input';
-import Card from '@core/presentation/shared/Card';
-import Link from '@core/presentation/shared/Link';
-import Button from '@core/presentation/shared/Button';
+import Input from '@/core/presentation/shared/Input';
+import Card from '@/core/presentation/shared/Card';
+import Link from '@/core/presentation/shared/Link';
+import Button from '@/core/presentation/shared/Button';
 
 interface IStyledScroll {
   insets: EdgeInsets;
@@ -63,8 +63,25 @@ export const StyledContainerFoods = styled.View`
 
 export const StyledLinkBottomSheet = styled(Link)`
   margin-bottom: ${({ theme }) => theme.effects.spacing.md}px;
+  margin-right: ${({ theme }) => theme.effects.spacing.sm}px;
 `;
 
 export const StyledButtonExcludeMeal = styled(Button)`
   margin-bottom: ${({ theme }) => theme.effects.spacing.md}px;
+`;
+
+export const StyledContainerModalButtons = styled.View`
+  flex-direction: row;
+  justify-content: flex-end;
+`;
+
+export const StyledDescriptionModal = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.family.regular};
+  font-size: ${({ theme }) => theme.fonts.size.md}px;
+  color: ${({ theme }) => theme.colors.gray[400]};
+  margin-bottom: ${({ theme }) => theme.effects.spacing.md}px;
+`;
+
+export const StyledLinkModal = styled(Link)`
+  margin-right: ${({ theme }) => theme.effects.spacing.sm}px;
 `;

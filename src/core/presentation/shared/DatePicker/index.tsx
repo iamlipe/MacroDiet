@@ -1,7 +1,8 @@
 import React, { useMemo, useRef } from 'react';
 import moment from 'moment';
-import { firstLetterUppercase } from '@utils/helpers/help';
+import { firstLetterUppercase } from '@/utils/helpers/help';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet from '@/core/presentation/shared/BottomSheet';
 import {
   StyledTitle,
   StyledError,
@@ -9,7 +10,7 @@ import {
   StyledDatePicker,
   StyledContainerDatePicker,
 } from './styles';
-import BottomSheet from '@core/presentation/shared/BottomSheet';
+import { View, ViewStyle } from 'react-native';
 
 interface IDatePicker {
   label?: string;
@@ -18,6 +19,7 @@ interface IDatePicker {
   value: string;
   mode?: 'date' | 'time';
   error?: string;
+  wrapperStyle?: ViewStyle;
 }
 
 const DatePicker: React.FC<IDatePicker> = ({
@@ -27,6 +29,7 @@ const DatePicker: React.FC<IDatePicker> = ({
   onChange,
   value,
   error,
+  wrapperStyle = {},
   ...rest
 }) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -53,10 +56,11 @@ const DatePicker: React.FC<IDatePicker> = ({
   );
 
   return (
-    <>
+    <View style={[wrapperStyle]}>
       {label && <StyledLabel>{firstLetterUppercase(label)}</StyledLabel>}
 
       <StyledContainerDatePicker
+        activeOpacity={1}
         onPress={() => bottomSheetRef.current?.present()}
         {...rest}>
         <StyledTitle selected={selected}>
@@ -79,7 +83,7 @@ const DatePicker: React.FC<IDatePicker> = ({
           }}
         />
       </BottomSheet>
-    </>
+    </View>
   );
 };
 

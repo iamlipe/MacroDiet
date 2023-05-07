@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useCallback, useState } from 'react';
-import Toast, { ToastProps } from '@core/presentation/shared/Toast';
+import Toast, { ToastProps } from '@/core/presentation/shared/Toast';
 
 interface IToastContext {
   show: (toast: ToastProps) => void;
@@ -17,7 +17,7 @@ export const ToastProvider = ({ children }: IToastProvider) => {
 
   const show = useCallback((data: ToastProps) => {
     setToast(data);
-    setTimeout(() => setToast(null), 3000);
+    setTimeout(() => setToast(null), 5000);
   }, []);
 
   const hide = useCallback(() => {
@@ -28,7 +28,9 @@ export const ToastProvider = ({ children }: IToastProvider) => {
     <ToastContext.Provider value={{ show, hide }}>
       {children}
 
-      {toast && <Toast type={toast.type} message={toast.message} />}
+      {toast && (
+        <Toast close={hide} type={toast.type} message={toast.message} />
+      )}
     </ToastContext.Provider>
   );
 };

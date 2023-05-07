@@ -4,10 +4,10 @@ import {
   BottomTabNavigationProp,
   BottomTabBarProps,
 } from '@react-navigation/bottom-tabs';
-import { DietStack } from './diet';
-import { ProfileStack } from './profile';
-import BottomTabBar from '@core/presentation/shared/BottomTabBar';
-import HeaderLogo from '@core/presentation/shared/HeaderLogo';
+import { DietStack } from '@/core/presentation/routes/diet';
+import { ProfileStack } from '@/core/presentation/routes/profile';
+import BottomTabBar from '@/core/presentation/shared/BottomTabBar';
+import HeaderLogo from '@/core/presentation/shared/HeaderLogo';
 
 export type AppStackParamsList = {
   DietStack: undefined;

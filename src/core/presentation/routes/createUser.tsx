@@ -4,15 +4,15 @@ import {
   MaterialTopTabBarProps,
   MaterialTopTabNavigationProp,
 } from '@react-navigation/material-top-tabs';
-import TabBarCreateUser from '@core/presentation/shared/TabBarCreateUser';
-import IntroductionCreateUser from '@core/presentation/screens/IntroductionCreateUser';
-import GenderCreateUser from '@core/presentation/screens/GenderCreateUser';
-import BirthDateCreateUser from '@core/presentation/screens/BirthDateCreateUser';
-import ActivityCreateUser from '@core/presentation/screens/ActivityCreateUser';
-import WeightCreateUser from '@core/presentation/screens/WeightCreateUser';
-import HeightCreateUser from '@core/presentation/screens/HeightCreateUser';
-import TimeCreateUser from '@core/presentation/screens/TimeCreateUser';
-import ConclusionCreateUser from '@core/presentation/screens/ConclusionCreateUser';
+import TabBarCreateUser from '@/core/presentation/shared/TabBarCreateUser';
+import IntroductionCreateUser from '@/core/presentation/screens/IntroductionCreateUser';
+import GenderCreateUser from '@/core/presentation/screens/GenderCreateUser';
+import BirthDateCreateUser from '@/core/presentation/screens/BirthDateCreateUser';
+import ActivityCreateUser from '@/core/presentation/screens/ActivityCreateUser';
+import WeightCreateUser from '@/core/presentation/screens/WeightCreateUser';
+import HeightCreateUser from '@/core/presentation/screens/HeightCreateUser';
+import TimeCreateUser from '@/core/presentation/screens/TimeCreateUser';
+import ConclusionCreateUser from '@/core/presentation/screens/ConclusionCreateUser';
 
 export type CreateUserStackParamsList = {
   IntroductionCreateUser: undefined;

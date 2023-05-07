@@ -3,7 +3,7 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import HomeDiet from '@core/presentation/screens/HomeDiet';
+import HomeDiet from '@/core/presentation/screens/HomeDiet';
 
 export type DietStackParamsList = {
   HomeDiet: undefined;

@@ -46,13 +46,11 @@ const layoutButton = {
 
 export const StyledWrapperButton = styled.TouchableOpacity<IStyledWrapperButtonProps>`
   align-items: center;
-  border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
   padding: ${({ theme }) => theme.effects.spacing.md}px;
   margin-top: ${({ marginTop }) => marginTop || 0}px;
   margin-right: ${({ marginRight }) => marginRight || 0}px;
   margin-bottom: ${({ marginBottom }) => marginBottom || 0}px;
   margin-left: ${({ marginLeft }) => marginLeft || 0}px;
-
   ${({ type }) => typeButton[type]}
   ${({ layout }) => layoutButton[layout]}
 `;

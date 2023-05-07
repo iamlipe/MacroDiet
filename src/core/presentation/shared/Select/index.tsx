@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { firstLetterUppercase } from '@utils/helpers/help';
+import { firstLetterUppercase } from '@/utils/helpers/help';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { TextStyle, View, ViewStyle, Text } from 'react-native';
+import BottomSheet from '@/core/presentation/shared/BottomSheet';
 import {
   StyledLabel,
   StyledContainer,
@@ -12,7 +13,6 @@ import {
   StyledLabelCardSelect,
   StyledDescription,
 } from './styles';
-import BottomSheet from '@core/presentation/shared/BottomSheet';
 
 interface ISelect {
   label?: string;
@@ -55,6 +55,7 @@ const Select: React.FC<ISelect> = ({
         {label && <StyledLabel>{firstLetterUppercase(label)}</StyledLabel>}
 
         <StyledContainer
+          activeOpacity={1}
           disabled={options.length <= 1}
           onPress={() => bottomSheetRef.current?.present()}>
           <StyledSelected style={[inputStyle]}>

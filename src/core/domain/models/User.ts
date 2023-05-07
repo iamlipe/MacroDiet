@@ -1,7 +1,8 @@
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import { formatFullName } from '@utils/helpers/format';
-import { Replace } from '@utils/helpers/help';
+import { formatFullName } from '@/utils/helpers/format';
+import { Replace } from '@/utils/helpers/help';
+import { MealTimeProps } from '@/core/domain/models/MealTime';
 
 export interface AuthProps {
   firstName: string | null;
@@ -30,27 +31,22 @@ export interface NutritionalInfoProps {
   sodium: number;
 }
 
-export interface MealTimeProps {
-  title: string;
-  time: { hour: number; minutes: number };
-  daysWeek: Array<number>;
-}
-
 export interface NotificationsProps {
   receiveNotifiicationsMeals?: boolean;
   reciveNotificationsDrinkWatter?: boolean;
 }
 
 export interface IPreferences {
-  mealsTime: MealTimeProps[];
   favoritesFoods: string[];
   notifications: NotificationsProps;
+  mealTimes?: MealTimeProps[];
 }
 
 export interface IUser extends AuthProps {
   info: InfoProps;
   nutritionalInfo?: NutritionalInfoProps;
   preferences: IPreferences;
+  typeAccount: 'google' | 'email';
 }
 
 export class User implements IUser {
@@ -61,6 +57,7 @@ export class User implements IUser {
   phone?: string | null;
   info: InfoProps;
   preferences: IPreferences;
+  typeAccount: 'google' | 'email';
 
   constructor(
     user: Replace<
@@ -75,6 +72,7 @@ export class User implements IUser {
     this.phone = user.phone;
     this.info = user.info;
     this.preferences = user.preferences;
+    this.typeAccount = user.typeAccount;
   }
 }
 
@@ -82,7 +80,7 @@ export const buidSchemaAuth = (raw: FirebaseAuthTypes.User): AuthProps => {
   return {
     firstName: formatFullName(raw.displayName || '').firstName,
     lastName: formatFullName(raw.displayName || '').lastName,
-    email: raw.email ? raw.email : null,
+    email: raw.email ? raw.email : '',
     phone: raw.phoneNumber,
     photo: raw.photoURL,
   };
@@ -92,12 +90,13 @@ export const buildSchemaUser = (
   raw: FirebaseFirestoreTypes.DocumentData,
 ): IUser => {
   return {
-    firstName: formatFullName(raw.displayName).firstName,
-    lastName: formatFullName(raw.displayName).lastName,
-    email: raw.email ? raw.email : null,
+    firstName: raw.firstName,
+    lastName: raw.lastName,
+    email: raw.email,
     phone: raw.phoneNumber,
     photo: raw.photoURL,
     info: raw.info,
     preferences: raw.preferences,
+    typeAccount: raw.typeAccount,
   };
 };

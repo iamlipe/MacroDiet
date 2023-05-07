@@ -3,7 +3,7 @@ import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'styled-components/native';
 import { StyledContainerHeader, StyledTitle, StyledBaseButton } from './styles';
-import Icon from '@core/presentation/shared/Icon';
+import Icon from '@/core/presentation/shared/Icon';
 
 interface HeaderProps extends NativeStackHeaderProps {
   hasLogo?: boolean;
@@ -14,22 +14,26 @@ const Header: React.FC<HeaderProps> = ({
   hasLogo = false,
   back,
   route,
+  options,
 }) => {
-  const { colors, fonts } = useTheme();
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
 
   return (
-    <StyledContainerHeader hasLogo={hasLogo} insets={insets}>
+    <StyledContainerHeader
+      transparent={route.name === 'DrinkWater'}
+      hasLogo={hasLogo}
+      insets={insets}>
       {back ? (
         <StyledBaseButton onPress={() => navigation.goBack()}>
-          <Icon name={'arrow-left'} color={colors.white} size={fonts.size.s2} />
+          <Icon name={'arrow-left'} color={colors.white} size={28} />
         </StyledBaseButton>
       ) : null}
 
       {hasLogo ? (
         <Icon name="logo" color={colors.primary[500]} size={32} />
       ) : (
-        <StyledTitle>{route.name}</StyledTitle>
+        <StyledTitle>{options.title || route.name}</StyledTitle>
       )}
 
       {back ? <StyledBaseButton disabled /> : null}

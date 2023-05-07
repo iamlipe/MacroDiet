@@ -4,9 +4,9 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { AuthStack } from './auth';
-import { LoggedStack } from './logged';
-import { useUserStore } from '@core/infrastructure/store/userStore';
+import { AuthStack } from '@/core/presentation/routes/auth';
+import { LoggedStack } from '@/core/presentation/routes/logged';
+import { useUserStore } from '@/core/infrastructure/store/userStore';
 
 export type MainStackParamsList = {
   AuthStack: undefined;
@@ -20,7 +20,11 @@ export const Routes = () => {
 
   return (
     <NavigationContainer>
-      <Main.Navigator screenOptions={{ headerShown: false }}>
+      <Main.Navigator
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: '#000' },
+        }}>
         {!user ? (
           <Main.Screen name="AuthStack" component={AuthStack} />
         ) : (

@@ -1,8 +1,6 @@
-import { handleErrorFirestore } from '@utils/helpers/handleErrors';
-import { FirebaseError } from 'firebase/app';
 import { useState } from 'react';
-import { useToast } from './useToast';
-import { RecoveryPasswordUseCase } from '@core/domain/useCases/RecoveryPassword';
+import { useToast } from '@/core/infrastructure/hooks/useToast';
+import { RecoveryPasswordUseCase } from '@/core/domain/services/firebase/useCases/RecoveryPassword';
 
 export const useRecoveryPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,14 +11,11 @@ export const useRecoveryPassword = () => {
 
     try {
       await new RecoveryPasswordUseCase().execute(email);
-    } catch (error) {
-      let message = 'something went wrong';
-
-      if (error instanceof FirebaseError) {
-        message = handleErrorFirestore(error);
-      }
-
-      showToast({ type: 'error', message });
+    } catch (error: any) {
+      showToast({
+        type: 'error',
+        message: error.message || 'something went wrong',
+      });
     } finally {
       setIsLoading(false);
     }

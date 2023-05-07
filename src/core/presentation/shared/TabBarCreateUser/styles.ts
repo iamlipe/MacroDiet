@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import Icon from '@core/presentation/shared/Icon';
+import Icon from '@/core/presentation/shared/Icon';
 
 export const StyledContainer = styled.View`
   flex-direction: row;

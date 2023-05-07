@@ -6,7 +6,6 @@ interface IStyledContainerHeader {
 }
 
 export const StyledContainerHeader = styled.View<IStyledContainerHeader>`
-  height: ${({ insets }) => insets.top + 80}px;
   flex-direction: row;
   align-items: center;
   justify-content: center;

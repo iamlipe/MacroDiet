@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import { SafeAreaViewProps } from 'react-native-safe-area-context';
-
 import { StyledBackground } from './styles';
 
 interface IBackground extends SafeAreaViewProps {

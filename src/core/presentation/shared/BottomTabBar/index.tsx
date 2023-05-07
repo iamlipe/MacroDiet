@@ -1,23 +1,23 @@
 import React, { useMemo } from 'react';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useTheme } from 'styled-components/native';
+import Icon from '@/core/presentation/shared/Icon';
 import { StyledContainerTab, StyledTitleTab, StyledWrapper } from './styles';
-import Icon from '@core/presentation/shared/Icon';
 
 const BottomTabBar = ({ state, insets, navigation }: BottomTabBarProps) => {
-  const { colors, fonts } = useTheme();
+  const { colors } = useTheme();
 
   const routeName: Record<string, string> = useMemo(() => {
     return {
       DietStack: 'Dieta',
-      ProfileStack: 'Perfil',
+      ProfileStack: 'Menu',
     };
   }, []);
 
   const iconName: Record<string, string> = useMemo(() => {
     return {
       DietStack: 'cutlery',
-      ProfileStack: 'user',
+      ProfileStack: 'menu',
     };
   }, []);
 
@@ -29,11 +29,7 @@ const BottomTabBar = ({ state, insets, navigation }: BottomTabBarProps) => {
           insets={insets}
           onPress={() => navigation.navigate(route.name)}>
           {state.history[state.history.length - 1].key === route.key && (
-            <Icon
-              name={iconName[route.name]}
-              color={colors.white}
-              size={fonts.size.s1}
-            />
+            <Icon name={iconName[route.name]} color={colors.white} size={26} />
           )}
 
           <StyledTitleTab>{routeName[route.name]}</StyledTitleTab>

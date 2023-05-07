@@ -26,3 +26,9 @@ export const StyledWrapperButtonSubmit = styled.View`
   flex: 1;
   justify-content: flex-end;
 `;
+
+export const StyledImage = styled.Image`
+  width: 100%;
+  height: 320px;
+  margin-bottom: ${({ theme }) => theme.effects.spacing.hg}px;
+`;

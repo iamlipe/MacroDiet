@@ -1,4 +1,4 @@
-import { IMeasure } from 'deprecated/services/firebase/models/measure';
+import { MeasureProps } from '@/core/domain/models/Measure';
 
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -29,7 +29,7 @@ export const formatTimeInWeeks = (
 
 export const formatMeasureToDefault = (
   measure: { quantity: number; measureDoc: string },
-  measureData: IMeasure[],
+  measureData: MeasureProps[],
 ) => {
   const measureMultiple = measureData.find(
     item => item.doc === measure.measureDoc,

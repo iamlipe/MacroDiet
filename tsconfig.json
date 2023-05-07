@@ -21,13 +21,13 @@
     "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
-      "@core/*": ["./src/core/*"],
-      "@config/*": ["./src/config/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@assets/*": ["./assets/*"],
-      "@__mocks__/*": ["./__mocks__/*"],
-      "@__tests__/*": ["./__tests__/*"],
-      "@env": ["node_modules/react-native-dotenv"]
+      "@/core/*": ["src/core/*"],
+      "@/config/*": ["./src/config/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/assets/*": ["./assets/*"],
+      "@/__mocks__/*": ["./__mocks__/*"],
+      "@/__tests__/*": ["./__tests__/*"],
+      "@/env": ["node_modules/react-native-dotenv"]
     },
   },
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacityProps } from 'react-native';
 import { useTheme } from 'styled-components/native';
-import Icon from '@core/presentation/shared/Icon';
+import Icon from '@/core/presentation/shared/Icon';
 import {
   StyledContainerIcon,
   StyledTitle,
@@ -24,7 +24,7 @@ const Link: React.FC<ILink> = ({
   icon,
   ...rest
 }) => {
-  const { colors, fonts } = useTheme();
+  const { colors } = useTheme();
 
   return (
     <StyledContainerLink
@@ -36,11 +36,7 @@ const Link: React.FC<ILink> = ({
 
       {icon && (
         <StyledContainerIcon iconLeft={icon.position === 'left'}>
-          <Icon
-            name={icon.name}
-            color={colors.white}
-            size={icon.size || fonts.size.s2}
-          />
+          <Icon name={icon.name} color={colors.gray[400]} size={24} />
         </StyledContainerIcon>
       )}
     </StyledContainerLink>

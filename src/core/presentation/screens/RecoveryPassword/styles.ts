@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import Input from '@core/presentation/shared/Input';
+import Input from '@/core/presentation/shared/Input';
 
 export const StyledScroll = styled.ScrollView.attrs(({ theme }) => ({
   showsVerticalScrollIndicator: false,
@@ -25,7 +25,7 @@ export const StyledSubtitle = styled.Text`
 `;
 
 export const StyledInput = styled(Input).attrs(({ theme }) => ({
-  wrapperStyled: {
+  wrapperStyle: {
     flex: 1,
     marginBottom: theme.effects.spacing.md,
   },

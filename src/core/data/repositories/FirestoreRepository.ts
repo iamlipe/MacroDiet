@@ -1,7 +1,7 @@
+import { removeUndefined } from '@/utils/helpers/help';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import { removeUndefined } from '@utils/helpers/help';
 
 export class FirestoreRepository {
   private db: FirebaseFirestoreTypes.Module;
@@ -65,9 +65,9 @@ export class FirestoreRepository {
   async update(
     collection: string,
     doc: string,
-    updates: Partial<Record<string, any>>,
+    data: Partial<Record<string, any>>,
   ) {
-    await this.db.collection(collection).doc(doc).update(updates);
+    await this.db.collection(collection).doc(doc).update(removeUndefined(data));
   }
 
   async remove(collection: string, doc: string) {

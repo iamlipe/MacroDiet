@@ -14,13 +14,9 @@ interface IStyledDescription {
 }
 
 export const StyledContainerOption = styled.TouchableOpacity<IStyledContainerOption>`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
   border-color: ${({ theme, selected }) =>
     selected ? theme.colors.primary[200] : theme.colors.white};
   border-width: ${({ theme }) => theme.effects.border.width.df}px;
-  border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
   padding: ${({ theme }) => theme.effects.spacing.md}px;
   margin-bottom: ${({ theme, lastChild }) =>
     !lastChild ? theme.effects.spacing.md : 0}px;
@@ -52,5 +48,6 @@ export const StyledDescription = styled.Text<IStyledDescription>`
   font-family: ${({ theme }) => theme.fonts.family.medium};
   font-size: ${({ theme }) => theme.fonts.size.md}px;
   color: ${({ theme, selected }) =>
-    selected ? theme.colors.primary[200] : theme.colors.gray[200]};
+    selected ? theme.colors.primary[200] : theme.colors.gray[400]};
+  margin-top: ${({ theme }) => theme.effects.spacing.vs}px;
 `;

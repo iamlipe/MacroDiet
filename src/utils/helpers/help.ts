@@ -3,6 +3,21 @@ interface IGroupBy<T> {
   keySelector: (item: T) => string;
 }
 
+interface ISectionListData<T> {
+  title: string;
+  data: T[];
+}
+
+interface IHandleSearch<T> {
+  search: string;
+  data: T[] | null;
+  keySearch: keyof T;
+}
+
+type SearchResult<T> = T[];
+
+export type Replace<T, R> = Omit<T, keyof R> & R;
+
 export const groupBy = <T>({
   arr,
   keySelector,
@@ -15,11 +30,6 @@ export const groupBy = <T>({
     };
   }, {});
 };
-
-interface ISectionListData<T> {
-  title: string;
-  data: T[];
-}
 
 export const toSectionListData = <T>(
   object: Record<string, T[]>,
@@ -47,14 +57,6 @@ export const parseNumber = (number: string | number) => {
     : Number(number);
 };
 
-interface IHandleSearch<T> {
-  search: string;
-  data: T[] | null;
-  keySearch: keyof T;
-}
-
-type SearchResult<T> = T[];
-
 export const searchData = <T>({
   search,
   data,
@@ -81,4 +83,20 @@ export const removeUndefined = (obj: Record<string, any>) => {
   return obj;
 };
 
-export type Replace<T, R> = Omit<T, keyof R> & R;
+export const enumerateDaysBetweenDates = (startDate: Date) => {
+  let currentDate = startDate;
+
+  const today = new Date();
+
+  const days = [];
+
+  while (currentDate <= today) {
+    days.push(new Date(startDate).toDateString());
+
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  days.push(new Date(startDate).toDateString());
+
+  return days;
+};

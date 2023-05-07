@@ -1,21 +1,21 @@
-import { handleErrorFirestore } from '@utils/helpers/handleErrors';
-import { FirebaseError } from 'firebase/app';
 import { useState } from 'react';
-import { useToast } from './useToast';
-import { useFoodStore } from '../store/foodStore';
-import { useMeasure } from './useMeasure';
-import { FoodMealProps } from '@core/domain/models/Meal';
-import { GetFoodsUseCase } from '@core/domain/useCases/GetFoods';
-import { useUserStore } from '../store/userStore';
-import { CreateFoodForm } from '../validators/createFoodSchema';
-import { CreateFoodUseCase } from '@core/domain/useCases/CreateFood';
-import { handleInfoFood } from '@utils/helpers/handleFood';
-import { FoodProps } from '@core/domain/models/Food';
+import { handleInfoFood } from '@/utils/helpers/handleFood';
+import { FoodMealProps } from '@/core/domain/models/Meal';
+import { FoodProps } from '@/core/domain/models/Food';
+import { GetFoodsUseCase } from '@/core/domain/services/firebase/useCases/GetFoods';
+import { GetSearchFoodsUseCase } from '@/core/domain/services/firebase/useCases/GetSearchFoods';
+import { CreateFoodUseCase } from '@/core/domain/services/firebase/useCases/CreateFood';
+import { CreateFoodForm } from '@/core/infrastructure/validators/createFoodSchema';
+import { useFoodStore } from '@/core/infrastructure/store/foodStore';
+import { useUserStore } from '@/core/infrastructure/store/userStore';
+import { useToast } from '@/core/infrastructure/hooks/useToast';
+import { useMeasure } from '@/core/infrastructure/hooks/useMeasure';
 
 export const useFood = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { show: showToast } = useToast();
-  const { foodList, setFavoriteFoodList, setFoodList } = useFoodStore();
+  const { foodList, setFavoriteFoodList, setFoodList, setSearchFoodList } =
+    useFoodStore();
   const { infoMeasure, createMeasure, getMeasureMassDefault } = useMeasure();
   const { user } = useUserStore();
 
@@ -40,14 +40,27 @@ export const useFood = () => {
       }
 
       setFoodList(foods);
-    } catch (error) {
-      let message = 'something went wrong';
+    } catch (error: any) {
+      showToast({
+        type: 'error',
+        message: error.message || 'something went wrong',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-      if (error instanceof FirebaseError) {
-        message = handleErrorFirestore(error);
-      }
+  const fetchSearchFoods = async (search: string) => {
+    setIsLoading(true);
 
-      showToast({ type: 'error', message });
+    try {
+      const foods = await new GetSearchFoodsUseCase().execute(search);
+      setSearchFoodList(foods);
+    } catch (error: any) {
+      showToast({
+        type: 'error',
+        message: error.message || 'something went wrong',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -84,14 +97,11 @@ export const useFood = () => {
         info,
         measures,
       });
-    } catch (error) {
-      let message = 'something went wrong';
-
-      if (error instanceof FirebaseError) {
-        message = handleErrorFirestore(error);
-      }
-
-      showToast({ type: 'error', message });
+    } catch (error: any) {
+      showToast({
+        type: 'error',
+        message: error.message || 'something went wrong',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -119,29 +129,12 @@ export const useFood = () => {
     return { title, kcal, quantity };
   };
 
-  const foodListExceptFavoriteFoods = () => {
-    if (!foodList || !foodList?.length) {
-      return [];
-    }
-
-    if (!user?.preferences) {
-      return foodList;
-    }
-
-    return foodList.filter(
-      food =>
-        !user?.preferences?.favoritesFoods.some(
-          favoriteFood => favoriteFood === food.doc,
-        ),
-    );
-  };
-
   return {
     fetchFoods,
     createFood,
     infoFood,
     handleFood,
     isLoading,
-    foodListExceptFavoriteFoods,
+    fetchSearchFoods,
   };
 };

@@ -1,7 +1,8 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import { firstLetterUppercase } from '@utils/helpers/help';
+import { firstLetterUppercase } from '@/utils/helpers/help';
 import { TouchableOpacityProps } from 'react-native';
+import Icon from '@/core/presentation/shared/Icon';
 import {
   StyledContainerIcon,
   StyledTitle,
@@ -9,7 +10,6 @@ import {
   StyledContainerLabel,
   StyledLoading,
 } from './styles';
-import Icon from '@core/presentation/shared/Icon';
 
 interface IButton extends TouchableOpacityProps {
   title: string;
@@ -30,7 +30,7 @@ const Button: React.FC<IButton> = ({
   loading = false,
   ...rest
 }) => {
-  const { colors, fonts } = useTheme();
+  const { colors } = useTheme();
 
   return (
     <StyledWrapperButton
@@ -54,11 +54,7 @@ const Button: React.FC<IButton> = ({
 
       {icon && !loading && (
         <StyledContainerIcon iconLeft={icon.position === 'left'}>
-          <Icon
-            name={icon.name}
-            color={colors.white}
-            size={icon.size || fonts.size.tl}
-          />
+          <Icon name={icon.name} color={colors.white} size={24} />
         </StyledContainerIcon>
       )}
     </StyledWrapperButton>

@@ -1,6 +1,7 @@
 import React, { forwardRef, useState } from 'react';
-import { firstLetterUppercase } from '@utils/helpers/help';
+import { firstLetterUppercase } from '@/utils/helpers/help';
 import { useTheme } from 'styled-components/native';
+import Icon from '@/core/presentation/shared/Icon';
 import {
   StyleProp,
   TextInput,
@@ -17,7 +18,6 @@ import {
   StyledError,
   StyledColumn,
 } from './styles';
-import Icon from '@core/presentation/shared/Icon';
 
 interface IInput extends TextInputProps {
   value: string;
@@ -43,10 +43,10 @@ const Input = forwardRef<TextInput, IInput>(
     ref,
   ) => {
     const [securityText, setSecurityText] = useState(secureTextEntry);
-    const { colors, fonts } = useTheme();
+    const { colors } = useTheme();
 
     return (
-      <View style={wrapperStyle}>
+      <View style={[wrapperStyle]}>
         {label && (
           <StyledLabel numberOfLines={1}>
             {firstLetterUppercase(label)}
@@ -69,7 +69,7 @@ const Input = forwardRef<TextInput, IInput>(
             <TouchableOpacity onPress={() => setSecurityText(!securityText)}>
               <Icon
                 name={securityText ? 'eye' : 'eye-off'}
-                size={fonts.size.s2}
+                size={24}
                 color={colors.white}
               />
             </TouchableOpacity>

@@ -1,6 +1,6 @@
 import auth from '@react-native-firebase/auth';
-import { LoginDTO } from '@core/domain/useCases/LoginWithEmail';
-import { RegisterDTO } from '@core/domain/useCases/Register';
+import { LoginDTO } from '@/core/domain/services/firebase/useCases/LoginWithEmail';
+import { RegisterDTO } from '@/core/domain/services/firebase/useCases/Register';
 
 export class FirebaseAuthRepository {
   async signIn({ email, password }: LoginDTO) {
@@ -35,7 +35,7 @@ export class FirebaseAuthRepository {
   async updatePassword(currentPassword: string, newPassword: string) {
     const user = auth().currentUser;
 
-    if (!user) {
+    if (!user?.email) {
       throw new Error('No authenticated user found');
     }
 

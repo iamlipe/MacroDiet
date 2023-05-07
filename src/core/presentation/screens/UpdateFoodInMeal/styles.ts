@@ -1,9 +1,9 @@
 import styled from 'styled-components/native';
 import { EdgeInsets } from 'react-native-safe-area-context';
 import Lottie from 'lottie-react-native';
-import Select from '@core/presentation/shared/Select';
-import Input from '@core/presentation/shared/Input';
-import Card from '@core/presentation/shared/Card';
+import Select from '@/core/presentation/shared/Select';
+import Input from '@/core/presentation/shared/Input';
+import Card from '@/core/presentation/shared/Card';
 
 interface IStyledScroll {
   insets: EdgeInsets;
@@ -95,7 +95,6 @@ export const StyledBoxNutrionalInfo = styled.View<IStyledBoxNutrionalInfo>`
   height: 60px;
   align-items: center;
   justify-content: center;
-  border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
   background-color: ${({ theme }) => theme.colors.primary[200]};
   margin-bottom: ${({ width }) => (width - 64) * 0.04}px;
 `;

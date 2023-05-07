@@ -1,22 +1,12 @@
-import { useMeasure } from '@core/infrastructure/hooks/useMeasure';
 import React from 'react';
-import { Button, View } from 'react-native';
+import Background from '@/core/presentation/shared/Background';
+import MenuView from './Menu.view';
 
-const MenuProfile: React.FC = () => {
-  const { createMeasure } = useMeasure();
-
-  const onCreateMeasure = async () => {
-    await createMeasure({
-      multiple: 40,
-      title: 'test',
-      type: 'mass',
-    });
-  };
-
+const MenuProfile = () => {
   return (
-    <View>
-      <Button title="teste criar meassure" onPress={onCreateMeasure} />
-    </View>
+    <Background>
+      <MenuView />
+    </Background>
   );
 };
 

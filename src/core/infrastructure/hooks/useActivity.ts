@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { GetActivitiesUseCase } from '@core/domain/useCases/GetActivities';
-import { handleErrorFirestore } from '@utils/helpers/handleErrors';
-import { FirebaseError } from 'firebase/app';
-import { useToast } from './useToast';
-import { useActivityStore } from '@core/infrastructure/store/activityStore';
+import { GetActivitiesUseCase } from '@/core/domain/services/firebase/useCases/GetActivities';
+import { useToast } from '@/core/infrastructure/hooks/useToast';
+import { useActivityStore } from '@/core/infrastructure/store/activityStore';
 
 export const useActivity = () => {
   const [loading, setLoading] = useState(false);
@@ -16,14 +14,11 @@ export const useActivity = () => {
     try {
       const activities = await new GetActivitiesUseCase().execute();
       setAcitivityList(activities);
-    } catch (error) {
-      let message = 'something went wrong';
-
-      if (error instanceof FirebaseError) {
-        message = handleErrorFirestore(error);
-      }
-
-      showToast({ type: 'error', message });
+    } catch (error: any) {
+      showToast({
+        type: 'error',
+        message: error.message || 'something went wrong',
+      });
     } finally {
       setLoading(false);
     }

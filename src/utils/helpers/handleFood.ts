@@ -1,4 +1,16 @@
-import { parseNumber } from './help';
+import { FoodProps } from '@/core/domain/models/Food';
+import { parseNumber } from '@/utils/helpers/help';
+
+interface HandleInfoFoodProps {
+  portion: string | number;
+  carb: string | number;
+  prot: string | number;
+  totalFat: string | number;
+  saturatedFat: string | number;
+  transFat: string | number;
+  sodium?: string | number;
+  fiber?: string | number;
+}
 
 const computeKcalPerGram = (
   carb: number,
@@ -15,17 +27,6 @@ const computeNutrientPerGram = (
 ) => {
   return parseNumber(nutrient) / parseNumber(portion);
 };
-
-interface HandleInfoFoodProps {
-  portion: string | number;
-  carb: string | number;
-  prot: string | number;
-  totalFat: string | number;
-  saturatedFat: string | number;
-  transFat: string | number;
-  sodium?: string | number;
-  fiber?: string | number;
-}
 
 export const handleInfoFood = ({
   carb,
@@ -52,4 +53,17 @@ export const handleInfoFood = ({
     saturatedFatPerGram: computeNutrientPerGram(saturatedFat, portion),
     transFatPerGram: computeNutrientPerGram(transFat, portion),
   };
+};
+
+export const excludeFavoriteFoods = (
+  data: FoodProps[],
+  favoritesFoods: string[],
+) => {
+  if (!data || !data?.length) {
+    return [];
+  }
+
+  return data.filter(
+    food => !favoritesFoods.some(favoriteFood => favoriteFood === food.doc),
+  );
 };

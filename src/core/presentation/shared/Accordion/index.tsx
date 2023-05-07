@@ -1,6 +1,7 @@
 import React, { ReactNode, useState } from 'react';
+import { firstLetterUppercase } from '@/utils/helpers/help';
 import { useTheme } from 'styled-components/native';
-import Icon from '@core/presentation/shared/Icon';
+import Icon from '@/core/presentation/shared/Icon';
 import {
   StyledContent,
   StyledDescription,
@@ -12,7 +13,6 @@ import {
   StyledWrapper,
   StyledDivider,
 } from './styles';
-import { firstLetterUppercase } from '@utils/helpers/help';
 
 interface IAccordion {
   title: string;
@@ -29,7 +29,7 @@ const Accordion: React.FC<IAccordion> = ({
   ...rest
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const { colors, fonts } = useTheme();
+  const { colors } = useTheme();
 
   return (
     <StyledWrapper {...rest}>
@@ -44,7 +44,7 @@ const Accordion: React.FC<IAccordion> = ({
           <Icon
             name={expanded ? 'down' : 'up'}
             color={colors.white}
-            size={fonts.size.md}
+            size={24}
           />
         </StyledOverviewContainer>
       </StyledHeader>

@@ -1,8 +1,8 @@
 const colors = {
   background: {
-    dark: '#000000',
+    dark: '#000',
     light: '#ffffff',
-    modal: '#00000099',
+    modal: '#ffffff0d',
   },
 
   white: '#fff',
@@ -22,20 +22,20 @@ const colors = {
   },
 
   primary: {
-    900: '#1a1774',
-    800: '#333280',
-    700: '#3e3c8b',
-    600: '#5250cc',
-    500: '#6563ff',
-    400: '#6c6ae0',
-    300: '#7371C5',
-    200: '#b1b0ff',
-    100: '#d6d5ff',
-    50: '#f4f4ff',
+    900: '#031B4F',
+    800: '#052775',
+    700: '#073C9C',
+    600: '#0A4ED8',
+    500: '#246EFF',
+    400: '#5D8EFF',
+    300: '#97B6FF',
+    200: '#C1D1FF',
+    100: '#E0EAF8',
+    50: '#F2F5FF',
   },
 
   status: {
-    warning: '#FFB93F',
+    warning: '#F3DA4A',
     error: '#C41826',
     success: '#009D35',
     info: '#417FFA',

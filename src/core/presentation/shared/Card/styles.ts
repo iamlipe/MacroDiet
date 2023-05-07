@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components/native';
-import Icon from '@core/presentation/shared/Icon';
+import Icon from '@/core/presentation/shared/Icon';
 
 interface IStyledWrapper {
   type: 'outlined' | 'bottomLine' | 'none';
@@ -8,7 +8,6 @@ interface IStyledWrapper {
 const typeCard = {
   outlined: css`
     border-width: ${({ theme }) => theme.effects.border.width.df}px;
-    border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
     padding: ${({ theme }) => theme.effects.spacing.md}px;
   `,
 
@@ -35,7 +34,6 @@ export const StyledTitle = styled.Text`
   font-family: ${({ theme }) => theme.fonts.family.regular};
   font-size: ${({ theme }) => theme.fonts.size.s2}px;
   color: ${({ theme }) => theme.fonts.color.primary};
-  line-height: 24px;
 `;
 
 export const StyledDescription = styled.Text`
@@ -49,7 +47,7 @@ export const StyledSubtitle = styled.Text`
   font-family: ${({ theme }) => theme.fonts.family.regular};
   font-size: ${({ theme }) => theme.fonts.size.md}px;
   color: ${({ theme }) => theme.fonts.color.secundary};
-  margin-top: ${({ theme }) => theme.effects.spacing.sm}px;
+  margin-top: ${({ theme }) => theme.effects.spacing.nn}px;
 `;
 
 export const StyledContainerInfo = styled.View`

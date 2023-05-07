@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import Input from '@core/presentation/shared/Input';
+import Input from '@/core/presentation/shared/Input';
 
 export const StyledScroll = styled.ScrollView.attrs(({ theme }) => ({
   showsVerticalScrollIndicator: false,
@@ -41,4 +41,5 @@ export const StyledTerms = styled.Text`
   font-size: ${({ theme }) => theme.fonts.size.md}px;
   color: ${({ theme }) => theme.colors.gray[200]};
   margin-bottom: ${({ theme }) => theme.effects.spacing.md}px;
+  margin-top: ${({ theme }) => theme.effects.spacing.md}px;
 `;

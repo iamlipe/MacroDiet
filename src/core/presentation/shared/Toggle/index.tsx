@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, ViewStyle } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import {
   useSharedValue,
@@ -16,13 +16,17 @@ import {
 
 interface IToggle {
   title?: string;
+  value: boolean;
+  onChange: (value: boolean) => void;
+  wrapperStyle?: ViewStyle;
 }
 
-const Toggle = ({ title }: IToggle) => {
-  const switchValue = useSharedValue(0);
+const Toggle = ({ title, value, onChange, wrapperStyle = {} }: IToggle) => {
+  const switchValue = useSharedValue(value ? 1 : 0);
   const { colors } = useTheme();
 
   const toggleSwitch = () => {
+    onChange(switchValue.value === 0);
     switchValue.value = withTiming(switchValue.value === 0 ? 1 : 0);
   };
 
@@ -64,7 +68,7 @@ const Toggle = ({ title }: IToggle) => {
   });
 
   return (
-    <StyledWrapper>
+    <StyledWrapper style={wrapperStyle}>
       {title ? <StyledLabel>{title}</StyledLabel> : null}
 
       <TouchableOpacity activeOpacity={1} onPress={toggleSwitch}>

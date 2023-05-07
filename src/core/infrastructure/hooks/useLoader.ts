@@ -1,5 +1,5 @@
-import { LoaderContext } from '@core/presentation/contexts/LoaderContext';
 import { useContext } from 'react';
+import { LoaderContext } from '@/core/presentation/contexts/LoaderContext';
 
 export const useLoader = () => {
   const context = useContext(LoaderContext);

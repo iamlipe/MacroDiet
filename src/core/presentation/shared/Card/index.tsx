@@ -1,7 +1,8 @@
 import React from 'react';
+import { firstLetterUppercase } from '@/utils/helpers/help';
 import { useTheme } from 'styled-components/native';
 import { TouchableOpacityProps, View } from 'react-native';
-import Icon from '@core/presentation/shared/Icon';
+import Icon from '@/core/presentation/shared/Icon';
 import {
   StyledContainerInfo,
   StyledDescription,
@@ -10,7 +11,6 @@ import {
   StyledWrapper,
   StyledIconLeft,
 } from './styles';
-import { firstLetterUppercase } from '@utils/helpers/help';
 
 interface ICard extends TouchableOpacityProps {
   title: string;
@@ -36,31 +36,31 @@ const Card: React.FC<ICard> = ({
 
   return (
     <StyledWrapper type={type} disabled={!onPress} onPress={onPress} {...rest}>
-      <StyledContainerInfo>
-        {iconLeft && (
-          <StyledIconLeft
-            name={iconLeft.name}
-            color={iconLeft.color || colors.primary[200]}
-            size={iconLeft.size || fonts.size.tl}
-            style={{ marginRight: effects.spacing.md }}
-          />
-        )}
-        <View>
-          <StyledTitle>{firstLetterUppercase(title)}</StyledTitle>
-          {subtitle && <StyledSubtitle>{subtitle}</StyledSubtitle>}
-        </View>
-      </StyledContainerInfo>
+      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+        <StyledContainerInfo>
+          {iconLeft && (
+            <StyledIconLeft
+              name={iconLeft.name}
+              color={iconLeft.color || colors.primary[400]}
+              size={iconLeft.size || fonts.size.tl}
+              style={{ marginRight: effects.spacing.md }}
+            />
+          )}
+          <View>
+            <StyledTitle>{firstLetterUppercase(title)}</StyledTitle>
+            {subtitle && <StyledSubtitle>{subtitle}</StyledSubtitle>}
+          </View>
+        </StyledContainerInfo>
 
-      {description && !icon && (
-        <StyledDescription>{description}</StyledDescription>
-      )}
+        {description && !icon && (
+          <StyledDescription>{description}</StyledDescription>
+        )}
+      </View>
 
       {icon && (
-        <Icon
-          name={icon.name}
-          color={icon.color || colors.white}
-          size={icon.size || fonts.size.s2}
-        />
+        <View style={{ padding: 4, marginLeft: 40 }}>
+          <Icon name={icon.name} color={icon.color || colors.white} size={24} />
+        </View>
       )}
     </StyledWrapper>
   );

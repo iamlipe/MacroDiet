@@ -1,9 +1,10 @@
-import { EdgeInsets } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
+import { EdgeInsets } from 'react-native-safe-area-context';
 
 interface IStyledContainerHeader {
   insets: EdgeInsets;
   hasLogo: boolean;
+  transparent: boolean;
 }
 
 export const StyledContainerHeader = styled.View<IStyledContainerHeader>`
@@ -11,7 +12,8 @@ export const StyledContainerHeader = styled.View<IStyledContainerHeader>`
   flex-direction: row;
   align-items: center;
   justify-content: ${({ hasLogo }) => (hasLogo ? 'center' : 'space-between')};
-  background-color: ${({ theme }) => theme.colors.background.dark};
+  background-color: ${({ theme, transparent }) =>
+    transparent ? 'transparent' : theme.colors.background.dark};
   padding: ${({ theme, insets }) =>
     `${theme.effects.spacing.lg + insets.top}px ${theme.effects.spacing.md}px ${
       theme.effects.spacing.lg

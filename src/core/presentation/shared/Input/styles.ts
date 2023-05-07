@@ -12,7 +12,6 @@ export const StyledContainerInput = styled.View`
   align-items: center;
   border-color: ${({ theme }) => theme.colors.white};
   border-width: ${({ theme }) => theme.effects.border.width.df}px;
-  border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
   padding: ${({ theme }) => theme.effects.spacing.md}px;
 `;
 

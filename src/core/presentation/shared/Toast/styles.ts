@@ -1,40 +1,57 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 interface IStyledContainerToast {
+  type: 'success' | 'error' | 'info' | 'warning';
   width: number;
   bottom: number;
 }
 
+const typeToast = {
+  success: css`
+    border-left-color: ${({ theme }) => theme.colors.status.success};
+  `,
+  error: css`
+    border-left-color: ${({ theme }) => theme.colors.status.error};
+  `,
+  info: css`
+    border-left-color: ${({ theme }) => theme.colors.status.info};
+  `,
+  warning: css`
+    border-left-color: ${({ theme }) => theme.colors.status.warning};
+  `,
+};
+
 export const StyledContainerToast = styled.View<IStyledContainerToast>`
   position: absolute;
-  bottom: 0;
-  width: ${({ width, theme }) => width - theme.effects.spacing.md}px;
+  bottom: ${({ bottom, theme }) => bottom + theme.effects.spacing.md}px;
+  width: ${({ width, theme }) => width - theme.effects.spacing.vl}px;
+  flex: 1;
   flex-direction: row;
-  align-items: center;
   align-self: center;
-  justify-content: space-between;
-  background-color: ${({ theme }) => theme.colors.gray[900]};
-  border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
+  background-color: #010101;
   border-left-width: ${({ theme }) => theme.effects.border.width.tl}px;
-  border-color: ${({ theme }) => theme.colors.status.success};
   padding: ${({ theme }) => theme.effects.spacing.md}px;
-  margin-bottom: ${({ bottom, theme }) => bottom + theme.effects.spacing.sm}px;
+  ${({ type }) => typeToast[type]}
 `;
 
 export const StyledContainerInfo = styled.View`
   flex: 1;
-  margin: 0 ${({ theme }) => theme.effects.spacing.md}px;
+  margin: 0 ${({ theme }) => theme.effects.spacing.sm}px;
 `;
 
 export const StyledTitle = styled.Text`
   font-family: ${({ theme }) => theme.fonts.family.medium};
-  font-size: ${({ theme }) => theme.fonts.size.s2}px;
+  font-size: ${({ theme }) => theme.fonts.size.s1}px;
   color: ${({ theme }) => theme.fonts.color.primary};
-  margin-bottom: ${({ theme }) => theme.effects.spacing.vs}px;
+  margin-bottom: ${({ theme }) => theme.effects.spacing.nn}px;
 `;
 
 export const StyledDescription = styled.Text`
   font-family: ${({ theme }) => theme.fonts.family.regular};
-  font-size: ${({ theme }) => theme.fonts.size.lg}px;
-  color: ${({ theme }) => theme.fonts.color.secundary};
+  font-size: ${({ theme }) => theme.fonts.size.md}px;
+  color: ${({ theme }) => theme.colors.gray[400]};
+`;
+
+export const StyledWrapperIcon = styled.View`
+  justify-content: center;
 `;

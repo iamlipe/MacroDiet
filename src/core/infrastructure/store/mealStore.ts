@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { MealProps } from '@core/domain/models/Meal';
+import { MealProps } from '@/core/domain/models/Meal';
 
 type State = {
   mealList: MealProps[] | null;
@@ -7,6 +7,9 @@ type State = {
 
   mealDayList: MealProps[] | null;
   setMealDayList: (meals: MealProps[]) => void;
+
+  selectedDateMeals: string;
+  setSelectedDateMeals: (selectedDateMeals: string) => void;
 };
 
 export const useMealStore = create<State>(set => ({
@@ -15,4 +18,8 @@ export const useMealStore = create<State>(set => ({
 
   mealDayList: null,
   setMealDayList: (mealDayList: MealProps[]) => set(() => ({ mealDayList })),
+
+  selectedDateMeals: new Date().toDateString(),
+  setSelectedDateMeals: (selectedDateMeals: string) =>
+    set(() => ({ selectedDateMeals })),
 }));

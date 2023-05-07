@@ -5,6 +5,8 @@ export const firestoreColections = {
   gender: 'Gender',
   meals: 'Meals',
   measures: 'Measures',
+  mealTimes: 'MealTimes',
+  water: 'Water',
 };
 
 export type FirestoreColections = keyof typeof firestoreColections;

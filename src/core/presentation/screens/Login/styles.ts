@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import Button from '@core/presentation/shared/Button';
+import Button from '@/core/presentation/shared/Button';
 
 export const StyledScroll = styled.ScrollView.attrs(({ theme }) => ({
   showsVerticalScrollIndicator: false,

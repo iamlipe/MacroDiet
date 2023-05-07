@@ -1,11 +1,10 @@
 import styled from 'styled-components/native';
-import Divider from '@core/presentation/shared/Divider';
+import Divider from '@/core/presentation/shared/Divider';
 
 export const StyledWrapper = styled.View`
   width: 100%;
   border-width: ${({ theme }) => theme.effects.border.width.df}px;
   border-color: ${({ theme }) => theme.colors.white};
-  border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
   padding: ${({ theme }) => theme.effects.spacing.md}px;
 `;
 

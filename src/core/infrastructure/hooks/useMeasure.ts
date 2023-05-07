@@ -1,11 +1,9 @@
 import { useCallback, useState } from 'react';
-import { GetMeasuresUseCase } from '@core/domain/useCases/GetMeasures';
-import { handleErrorFirestore } from '@utils/helpers/handleErrors';
-import { FirebaseError } from 'firebase/app';
-import { useToast } from './useToast';
-import { useMeasureStore } from '@core/infrastructure/store/measureStore';
-import { CreateMesureForm } from '../validators/createMeasureSchema';
-import { CreateMeasureUseCase } from '@core/domain/useCases/CreateMeasure';
+import { GetMeasuresUseCase } from '@/core/domain/services/firebase/useCases/GetMeasures';
+import { CreateMeasureUseCase } from '@/core/domain/services/firebase/useCases/CreateMeasure';
+import { CreateMesureForm } from '@/core/infrastructure/validators/createMeasureSchema';
+import { useMeasureStore } from '@/core/infrastructure/store/measureStore';
+import { useToast } from '@/core/infrastructure/hooks/useToast';
 
 export const useMeasure = () => {
   const [isloading, setIsLoading] = useState(false);
@@ -30,14 +28,11 @@ export const useMeasure = () => {
       setMeasureList(measures);
       setMeasureLengthList(measuresLength);
       setMeasureMassList(mesuresMass);
-    } catch (error) {
-      let message = 'something went wrong';
-
-      if (error instanceof FirebaseError) {
-        message = handleErrorFirestore(error);
-      }
-
-      showToast({ type: 'error', message });
+    } catch (error: any) {
+      showToast({
+        type: 'error',
+        message: error.message || 'something went wrong',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -62,16 +57,11 @@ export const useMeasure = () => {
       await fetchMeasures();
 
       successCallback && successCallback(measureDoc);
-    } catch (error) {
-      console.log(error);
-
-      let message = 'something went wrong';
-
-      if (error instanceof FirebaseError) {
-        message = handleErrorFirestore(error);
-      }
-
-      showToast({ type: 'error', message });
+    } catch (error: any) {
+      showToast({
+        type: 'error',
+        message: error.message || 'something went wrong',
+      });
     } finally {
       setIsLoading(false);
     }

@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#fff"
+      "backgroundColor": "#246EFF"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -23,7 +23,7 @@
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#fff"
+        "backgroundColor": "#000"
       },
       "package": "com.app.macros"
     },
@@ -51,5 +51,9 @@
         }
       ]
     ]
-  }
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-3082941249339829~6040300091",
+    "ios_app_id": "ca-app-pub-3082941249339829~5301933493"
+   }
 }

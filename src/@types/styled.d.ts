@@ -1,8 +1,8 @@
 import 'styled-components';
 
-import fonts from '@styles/fonts';
-import colors from '@styles/colors';
-import effects from '@styles/effects';
+import fonts from '@/config/styles/fonts';
+import colors from '@/config/styles/colors';
+import effects from '@/config/styles/effects';
 
 declare module 'styled-components' {
   type COLOR_TYPE = typeof colors;

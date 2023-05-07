@@ -1,5 +1,5 @@
-import { FoodProps } from '@core/domain/models/Food';
-import { MealProps } from '@core/domain/models/Meal';
+import { FoodProps } from '@/core/domain/models/Food';
+import { MealProps } from '@/core/domain/models/Meal';
 
 // Função para adicionar um alimento a uma refeição
 const addFoodToMeal = (

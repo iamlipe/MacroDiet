@@ -1,6 +1,6 @@
 import React from 'react';
-import { firstLetterUppercase } from '@utils/helpers/help';
-import { View } from 'react-native';
+import { firstLetterUppercase } from '@/utils/helpers/help';
+import { View, ViewStyle } from 'react-native';
 import {
   StyledContainerOption,
   StyledLabel,
@@ -15,6 +15,7 @@ interface IOption {
   options: { key: string; name: string; description?: string }[];
   error?: string;
   onChange: (text: string) => void;
+  wrapperStyle?: ViewStyle;
 }
 
 const Option: React.FC<IOption> = ({
@@ -23,9 +24,10 @@ const Option: React.FC<IOption> = ({
   options,
   error,
   onChange,
+  wrapperStyle,
 }) => {
   return (
-    <View>
+    <View style={wrapperStyle}>
       {label && <StyledLabel>{firstLetterUppercase(label)}</StyledLabel>}
 
       {options.map((option, index) => (
@@ -40,9 +42,10 @@ const Option: React.FC<IOption> = ({
 
           {option.description ? (
             <StyledDescription
+              numberOfLines={2}
               selected={
                 option.key === value
-              }>{`(${option.description})`}</StyledDescription>
+              }>{`${option.description}`}</StyledDescription>
           ) : null}
         </StyledContainerOption>
       ))}

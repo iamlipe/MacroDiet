@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { useSync } from '@core/infrastructure/hooks/useSync';
-import { StyledContainerSync, StyledLabel, StyledLoading } from './styles';
+import { useSync } from '@/core/infrastructure/hooks/useSync';
+import SyncView from './Sync.view';
 
 const Sync: React.FC = () => {
   const { sync } = useSync();
@@ -10,12 +10,7 @@ const Sync: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <StyledContainerSync>
-      <StyledLoading />
-      <StyledLabel>Carregando...</StyledLabel>
-    </StyledContainerSync>
-  );
+  return <SyncView />;
 };
 
 export default Sync;

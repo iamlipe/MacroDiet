@@ -4,7 +4,7 @@ interface IUserInfo {
   age: number;
   gender: 'male' | 'female';
   activityLevelFactor: number;
-  weightGoal: number;
+  goalWeight: number;
   timeInWeeks: number;
 }
 
@@ -56,13 +56,13 @@ const calculateTDEE = (bmr: number, activityLevelFactor: number) => {
 };
 
 const calculateKcalGoal = (
-  weightGoal: number,
+  goalWeight: number,
   weight: number,
   tdee: number,
   timeInWeeks: number,
   kcalDiff: number,
 ) => {
-  if (weightGoal > weight) {
+  if (goalWeight > weight) {
     return (
       (tdee * DAYS_WEEK * timeInWeeks + kcalDiff) / timeInWeeks / DAYS_WEEK
     );
@@ -89,16 +89,16 @@ export const calculateNutritionalInfo = (user: IUserInfo) => {
   const bmr = calculateBMR(user.gender, user.height, user.weight, user.age);
   const tdee = calculateTDEE(bmr, user.activityLevelFactor);
   const kcalDiff = Math.abs(
-    (user.weightGoal - user.weight) * CALORIES_PER_POUND,
+    (user.goalWeight - user.weight) * CALORIES_PER_POUND,
   );
   const kcal = calculateKcalGoal(
-    user.weightGoal,
+    user.goalWeight,
     user.weight,
     tdee,
     user.timeInWeeks,
     kcalDiff,
   );
-  const kcalGoal = user.weightGoal === user.weight ? tdee : kcal;
+  const kcalGoal = user.goalWeight === user.weight ? tdee : kcal;
   const fiber = FIBER;
   const sodium = SODIUM;
   const prot = calculateProtein(kcalGoal);

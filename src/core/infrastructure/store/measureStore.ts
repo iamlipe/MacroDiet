@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { MeasureProps } from '@core/domain/models/Measure';
+import { MeasureProps } from '@/core/domain/models/Measure';
 
 type State = {
   measureList: Array<MeasureProps> | null;

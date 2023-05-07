@@ -30,5 +30,4 @@ export const StyledTitleTab = styled.Text`
   font-family: ${({ theme }) => theme.fonts.family.medium};
   font-size: ${({ theme }) => theme.fonts.size.lg}px;
   color: ${({ theme }) => theme.fonts.color.primary};
-  margin-top: ${({ theme }) => theme.effects.spacing.sm}px;
 `;

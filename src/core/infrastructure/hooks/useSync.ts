@@ -1,27 +1,21 @@
-import { useToast } from './useToast';
-import { useActivity } from './useActivity';
-import { useSyncStore } from '@core/infrastructure/store/syncStore';
-import { useGender } from './useGender';
-import { useMeasure } from './useMeasure';
+import { useSyncStore } from '@/core/infrastructure/store/syncStore';
+import { useToast } from '@/core/infrastructure/hooks/useToast';
+import { useLogin } from '@/core/infrastructure/hooks/useLogin';
 
 export const useSync = () => {
   const { show: showToast } = useToast();
   const { setIsSync } = useSyncStore();
-  const { fetchActivities } = useActivity();
-  const { fetchGender } = useGender();
-  const { fetchMeasures } = useMeasure();
+  const { rememberLogin } = useLogin();
 
   const sync = async () => {
     setIsSync(true);
 
     try {
-      await fetchActivities();
-      await fetchGender();
-      await fetchMeasures();
+      await rememberLogin();
     } catch (error) {
       showToast({ type: 'error', message: 'Something went wrong' });
     } finally {
-      setIsSync(false);
+      setTimeout(() => setIsSync(false), 1000);
     }
   };
 

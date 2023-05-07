@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useCallback, useState } from 'react';
-import Loader from '@core/presentation/shared/Loader';
+import Loader from '@/core/presentation/shared/Loader';
 
 interface ILoaderContext {
   show: () => void;

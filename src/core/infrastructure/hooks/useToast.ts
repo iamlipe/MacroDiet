@@ -1,4 +1,4 @@
-import { ToastContext } from '@core/presentation/contexts/ToastContext';
+import { ToastContext } from '@/core/presentation/contexts/ToastContext';
 import { useContext } from 'react';
 
 export const useToast = () => {

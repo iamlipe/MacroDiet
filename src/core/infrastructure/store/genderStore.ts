@@ -1,5 +1,5 @@
-import { GenderProps } from '@core/domain/models/Gender';
 import { create } from 'zustand';
+import { GenderProps } from '@/core/domain/models/Gender';
 
 type State = {
   genderList: GenderProps[] | null;

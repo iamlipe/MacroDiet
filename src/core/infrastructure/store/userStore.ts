@@ -1,14 +1,18 @@
 import { create } from 'zustand';
-import { IAuth, IInfo, IUser } from '@core/domain/models/User';
+import { AuthProps, InfoProps, IUser } from '@/core/domain/models/User';
+
+export interface CreateUserProps extends InfoProps {
+  typeAccount: 'google' | 'email';
+}
 
 type State = {
   user: Partial<IUser> | null;
-  setAuth: (auth: IAuth) => void;
+  setAuth: (auth: AuthProps) => void;
   setUser: (user: IUser) => void;
   reset: () => void;
 
-  formCreateUser: Partial<IInfo> | null;
-  setFormCreateUser: (values: Partial<IInfo>) => void;
+  formCreateUser: Partial<CreateUserProps> | null;
+  setFormCreateUser: (values: Partial<CreateUserProps>) => void;
 };
 
 export const useUserStore = create<State>(set => ({

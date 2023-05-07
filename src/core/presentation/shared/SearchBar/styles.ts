@@ -6,7 +6,6 @@ export const StyledContainerSearchBar = styled.View`
   align-items: center;
   border-color: ${({ theme }) => theme.colors.white};
   border-width: ${({ theme }) => theme.effects.border.width.df}px;
-  border-radius: ${({ theme }) => theme.effects.border.radius.sm}px;
   padding: ${({ theme }) =>
     `${theme.effects.spacing.lg}px ${theme.effects.spacing.md}px`};
 `;

@@ -3,7 +3,7 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import MenuProfile from '@core/presentation/screens/MenuProfile';
+import MenuProfile from '@/core/presentation/screens/MenuProfile';
 
 export type ProfileStackParamsList = {
   MenuProfile: undefined;
@@ -14,7 +14,7 @@ const Profile = createNativeStackNavigator<ProfileStackParamsList>();
 export const ProfileStack = () => {
   return (
     <Profile.Navigator screenOptions={{ headerShown: false }}>
-      <Profile.Screen name="MenuProfile" component={MenuProfile} />
+      <Profile.Screen name="MenuProfile" component={MenuProfile} options={{}} />
     </Profile.Navigator>
   );
 };
